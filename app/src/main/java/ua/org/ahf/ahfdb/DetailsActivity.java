@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import ua.org.ahf.ahfdb.fragments.UpdateFragment;
+
 public class DetailsActivity extends AppCompatActivity {
 
     @Override
@@ -20,8 +22,7 @@ public class DetailsActivity extends AppCompatActivity {
         TextView tv_name = (TextView) findViewById(R.id.tv_name);
         TextView tv_description = (TextView) findViewById(R.id.tv_description);
 
-        SQLiteDatabase db = MainActivity.dbHelper.getReadableDatabase();
-
+        SQLiteDatabase db = NavigationActivity.dbHelper.getReadableDatabase();
 
         // Define 'where' part of query.
         String selection = DBHelper.COLUMN_ID + " = ?";
