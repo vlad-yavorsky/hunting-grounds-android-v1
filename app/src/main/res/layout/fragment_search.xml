@@ -4,10 +4,9 @@
     android:layout_height="match_parent"
     tools:context="ua.org.ahf.ahfdb.fragments.SearchFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
+        android:id="@+id/lv_companies"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/search" />
+        android:layout_height="match_parent" />
 
 </FrameLayout>

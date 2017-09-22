@@ -5,7 +5,7 @@ import com.google.maps.android.clustering.ClusterItem;
 
 public class Company implements ClusterItem {
 
-    private int id;
+    private long id;
     private int isMember;
     private int isHuntingGround;
     private int isFishingGround;
@@ -27,7 +27,7 @@ public class Company implements ClusterItem {
 //    private String[] gallery;
 //    private int isEnabled;
 
-    public Company(int id, int isMember, int isHuntingGround, int isFishingGround, int isPondFarm,
+    public Company(long id, int isMember, int isHuntingGround, int isFishingGround, int isPondFarm,
                    /*double territorySize,*/ double lat, double lng, String name, String description/*,
                    String website, String email, String[] phone, String logo*/) {
         this.id = id;
@@ -45,8 +45,11 @@ public class Company implements ClusterItem {
 //        this.logo = logo;
     }
 
-    public int getID() {
+    public long getId() {
         return id;
+    }
+    public void setId(long id) {
+        this.id = id;
     }
 
     public int isMember() {

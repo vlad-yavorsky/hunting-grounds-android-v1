@@ -1,15 +1,12 @@
 package ua.org.ahf.ahfdb.fragments;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -22,8 +19,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import ua.org.ahf.ahfdb.DBHelper;
-import ua.org.ahf.ahfdb.NavigationActivity;
+import ua.org.ahf.ahfdb.Company;
+import ua.org.ahf.ahfdb.DbHelper;
 import ua.org.ahf.ahfdb.R;
 
 /**
@@ -34,7 +31,7 @@ import ua.org.ahf.ahfdb.R;
  * Use the {@link UpdateFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UpdateFragment extends Fragment {
+public class UpdateFragment extends Fragment implements OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -86,7 +83,11 @@ public class UpdateFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_update, container, false);
+        View view = inflater.inflate(R.layout.fragment_update, container, false);
+
+        view.findViewById(R.id.updateDatabaseButton).setOnClickListener(this);
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -113,6 +114,16 @@ public class UpdateFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.updateDatabaseButton:
+                clearDatabase();
+                getJSON(JSON_URL);
+                break;
+        }
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -128,14 +139,8 @@ public class UpdateFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void updateDatabase(View view) {
-        clearDatabase(null);
-        getJSON(JSON_URL);
-    }
-
-    public void clearDatabase(View view) {
-        SQLiteDatabase db = NavigationActivity.dbHelper.getWritableDatabase();
-        db.delete(NavigationActivity.dbHelper.TABLE_COMPANY, null, null);
+    public void clearDatabase() {
+        DbHelper.instance(getActivity()).deleteAllCompanies();
     }
 
     private void getJSON(String url) {
@@ -183,31 +188,29 @@ public class UpdateFragment extends Fragment {
             JSONObject jsonObj = new JSONObject(myJSON);
             companies = jsonObj.getJSONArray(TAG_RESULT);
 
-            SQLiteDatabase db = NavigationActivity.dbHelper.getWritableDatabase();
-            ContentValues values = new ContentValues();
-
             for(int i = 0; i < companies.length(); i++){
                 JSONObject c = companies.getJSONObject(i);
 
-                String lat = c.getString(DBHelper.COLUMN_LAT);
-                String lng = c.getString(DBHelper.COLUMN_LNG);
+                String lat = c.getString(DbHelper.DbSchema.CompanyTable.Column.LAT);
+                String lng = c.getString(DbHelper.DbSchema.CompanyTable.Column.LNG);
 
                 if(lat.equals("") || lng.equals("")) {
                     lat = "0.0";
                     lng = "0.0";
                 }
 
-                values.put(DBHelper.COLUMN_ID, c.getInt(DBHelper.COLUMN_ID));
-                values.put(DBHelper.COLUMN_IS_MEMBER, c.getInt(DBHelper.COLUMN_IS_MEMBER));
-                values.put(DBHelper.COLUMN_IS_HUNTING_GROUND, c.getInt(DBHelper.COLUMN_IS_HUNTING_GROUND));
-                values.put(DBHelper.COLUMN_IS_FISHING_GROUND, c.getInt(DBHelper.COLUMN_IS_FISHING_GROUND));
-                values.put(DBHelper.COLUMN_IS_POND_FARM, c.getInt(DBHelper.COLUMN_IS_POND_FARM));
-                values.put(DBHelper.COLUMN_LAT, Double.parseDouble(lat));
-                values.put(DBHelper.COLUMN_LNG, Double.parseDouble(lng));
-                values.put(DBHelper.COLUMN_NAME, c.getString(DBHelper.COLUMN_NAME));
-                values.put(DBHelper.COLUMN_DESCRIPTION, c.getString(DBHelper.COLUMN_DESCRIPTION));
+                long id = c.getLong(DbHelper.DbSchema.CompanyTable.Column.ID);
+                int isMember = c.getInt(DbHelper.DbSchema.CompanyTable.Column.IS_MEMBER);
+                int isHuntingGround = c.getInt(DbHelper.DbSchema.CompanyTable.Column.IS_HUNTING_GROUND);
+                int isFishingGround = c.getInt(DbHelper.DbSchema.CompanyTable.Column.IS_FISHING_GROUND);
+                int isPondFarm = c.getInt(DbHelper.DbSchema.CompanyTable.Column.IS_POND_FARM);
+                String name = c.getString(DbHelper.DbSchema.CompanyTable.Column.NAME);
+                String description = c.getString(DbHelper.DbSchema.CompanyTable.Column.DESCRIPTION);
 
-                db.insert(DBHelper.TABLE_COMPANY, null, values);
+                Company company = new Company(id, isMember, isHuntingGround, isFishingGround,
+                        isPondFarm, Double.parseDouble(lat), Double.parseDouble(lng), name,
+                        description);
+                DbHelper.instance(getActivity()).create(company);
             }
             Toast.makeText(getActivity(), "Update success!", Toast.LENGTH_SHORT).show();
         } catch (JSONException e) {
@@ -216,3 +219,5 @@ public class UpdateFragment extends Fragment {
         }
     }
 }
+
+// TODO: Check internet connection, after that download latest data and clear/update database

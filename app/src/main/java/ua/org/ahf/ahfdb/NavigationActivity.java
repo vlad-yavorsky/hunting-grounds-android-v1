@@ -27,8 +27,6 @@ public class NavigationActivity extends AppCompatActivity
     UpdateFragment updateFragment;
     SettingsFragment settingsFragment;
 
-    public static DBHelper dbHelper;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,17 +124,6 @@ public class NavigationActivity extends AppCompatActivity
         return true;
     }
 
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        dbHelper = new DBHelper(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        dbHelper.close();
-    }
-
 }
+
+// TODO: Delete pink message button and setting button in top right corner

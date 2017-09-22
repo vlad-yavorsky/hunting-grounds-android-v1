@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 
 import ua.org.ahf.ahfdb.MapsActivity;
 import ua.org.ahf.ahfdb.R;
@@ -20,7 +20,7 @@ import ua.org.ahf.ahfdb.R;
  * Use the {@link CategoriesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CategoriesFragment extends Fragment implements View.OnClickListener {
+public class CategoriesFragment extends Fragment implements OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -104,10 +104,10 @@ public class CategoriesFragment extends Fragment implements View.OnClickListener
         Intent intent = new Intent(getActivity(), MapsActivity.class);
         switch (view.getId()) {
             case R.id.huntingGroundsButton:
-                intent.putExtra("GROUND_TYPE", 1);
+                intent.putExtra("COMPANY_TYPE", 1);
                 break;
             case R.id.fishingGroundButton:
-                intent.putExtra("GROUND_TYPE", 2);
+                intent.putExtra("COMPANY_TYPE", 2);
                 break;
         }
         startActivity(intent);
@@ -129,3 +129,5 @@ public class CategoriesFragment extends Fragment implements View.OnClickListener
     }
 
 }
+
+// TODO: Delete categories, leave only map with checkboxes to choose type of grounds

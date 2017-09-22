@@ -1,13 +1,20 @@
 package ua.org.ahf.ahfdb.fragments;
 
-import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
+import ua.org.ahf.ahfdb.DbHelper;
+import ua.org.ahf.ahfdb.DetailsActivity;
 import ua.org.ahf.ahfdb.R;
 
 /**
@@ -27,6 +34,8 @@ public class SearchFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private ListView lvCompanies;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,7 +74,41 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false);
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
+
+        ListView listView = (ListView) view.findViewById(R.id.lv_companies);
+        String[] columns = {
+                DbHelper.DbSchema.CompanyTable.Column.ID,
+                DbHelper.DbSchema.CompanyTable.Column.NAME
+        };
+        int[] resourceIds = {
+                R.id.tv_id,
+                R.id.tv_name
+        };
+        Cursor cursor = DbHelper.instance(getActivity()).fetchAll();
+        ListAdapter listAdapter = new SimpleCursorAdapter(getActivity(), R.layout.listview_row, cursor, columns, resourceIds, 0);
+        listView.setAdapter(listAdapter);
+        listView.setOnItemClickListener(
+            new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(getActivity(), DetailsActivity.class);
+                    intent.putExtra("id", Long.toString(id));
+                    startActivity(intent);
+//                    Cursor cursor = (Cursor)parent.getItemAtPosition(position);
+//                    String _id = "";
+//                    String name = "";
+//                    if(cursor.moveToPosition(position)) {
+//                        _id = cursor.getString(cursor.getColumnIndex("_id"));
+//                        name = cursor.getString(cursor.getColumnIndex("name"));
+//                    }
+//                    Log.d("blah", "itemClick: id = " + _id + ", name = " + name + ", id = " + id);
+                }
+            }
+        );
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -107,3 +150,5 @@ public class SearchFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 }
+
+// TODO: Add filter options (name, region, territory area) and region of company on the right side

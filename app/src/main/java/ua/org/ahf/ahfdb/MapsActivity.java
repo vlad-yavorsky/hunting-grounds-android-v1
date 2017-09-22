@@ -2,12 +2,8 @@ package ua.org.ahf.ahfdb;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -60,44 +56,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.getUiSettings().setZoomControlsEnabled(true);
 //        mMap.setMyLocationEnabled(true);
 
-
         setUpClusterer();
-        int groundType = getIntent().getIntExtra("GROUND_TYPE", 1);
-        DBHelper dbHelper = new DBHelper(this);
+        int companyType = getIntent().getIntExtra("COMPANY_TYPE", 1);
 
-        // Define 'where' part of query.
-        String selection = "";
-        if(groundType == 1) {
-            selection = DBHelper.COLUMN_IS_HUNTING_GROUND + " = ?";
-        } else if(groundType == 2) {
-            selection = DBHelper.COLUMN_IS_FISHING_GROUND + " = ?";
-        } else if(groundType == 3) {
-            selection = DBHelper.COLUMN_IS_POND_FARM + " = ?";
-        }
-        // Specify arguments in placeholder order.
-        String[] selectionArgs = { "1" };
-
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query(
-                DBHelper.TABLE_COMPANY,  // The table to query
-                null,                    // The columns to return
-                selection,               // The columns for the WHERE clause
-                selectionArgs,           // The values for the WHERE clause
-                null,                    // don't group the rows
-                null,                    // don't filter by row groups
-                null                     // The sort order
-        );
+        Cursor cursor = DbHelper.instance(this).fetchByType(companyType);
 
         if (cursor.moveToFirst()) {
-            int id = cursor.getColumnIndex(DBHelper.COLUMN_ID);
-            int isMember = cursor.getColumnIndex(DBHelper.COLUMN_IS_MEMBER);
-            int isHuntingGround = cursor.getColumnIndex(DBHelper.COLUMN_IS_HUNTING_GROUND);
-            int isFishingGround = cursor.getColumnIndex(DBHelper.COLUMN_IS_FISHING_GROUND);
-            int isPondFarm = cursor.getColumnIndex(DBHelper.COLUMN_IS_POND_FARM);
-            int lat = cursor.getColumnIndex(DBHelper.COLUMN_LAT);
-            int lng = cursor.getColumnIndex(DBHelper.COLUMN_LNG);
-            int name = cursor.getColumnIndex(DBHelper.COLUMN_NAME);
-            int description = cursor.getColumnIndex(DBHelper.COLUMN_DESCRIPTION);
+            int id = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.ID);
+            int isMember = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.IS_MEMBER);
+            int isHuntingGround = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.IS_HUNTING_GROUND);
+            int isFishingGround = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.IS_FISHING_GROUND);
+            int isPondFarm = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.IS_POND_FARM);
+            int lat = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.LAT);
+            int lng = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.LNG);
+            int name = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.NAME);
+            int description = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.DESCRIPTION);
 
             do {
                 if(cursor.getDouble(lat) == 0.0d || cursor.getDouble(lng) == 0.0d) {
@@ -111,21 +84,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 // Add cluster items (markers) to the cluster manager.
                 mClusterManager.addItem(item);
-
-                Log.d("mLog",
-                        " id = " + cursor.getString(id) +
-                        " isMember = " + cursor.getString(isMember) +
-                        " isHuntingGround = " + cursor.getString(isHuntingGround) +
-                        " isFishingGround = " + cursor.getString(isFishingGround) +
-                        " isPondFarm = " + cursor.getString(isPondFarm) +
-                        " lat = " + cursor.getString(lat) +
-                        " lng = " + cursor.getString(lng) +
-                        " name = " + cursor.getString(name) +
-                        " description = " + cursor.getString(description)
-                );
             } while (cursor.moveToNext());
-        } else {
-            Log.d("mLog", "database: 0 rows");
         }
 
         googleMap.setOnInfoWindowClickListener(mClusterManager);
@@ -175,7 +134,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClusterItemInfoWindowClick(Company company) {
                 Intent intent = new Intent(MapsActivity.this, DetailsActivity.class);
-                intent.putExtra("id", Integer.toString(company.getID()));
+                intent.putExtra("id", Long.toString(company.getId()));
                 startActivity(intent);
             }
         });
@@ -229,7 +188,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             TextView tv_position = (TextView) contentView.findViewById(R.id.tv_position);
 
             if (clickedClusterItem != null) {
-                tv_id.setText(Integer.toString(clickedClusterItem.getID()));
+                tv_id.setText(Long.toString(clickedClusterItem.getId()));
                 tv_company_name.setText(clickedClusterItem.getName());
                 tv_position.setText(clickedClusterItem.getLat() + ", " + clickedClusterItem.getLng());
             }

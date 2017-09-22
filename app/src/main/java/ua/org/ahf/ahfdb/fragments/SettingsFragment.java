@@ -1,6 +1,5 @@
 package ua.org.ahf.ahfdb.fragments;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -107,3 +106,5 @@ public class SettingsFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 }
+
+// TODO: Possibility to chose home screen (map/search/etc)
