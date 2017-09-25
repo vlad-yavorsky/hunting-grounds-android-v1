@@ -5,12 +5,12 @@ import com.google.maps.android.clustering.ClusterItem;
 
 public class Company implements ClusterItem {
 
-    private long id;
-    private int isMember;
-    private int isHuntingGround;
-    private int isFishingGround;
-    private int isPondFarm;
-//    private double territorySize;
+    private Long id;
+    private Integer isMember;
+    private Integer isHuntingGround;
+    private Integer isFishingGround;
+    private Integer isPondFarm;
+    private Double area;
     private LatLng position;
     private String name;
     private String description;
@@ -27,16 +27,27 @@ public class Company implements ClusterItem {
 //    private String[] gallery;
 //    private int isEnabled;
 
-    public Company(long id, int isMember, int isHuntingGround, int isFishingGround, int isPondFarm,
-                   /*double territorySize,*/ double lat, double lng, String name, String description/*,
-                   String website, String email, String[] phone, String logo*/) {
+    public Company(Long id, Integer isMember, Integer isHuntingGround, Integer isFishingGround,
+                   Integer isPondFarm, Double lat, Double lng, String name) {
         this.id = id;
         this.isMember = isMember;
         this.isHuntingGround = isHuntingGround;
         this.isFishingGround = isFishingGround;
         this.isPondFarm = isPondFarm;
-//        this.territorySize = territorySize;
-        this.position = new LatLng(lat, lng);
+        setPosition(lat, lng);
+        this.name = name;
+    }
+
+    public Company(Long id, Integer isMember, Integer isHuntingGround, Integer isFishingGround,
+                   Integer isPondFarm, Double area, Double lat, Double lng, String name,
+                   String description/*, String website, String email, String[] phone, String logo*/) {
+        this.id = id;
+        this.isMember = isMember;
+        this.isHuntingGround = isHuntingGround;
+        this.isFishingGround = isFishingGround;
+        this.isPondFarm = isPondFarm;
+        this.area = area;
+        setPosition(lat, lng);
         this.name = name;
         this.description = description;
 //        this.website = website;
@@ -45,43 +56,50 @@ public class Company implements ClusterItem {
 //        this.logo = logo;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
     public void setId(long id) {
         this.id = id;
     }
 
-    public int isMember() {
+    public Integer isMember() {
         return isMember;
     }
 
-    public int isHuntingGround() {
+    public Integer isHuntingGround() {
         return isHuntingGround;
     }
 
-    public int isFishingGround() {
+    public Integer isFishingGround() {
         return isFishingGround;
     }
 
-    public int isPondFarm() {
+    public Integer isPondFarm() {
         return isPondFarm;
     }
 
-//    public double getTerritorySize() {
-//        return territorySize;
-//    }
+    public Double getArea() {
+        return area;
+    }
 
     @Override
     public LatLng getPosition() {
         return position;
     }
+    public void setPosition(Double lat, Double lng) {
+        if(lat == null || lng == null) {
+            this.position = null;
+        } else {
+            this.position = new LatLng(lat, lng);
+        }
+    }
 
-    public double getLat() {
+    public Double getLat() {
         return position.latitude;
     }
 
-    public double getLng() {
+    public Double getLng() {
         return position.longitude;
     }
 

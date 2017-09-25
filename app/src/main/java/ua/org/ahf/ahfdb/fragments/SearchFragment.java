@@ -9,9 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 import ua.org.ahf.ahfdb.DbHelper;
 import ua.org.ahf.ahfdb.DetailsActivity;
@@ -80,15 +80,44 @@ public class SearchFragment extends Fragment {
         ListView listView = (ListView) view.findViewById(R.id.lv_companies);
         String[] columns = {
                 DbHelper.DbSchema.CompanyTable.Column.ID,
-                DbHelper.DbSchema.CompanyTable.Column.NAME
+                DbHelper.DbSchema.CompanyTable.Column.NAME,
+                DbHelper.DbSchema.CompanyTable.Column.IS_MEMBER,
+                DbHelper.DbSchema.CompanyTable.Column.AREA
         };
         int[] resourceIds = {
                 R.id.tv_id,
-                R.id.tv_name
+                R.id.tv_name,
+                R.id.tv_short_info,
+                R.id.tv_short_info
         };
         Cursor cursor = DbHelper.instance(getActivity()).fetchAll();
-        ListAdapter listAdapter = new SimpleCursorAdapter(getActivity(), R.layout.listview_row, cursor, columns, resourceIds, 0);
-        listView.setAdapter(listAdapter);
+        SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.listview_row, cursor, columns, resourceIds, 0);
+
+        simpleCursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+            @Override
+            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+                if (columnIndex == 1) {
+                    if(cursor.getString(columnIndex).equals("1")) {
+                        ((TextView)view).setText(R.string.memberOfAssociation);
+                    } else {
+                        ((TextView)view).setText("");
+                    }
+                    return true;
+                }
+                if (columnIndex == 5) {
+                    if(!cursor.isNull(columnIndex)) {
+                        TextView textView = (TextView) view;
+                        if(!textView.getText().equals("")) {
+                            textView.setText(textView.getText() + " • ");
+                        }
+                        textView.setText(textView.getText() + cursor.getString(columnIndex) + " " + getResources().getString(R.string.kilo_ha));
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+        listView.setAdapter(simpleCursorAdapter);
         listView.setOnItemClickListener(
             new AdapterView.OnItemClickListener() {
                 @Override
@@ -152,3 +181,4 @@ public class SearchFragment extends Fragment {
 }
 
 // TODO: Add filter options (name, region, territory area) and region of company on the right side
+// TODO: Add info how far is hunting ground from user (Member of Association • 10 kilo ha. • 50 km)

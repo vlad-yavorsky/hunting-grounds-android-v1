@@ -70,17 +70,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             int lat = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.LAT);
             int lng = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.LNG);
             int name = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.NAME);
-            int description = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.DESCRIPTION);
 
             do {
-                if(cursor.getDouble(lat) == 0.0d || cursor.getDouble(lng) == 0.0d) {
+                if(cursor.isNull(lat) || cursor.isNull(lng)) {
                     continue;
                 }
 
-                Company item = new Company(cursor.getInt(id), cursor.getInt(isMember),
+                Company item = new Company(cursor.getLong(id), cursor.getInt(isMember),
                         cursor.getInt(isHuntingGround), cursor.getInt(isFishingGround),
                         cursor.getInt(isPondFarm), cursor.getDouble(lat), cursor.getDouble(lng),
-                        cursor.getString(name), cursor.getString(description));
+                        cursor.getString(name));
 
                 // Add cluster items (markers) to the cluster manager.
                 mClusterManager.addItem(item);

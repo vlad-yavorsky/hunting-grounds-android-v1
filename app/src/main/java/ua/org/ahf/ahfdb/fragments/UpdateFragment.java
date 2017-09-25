@@ -191,25 +191,32 @@ public class UpdateFragment extends Fragment implements OnClickListener {
             for(int i = 0; i < companies.length(); i++){
                 JSONObject c = companies.getJSONObject(i);
 
-                String lat = c.getString(DbHelper.DbSchema.CompanyTable.Column.LAT);
-                String lng = c.getString(DbHelper.DbSchema.CompanyTable.Column.LNG);
-
-                if(lat.equals("") || lng.equals("")) {
-                    lat = "0.0";
-                    lng = "0.0";
-                }
-
-                long id = c.getLong(DbHelper.DbSchema.CompanyTable.Column.ID);
-                int isMember = c.getInt(DbHelper.DbSchema.CompanyTable.Column.IS_MEMBER);
-                int isHuntingGround = c.getInt(DbHelper.DbSchema.CompanyTable.Column.IS_HUNTING_GROUND);
-                int isFishingGround = c.getInt(DbHelper.DbSchema.CompanyTable.Column.IS_FISHING_GROUND);
-                int isPondFarm = c.getInt(DbHelper.DbSchema.CompanyTable.Column.IS_POND_FARM);
+                Long id = c.getLong(DbHelper.DbSchema.CompanyTable.Column.ID);
+                Integer isMember = c.getInt(DbHelper.DbSchema.CompanyTable.Column.IS_MEMBER);
+                Integer isHuntingGround = c.getInt(DbHelper.DbSchema.CompanyTable.Column.IS_HUNTING_GROUND);
+                Integer isFishingGround = c.getInt(DbHelper.DbSchema.CompanyTable.Column.IS_FISHING_GROUND);
+                Integer isPondFarm = c.getInt(DbHelper.DbSchema.CompanyTable.Column.IS_POND_FARM);
                 String name = c.getString(DbHelper.DbSchema.CompanyTable.Column.NAME);
                 String description = c.getString(DbHelper.DbSchema.CompanyTable.Column.DESCRIPTION);
 
+                Double area = null;
+                if(!c.isNull(DbHelper.DbSchema.CompanyTable.Column.AREA)) {
+                    area = c.getDouble(DbHelper.DbSchema.CompanyTable.Column.AREA);
+                }
+
+                Double lat = null;
+                if(!c.isNull(DbHelper.DbSchema.CompanyTable.Column.LAT)) {
+                    lat = c.getDouble(DbHelper.DbSchema.CompanyTable.Column.LAT);
+                }
+
+                Double lng = null;
+                if(!c.isNull(DbHelper.DbSchema.CompanyTable.Column.LNG)) {
+                    lng = c.getDouble(DbHelper.DbSchema.CompanyTable.Column.LNG);
+                }
+
+
                 Company company = new Company(id, isMember, isHuntingGround, isFishingGround,
-                        isPondFarm, Double.parseDouble(lat), Double.parseDouble(lng), name,
-                        description);
+                        isPondFarm, area, lat, lng, name, description);
                 DbHelper.instance(getActivity()).create(company);
             }
             Toast.makeText(getActivity(), "Update success!", Toast.LENGTH_SHORT).show();

@@ -11,4 +11,8 @@
     <string name="search">Search</string>
     <string name="update">Update</string>
     <string name="settings">Settings</string>
+
+    <string name="area">Area:</string>
+    <string name="kilo_ha">kilo ha.</string>
+    <string name="memberOfAssociation">Member of Association</string>
 </resources>

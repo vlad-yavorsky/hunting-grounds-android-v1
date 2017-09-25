@@ -59,7 +59,7 @@ public class NavigationActivity extends AppCompatActivity
 
         // Set default fragment
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.container, categoriesFragment);
+        fragmentTransaction.replace(R.id.container, searchFragment);
         fragmentTransaction.commit();
     }
 

@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DbHelper {
 
     private static final String DB_NAME = "ahf.db";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 4;
     private static DbHelper mInstance;
     private SQLiteDatabase mSQLiteDatabase;
 
@@ -26,7 +26,8 @@ public class DbHelper {
 
             @Override
             public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-                //
+                sqLiteDatabase.execSQL(DbSchema.CompanyTable.DELETE_SQL);
+                onCreate(sqLiteDatabase);
             }
         }.getWritableDatabase();
     }
@@ -41,11 +42,13 @@ public class DbHelper {
                     Column.IS_HUNTING_GROUND + " integer, " +
                     Column.IS_FISHING_GROUND + " integer, " +
                     Column.IS_POND_FARM + " integer, " +
+                    Column.AREA + " real, " +
                     Column.LAT + " real, " +
                     Column.LNG + " real, " +
                     Column.NAME + " text, " +
                     Column.DESCRIPTION + " text" +
                     ")";
+            public static final String DELETE_SQL = "drop table if exists " + NAME;
 
             public class Column {
                 public static final String ID = "_id";
@@ -53,6 +56,7 @@ public class DbHelper {
                 public static final String IS_HUNTING_GROUND = "is_hunting_ground";
                 public static final String IS_FISHING_GROUND = "is_fishing_ground";
                 public static final String IS_POND_FARM = "is_pond_farm";
+                public static final String AREA = "area";
                 public static final String LAT = "lat";
                 public static final String LNG = "lng";
                 public static final String NAME = "name";
@@ -69,6 +73,7 @@ public class DbHelper {
         contentValues.put(DbSchema.CompanyTable.Column.IS_HUNTING_GROUND, company.isHuntingGround());
         contentValues.put(DbSchema.CompanyTable.Column.IS_FISHING_GROUND, company.isFishingGround());
         contentValues.put(DbSchema.CompanyTable.Column.IS_POND_FARM, company.isPondFarm());
+        contentValues.put(DbSchema.CompanyTable.Column.AREA, company.getArea());
         contentValues.put(DbSchema.CompanyTable.Column.LAT, company.getLat());
         contentValues.put(DbSchema.CompanyTable.Column.LNG, company.getLng());
         contentValues.put(DbSchema.CompanyTable.Column.NAME, company.getName());
@@ -85,7 +90,7 @@ public class DbHelper {
 
     public Cursor fetchAll() {
         Cursor cursor = null;
-        String orderBy = DbSchema.CompanyTable.Column.NAME;
+        String orderBy = DbSchema.CompanyTable.Column.IS_MEMBER + " DESC, " + DbSchema.CompanyTable.Column.NAME  + " ASC";
         cursor = mSQLiteDatabase.query(DbSchema.CompanyTable.NAME, null, null, null, null, null, orderBy);
         return cursor;
     }
