@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DbHelper {
 
     private static final String DB_NAME = "ahf.db";
-    private static final int DB_VERSION = 4;
+    private static final int DB_VERSION = 6;
     private static DbHelper mInstance;
     private SQLiteDatabase mSQLiteDatabase;
 
@@ -46,7 +46,13 @@ public class DbHelper {
                     Column.LAT + " real, " +
                     Column.LNG + " real, " +
                     Column.NAME + " text, " +
-                    Column.DESCRIPTION + " text" +
+                    Column.DESCRIPTION + " text," +
+                    Column.WEBSITE + " text," +
+                    Column.EMAIL + " text," +
+                    Column.JURIDICAL_ADDRESS + " text," +
+                    Column.ACTUAL_ADDRESS + " text," +
+                    Column.DIRECTOR + " text," +
+                    Column.IS_ENABLED + " integer" +
                     ")";
             public static final String DELETE_SQL = "drop table if exists " + NAME;
 
@@ -61,7 +67,12 @@ public class DbHelper {
                 public static final String LNG = "lng";
                 public static final String NAME = "name";
                 public static final String DESCRIPTION = "description";
-
+                public static final String WEBSITE = "website";
+                public static final String EMAIL = "email";
+                public static final String JURIDICAL_ADDRESS = "juridical_address";
+                public static final String ACTUAL_ADDRESS = "actual_address";
+                public static final String DIRECTOR = "director";
+                public static final String IS_ENABLED = "is_enabled";
             }
         }
     }
@@ -78,6 +89,12 @@ public class DbHelper {
         contentValues.put(DbSchema.CompanyTable.Column.LNG, company.getLng());
         contentValues.put(DbSchema.CompanyTable.Column.NAME, company.getName());
         contentValues.put(DbSchema.CompanyTable.Column.DESCRIPTION, company.getDescription());
+        contentValues.put(DbSchema.CompanyTable.Column.WEBSITE, company.getWebsite());
+        contentValues.put(DbSchema.CompanyTable.Column.EMAIL, company.getEmail());
+        contentValues.put(DbSchema.CompanyTable.Column.JURIDICAL_ADDRESS, company.getJuridicalAddress());
+        contentValues.put(DbSchema.CompanyTable.Column.ACTUAL_ADDRESS, company.getActualAddress());
+        contentValues.put(DbSchema.CompanyTable.Column.DIRECTOR, company.getDirector());
+        contentValues.put(DbSchema.CompanyTable.Column.IS_ENABLED, company.isEnabled());
         return contentValues;
     }
 

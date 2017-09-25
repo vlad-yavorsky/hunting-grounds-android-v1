@@ -198,6 +198,12 @@ public class UpdateFragment extends Fragment implements OnClickListener {
                 Integer isPondFarm = c.getInt(DbHelper.DbSchema.CompanyTable.Column.IS_POND_FARM);
                 String name = c.getString(DbHelper.DbSchema.CompanyTable.Column.NAME);
                 String description = c.getString(DbHelper.DbSchema.CompanyTable.Column.DESCRIPTION);
+                String website = c.getString(DbHelper.DbSchema.CompanyTable.Column.WEBSITE);
+                String email = c.getString(DbHelper.DbSchema.CompanyTable.Column.EMAIL);
+                String juridicalAddress = c.getString(DbHelper.DbSchema.CompanyTable.Column.JURIDICAL_ADDRESS);
+                String actualAddress = c.getString(DbHelper.DbSchema.CompanyTable.Column.ACTUAL_ADDRESS);
+                String director = c.getString(DbHelper.DbSchema.CompanyTable.Column.DIRECTOR);
+                Integer isEnabled = c.getInt(DbHelper.DbSchema.CompanyTable.Column.IS_ENABLED);
 
                 Double area = null;
                 if(!c.isNull(DbHelper.DbSchema.CompanyTable.Column.AREA)) {
@@ -216,7 +222,8 @@ public class UpdateFragment extends Fragment implements OnClickListener {
 
 
                 Company company = new Company(id, isMember, isHuntingGround, isFishingGround,
-                        isPondFarm, area, lat, lng, name, description);
+                        isPondFarm, area, lat, lng, name, description, website, email, juridicalAddress,
+                        actualAddress, director, isEnabled);
                 DbHelper.instance(getActivity()).create(company);
             }
             Toast.makeText(getActivity(), "Update success!", Toast.LENGTH_SHORT).show();

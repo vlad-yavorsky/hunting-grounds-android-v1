@@ -14,18 +14,18 @@ public class Company implements ClusterItem {
     private LatLng position;
     private String name;
     private String description;
-//    private String website;
-//    private String email;
+    private String website;
+    private String email;
+    private String juridicalAddress;
+    private String actualAddress;
+    private String director;
+    private Integer isEnabled;
 //    private String[] phone;
 //    private String logo;
 //    private String[] oblast;
 //    private String[] raion;
 //    private String language;
-//    private String juridicalAddress;
-//    private String actualAddress;
-//    private String director;
 //    private String[] gallery;
-//    private int isEnabled;
 
     public Company(Long id, Integer isMember, Integer isHuntingGround, Integer isFishingGround,
                    Integer isPondFarm, Double lat, Double lng, String name) {
@@ -40,7 +40,8 @@ public class Company implements ClusterItem {
 
     public Company(Long id, Integer isMember, Integer isHuntingGround, Integer isFishingGround,
                    Integer isPondFarm, Double area, Double lat, Double lng, String name,
-                   String description/*, String website, String email, String[] phone, String logo*/) {
+                   String description, String website, String email, String juridicalAddress,
+                   String actualAddress, String director, Integer isEnabled) {
         this.id = id;
         this.isMember = isMember;
         this.isHuntingGround = isHuntingGround;
@@ -50,10 +51,12 @@ public class Company implements ClusterItem {
         setPosition(lat, lng);
         this.name = name;
         this.description = description;
-//        this.website = website;
-//        this.email = email;
-//        this.phone = phone;
-//        this.logo = logo;
+        this.website = website;
+        this.email = email;
+        this.juridicalAddress = juridicalAddress;
+        this.actualAddress = actualAddress;
+        this.director = director;
+        this.isEnabled = isEnabled;
     }
 
     public Long getId() {
@@ -96,10 +99,16 @@ public class Company implements ClusterItem {
     }
 
     public Double getLat() {
+        if (position == null) {
+            return null;
+        }
         return position.latitude;
     }
 
     public Double getLng() {
+        if (position == null) {
+            return null;
+        }
         return position.longitude;
     }
 
@@ -111,6 +120,29 @@ public class Company implements ClusterItem {
         return description;
     }
 
+    public String getWebsite() {
+        return website;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getJuridicalAddress() {
+        return juridicalAddress;
+    }
+
+    public String getActualAddress() {
+        return actualAddress;
+    }
+
+    public String getDirector() {
+        return director;
+    }
+
+    public Integer isEnabled() {
+        return isEnabled;
+    }
 }
 
 

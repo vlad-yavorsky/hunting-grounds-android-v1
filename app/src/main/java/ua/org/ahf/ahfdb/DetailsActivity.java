@@ -41,16 +41,56 @@ public class DetailsActivity extends AppCompatActivity {
             int name = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.NAME);
             int description = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.DESCRIPTION);
             int area = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.AREA);
+            int website  = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.WEBSITE);
+            int email  = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.EMAIL);
+            int juridicalAddress  = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.JURIDICAL_ADDRESS);
+            int actualAddress  = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.ACTUAL_ADDRESS);
+            int director  = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.DIRECTOR);
 
             ((TextView)findViewById(R.id.tv_name)).setText(cursor.getString(name));
-            ((TextView)findViewById(R.id.tv_description)).setText(Html.fromHtml(cursor.getString(description), null, new Utils.UlTagHandler()));
+
+            if (cursor.getString(description).isEmpty()) {
+                findViewById(R.id.tv_description).setVisibility(View.GONE);
+            } else {
+                ((TextView)findViewById(R.id.tv_description)).setText(Html.fromHtml(cursor.getString(description), null, new Utils.UlTagHandler()));
+//            ((TextView)findViewById(R.id.tv_description)).setText(Html.fromHtml(cursor.getString(description), Html.FROM_HTML_MODE_COMPACT));
+            }
 
             if (cursor.getString(area) == null) {
-                findViewById(R.id.tv_area).setVisibility(View.INVISIBLE);
+                findViewById(R.id.tv_area).setVisibility(View.GONE);
             } else {
                 ((TextView)findViewById(R.id.tv_area)).setText(getResources().getString(R.string.area) + " " + cursor.getString(area) + " " + getResources().getString(R.string.kilo_ha));
             }
-//            ((TextView)findViewById(R.id.tv_description)).setText(Html.fromHtml(cursor.getString(description), Html.FROM_HTML_MODE_COMPACT));
+
+            if (cursor.getString(email).isEmpty()) {
+                findViewById(R.id.tv_email).setVisibility(View.GONE);
+            } else {
+                ((TextView)findViewById(R.id.tv_email)).setText(getResources().getString(R.string.email) + " " + cursor.getString(email));
+            }
+
+            if (cursor.getString(website).isEmpty()) {
+                findViewById(R.id.tv_website).setVisibility(View.GONE);
+            } else {
+                ((TextView)findViewById(R.id.tv_website)).setText(getResources().getString(R.string.website) + " " + cursor.getString(website));
+            }
+
+            if (cursor.getString(juridicalAddress).isEmpty()) {
+                findViewById(R.id.tv_juridical_address).setVisibility(View.GONE);
+            } else {
+                ((TextView)findViewById(R.id.tv_juridical_address)).setText(getResources().getString(R.string.juridical_address) + " " + cursor.getString(juridicalAddress));
+            }
+
+            if (cursor.getString(actualAddress).isEmpty()) {
+                findViewById(R.id.tv_actual_address).setVisibility(View.GONE);
+            } else {
+                ((TextView)findViewById(R.id.tv_actual_address)).setText(getResources().getString(R.string.actual_address) + " " + cursor.getString(actualAddress));
+            }
+
+            if (cursor.getString(director).isEmpty()) {
+                findViewById(R.id.tv_director).setVisibility(View.GONE);
+            } else {
+                ((TextView)findViewById(R.id.tv_director)).setText(getResources().getString(R.string.director) + " " + cursor.getString(director));
+            }
         }
     }
 

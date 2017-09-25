@@ -6,45 +6,95 @@
     android:layout_height="match_parent"
     tools:context="ua.org.ahf.ahfdb.DetailsActivity">
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tv_name"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="tv_name"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tv_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="tv_description"
-            android:textColor="#000000" />
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="tv_name"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tv_area"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="tv_area"
-            android:textColor="#000000" />
+            <TextView
+                android:id="@+id/tv_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="tv_description"
+                android:textColor="#000000" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tv_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="tv_area"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/tv_website"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:text="tv_website"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/tv_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="email"
+                android:text="tv_email"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/tv_juridical_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="tv_juridical_address"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/tv_actual_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="tv_actual_address"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/tv_director"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="tv_director"
+                android:textColor="#000000" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>
