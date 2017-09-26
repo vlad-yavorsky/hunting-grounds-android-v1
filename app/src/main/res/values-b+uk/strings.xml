@@ -19,6 +19,9 @@
     <string name="hunting_grounds">Мисливські господарства</string>
     <string name="fishing_grounds">Риболовецькі бази</string>
     <string name="update_database">Оновити базу даних</string>
+    <string name="auhfg">Асоціація користувачів мисливських та рибальських господарств</string>
+    <string name="update_success">Успішно оновлено!</string>
+    <string name="update_failed">Помилка оновлення!</string>
 
     <!-- Company -->
     <string name="memberOfAssociation">Член Асоціації</string>

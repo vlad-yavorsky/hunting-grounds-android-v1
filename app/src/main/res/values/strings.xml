@@ -19,6 +19,9 @@
     <string name="hunting_grounds">Hunting Grounds</string>
     <string name="fishing_grounds">Fishing Grounds</string>
     <string name="update_database">Update Database</string>
+    <string name="auhfg">Association of users of hunting and fishing grounds</string>
+    <string name="update_success">Update success!</string>
+    <string name="update_failed">Update failed!</string>
 
     <!-- Company -->
     <string name="memberOfAssociation">Member of Association</string>

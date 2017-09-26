@@ -19,6 +19,9 @@
     <string name="hunting_grounds">Охотничьи хозяйства</string>
     <string name="fishing_grounds">Рыболовные базы</string>
     <string name="update_database">Обновить базу данных</string>
+    <string name="auhfg">Ассоциация пользователей охотничьих и рыболовных хозяйств</string>
+    <string name="update_success">Успешно обновлено!</string>
+    <string name="update_failed">Ошибка обновления!</string>
 
     <!-- Company -->
     <string name="memberOfAssociation">Член Ассоциации</string>

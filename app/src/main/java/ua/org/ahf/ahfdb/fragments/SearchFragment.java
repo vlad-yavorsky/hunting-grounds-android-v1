@@ -5,11 +5,14 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FilterQueryProvider;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
@@ -74,10 +77,10 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
         ListView listView = (ListView) view.findViewById(R.id.lv_companies);
+        SearchView searchView = (SearchView) view.findViewById(R.id.sv_search);
         String[] columns = {
                 DbHelper.DbSchema.CompanyTable.Column.ID,
                 DbHelper.DbSchema.CompanyTable.Column.NAME,
@@ -94,7 +97,7 @@ public class SearchFragment extends Fragment {
         };
         String locale = getResources().getString(R.string.locale);
         Cursor cursor = DbHelper.instance(getActivity()).findAll(locale);
-        SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.listview_row, cursor, columns, resourceIds, 0);
+        final SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.listview_row, cursor, columns, resourceIds, 0);
 
         simpleCursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
@@ -119,12 +122,8 @@ public class SearchFragment extends Fragment {
                 }
                 if (columnIndex == 16) {
                     TextView textView = (TextView)view;
-                    Cursor cursor1 = DbHelper.instance(getActivity()).findOblastById(cursor.getString(columnIndex));
-                    if (cursor1.moveToFirst()) {
-                        int iOblastName = cursor1.getColumnIndex(DbHelper.DbSchema.OblastTable.Column.NAME);
-                        String sOblastName =  getResources().getString(getResources().getIdentifier(cursor1.getString(iOblastName), "string", getActivity().getPackageName()));
-                        textView.setText(sOblastName);
-                    }
+                    String oblastName = DbHelper.instance(getActivity()).findOblastById(cursor.getString(columnIndex));
+                    textView.setText(oblastName);
                     return true;
                 }
                 return false;
@@ -138,17 +137,34 @@ public class SearchFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), DetailsActivity.class);
                     intent.putExtra("id", Long.toString(id));
                     startActivity(intent);
-//                    Cursor cursor = (Cursor)parent.getItemAtPosition(position);
-//                    String _id = "";
-//                    String name = "";
-//                    if(cursor.moveToPosition(position)) {
-//                        _id = cursor.getString(cursor.getColumnIndex("_id"));
-//                        name = cursor.getString(cursor.getColumnIndex("name"));
-//                    }
-//                    Log.d("blah", "itemClick: id = " + _id + ", name = " + name + ", id = " + id);
                 }
             }
         );
+
+
+        FilterQueryProvider provider = new FilterQueryProvider() {
+            @Override
+            public Cursor runQuery(CharSequence constraint) {
+                String locale = getResources().getString(R.string.locale);
+                if (TextUtils.isEmpty(constraint)) {
+                    return DbHelper.instance(getActivity()).findAll(locale);
+                }
+                return DbHelper.instance(getActivity()).findByName(constraint.toString(), locale);
+            }
+        };
+        simpleCursorAdapter.setFilterQueryProvider(provider);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String string) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String string) {
+                simpleCursorAdapter.getFilter().filter(string);
+                return false;
+            }
+        });
 
         return view;
     }

@@ -229,10 +229,10 @@ public class UpdateFragment extends Fragment implements OnClickListener {
                 DbHelper.instance(getActivity()).create(company);
             }
             DbHelper.instance(getActivity()).createOblasts();
-            Toast.makeText(getActivity(), "Update success!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getResources().getString(R.string.update_success), Toast.LENGTH_SHORT).show();
         } catch (JSONException e) {
             e.printStackTrace();
-            Toast.makeText(getActivity(), "Update failed!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getResources().getString(R.string.update_failed), Toast.LENGTH_SHORT).show();
         }
     }
 }

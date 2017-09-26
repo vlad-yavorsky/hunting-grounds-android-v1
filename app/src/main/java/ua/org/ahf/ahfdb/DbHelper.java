@@ -9,16 +9,18 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DbHelper {
 
     private static final String DB_NAME = "ahf.db";
-    private static final int DB_VERSION = 8;
+    private static final int DB_VERSION = 9;
     private static DbHelper mInstance;
     private SQLiteDatabase mSQLiteDatabase;
+    private Context context;
 
     public DbHelper(Context context) {
         if (context == null) {
             throw new IllegalArgumentException("Context cannot be null!");
         }
 
-        mSQLiteDatabase = new SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
+        this.context = context;
+        mSQLiteDatabase = new SQLiteOpenHelper(this.context, DB_NAME, null, DB_VERSION) {
             @Override
             public void onCreate(SQLiteDatabase sqLiteDatabase) {
                 sqLiteDatabase.execSQL(DbSchema.CompanyTable.CREATE_SQL);
@@ -150,7 +152,16 @@ public class DbHelper {
         Cursor cursor = null;
         String selection = DbSchema.CompanyTable.Column.ID + " = ?";
         String[] selectionArgs = {id};
-        String orderBy = DbSchema.CompanyTable.Column.ID;
+        cursor = mSQLiteDatabase.query(DbSchema.CompanyTable.NAME, null, selection, selectionArgs, null, null, null);
+        return cursor;
+    }
+
+    // Used for search page
+    public Cursor findByName(String name, String locale) {
+        Cursor cursor = null;
+        String selection = DbSchema.CompanyTable.Column.NAME + " LIKE '%" + name + "%' AND " + DbSchema.CompanyTable.Column.LOCALE + " = ?";
+        String[] selectionArgs = {locale};
+        String orderBy = DbSchema.CompanyTable.Column.NAME;
         cursor = mSQLiteDatabase.query(DbSchema.CompanyTable.NAME, null, selection, selectionArgs, null, null, orderBy);
         return cursor;
     }
@@ -184,12 +195,19 @@ public class DbHelper {
         return ret;
     }
 
-    public Cursor findOblastById(String id) {
+    public String findOblastById(String id) {
         Cursor cursor = null;
         String selection = DbSchema.OblastTable.Column.ID + " = ?";
         String[] selectionArgs = {id};
         cursor = mSQLiteDatabase.query(DbSchema.OblastTable.NAME, null, selection, selectionArgs, null, null, null);
-        return cursor;
+        String sOblastName = "";
+
+        if (cursor.moveToFirst()) {
+            int iOblastName = cursor.getColumnIndex(DbHelper.DbSchema.OblastTable.Column.NAME);
+            sOblastName =  context.getResources().getString(context.getResources().getIdentifier(cursor.getString(iOblastName), "string", context.getPackageName()));
+        }
+
+        return sOblastName;
     }
 
     public Oblast create(Oblast oblast) {

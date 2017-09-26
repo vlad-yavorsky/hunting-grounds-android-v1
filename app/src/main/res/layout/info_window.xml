@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -15,7 +14,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="#cccccc"
+        android:background="@color/colorPrimary"
         android:orientation="vertical"
         android:padding="5dp">
 
@@ -24,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="tv_company_name"
-            android:textColor="#000000"
+            android:textColor="#ffffff"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -33,18 +32,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="tv_position"
-            android:textColor="#000000"
-            android:textSize="12sp" />
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="tv_id"
-            android:textColor="#000000"
+            android:textColor="#ffffff"
             android:textSize="12sp"
             android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_oblast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="tv_oblast"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="tv_area"
+            android:textColor="#ffffff"
+            android:textSize="12sp" />
 
     </LinearLayout>
 

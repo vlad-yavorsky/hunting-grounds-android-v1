@@ -30,7 +30,7 @@ public class Company implements ClusterItem {
 //    private String[] gallery;
 
     public Company(Long id, Integer isMember, Integer isHuntingGround, Integer isFishingGround,
-                   Integer isPondFarm, Double lat, Double lng, String name) {
+                   Integer isPondFarm, Double lat, Double lng, String name, Double area) {
         this.id = id;
         this.isMember = isMember;
         this.isHuntingGround = isHuntingGround;
@@ -38,6 +38,7 @@ public class Company implements ClusterItem {
         this.isPondFarm = isPondFarm;
         setPosition(lat, lng);
         this.name = name;
+        this.area = area;
     }
 
     public Company(Long id, Integer isMember, Integer isHuntingGround, Integer isFishingGround,
