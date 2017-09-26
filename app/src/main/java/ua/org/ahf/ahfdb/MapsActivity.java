@@ -59,7 +59,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setUpClusterer();
         int companyType = getIntent().getIntExtra("COMPANY_TYPE", 1);
 
-        Cursor cursor = DbHelper.instance(this).fetchByType(companyType);
+        Cursor cursor = DbHelper.instance(this).findByType(companyType);
 
         if (cursor.moveToFirst()) {
             int id = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.ID);

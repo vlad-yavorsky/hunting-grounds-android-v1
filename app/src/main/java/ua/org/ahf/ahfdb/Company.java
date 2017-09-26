@@ -20,6 +20,7 @@ public class Company implements ClusterItem {
     private String actualAddress;
     private String director;
     private Integer isEnabled;
+    private Integer oblastId;
 //    private String[] phone;
 //    private String logo;
 //    private String[] oblast;
@@ -41,7 +42,7 @@ public class Company implements ClusterItem {
     public Company(Long id, Integer isMember, Integer isHuntingGround, Integer isFishingGround,
                    Integer isPondFarm, Double area, Double lat, Double lng, String name,
                    String description, String website, String email, String juridicalAddress,
-                   String actualAddress, String director, Integer isEnabled) {
+                   String actualAddress, String director, Integer isEnabled, Integer oblastId) {
         this.id = id;
         this.isMember = isMember;
         this.isHuntingGround = isHuntingGround;
@@ -57,6 +58,7 @@ public class Company implements ClusterItem {
         this.actualAddress = actualAddress;
         this.director = director;
         this.isEnabled = isEnabled;
+        this.oblastId = oblastId;
     }
 
     public Long getId() {
@@ -142,6 +144,10 @@ public class Company implements ClusterItem {
 
     public Integer isEnabled() {
         return isEnabled;
+    }
+
+    public Integer getOblastId() {
+        return oblastId;
     }
 }
 

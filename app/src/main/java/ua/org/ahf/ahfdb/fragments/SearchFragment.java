@@ -81,16 +81,18 @@ public class SearchFragment extends Fragment {
         String[] columns = {
                 DbHelper.DbSchema.CompanyTable.Column.ID,
                 DbHelper.DbSchema.CompanyTable.Column.NAME,
+                DbHelper.DbSchema.CompanyTable.Column.OBLAST_ID,
                 DbHelper.DbSchema.CompanyTable.Column.IS_MEMBER,
                 DbHelper.DbSchema.CompanyTable.Column.AREA
         };
         int[] resourceIds = {
                 R.id.tv_id,
                 R.id.tv_name,
+                R.id.tv_oblast,
                 R.id.tv_short_info,
                 R.id.tv_short_info
         };
-        Cursor cursor = DbHelper.instance(getActivity()).fetchAll();
+        Cursor cursor = DbHelper.instance(getActivity()).findAll();
         SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.listview_row, cursor, columns, resourceIds, 0);
 
         simpleCursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
@@ -111,6 +113,16 @@ public class SearchFragment extends Fragment {
                             textView.setText(textView.getText() + " • ");
                         }
                         textView.setText(textView.getText() + cursor.getString(columnIndex) + " " + getResources().getString(R.string.kilo_ha));
+                    }
+                    return true;
+                }
+                if (columnIndex == 16) {
+                    TextView textView = (TextView)view;
+                    Cursor cursor1 = DbHelper.instance(getActivity()).findOblastById(cursor.getString(columnIndex));
+                    if (cursor1.moveToFirst()) {
+                        int iOblastName = cursor1.getColumnIndex(DbHelper.DbSchema.OblastTable.Column.NAME);
+                        String sOblastName =  getResources().getString(getResources().getIdentifier(cursor1.getString(iOblastName), "string", getActivity().getPackageName()));
+                        textView.setText(sOblastName);
                     }
                     return true;
                 }

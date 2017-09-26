@@ -20,4 +20,30 @@
     <string name="juridical_address">Juridical address:</string>
     <string name="actual_address">Actual address:</string>
     <string name="director">Director:</string>
+
+    <string name="vinnytsia_oblast">Vinnytsia oblast</string>
+    <string name="volyn_oblast">Volyn oblast</string>
+    <string name="dnipropetrovsk_oblast">Dnipropetrovsk oblast</string>
+    <string name="donetsk_oblast">Donetsk oblast</string>
+    <string name="zhitomyr_oblast">Zhitomyr oblast</string>
+    <string name="zakarpattia_oblast">Zakarpattia oblast</string>
+    <string name="zaporizhia_oblast">Zaporizhia oblast</string>
+    <string name="ivano_frankivsk_oblast">Ivano frankivsk oblast</string>
+    <string name="kyiv_oblast">Kyiv oblast</string>
+    <string name="kirovohrad_oblast">Kirovohrad oblast</string>
+    <string name="luhansk_oblast">Luhansk oblast</string>
+    <string name="lviv_oblast">Lviv oblast</string>
+    <string name="mykolaiv_oblast">Mykolaiv oblast</string>
+    <string name="odessa_oblast">Odessa oblast</string>
+    <string name="poltava_oblast">Poltava oblast</string>
+    <string name="rivne_oblast">Rivne oblast</string>
+    <string name="sumy_oblast">Sumy oblast</string>
+    <string name="ternopil_oblast">Ternopil oblast</string>
+    <string name="kharkiv_oblast">Kharkiv oblast</string>
+    <string name="kherson_oblast">Kherson oblast</string>
+    <string name="khmelnytskyi_oblast">Khmelnytskyi oblast</string>
+    <string name="cherkasy_oblast">Cherkasy oblast</string>
+    <string name="chernivtsi_oblast">Chernivtsi oblast</string>
+    <string name="chernygiv_oblast">Chernygiv oblast</string>
+    <string name="krim">Krim</string>
 </resources>

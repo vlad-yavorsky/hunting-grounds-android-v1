@@ -28,7 +28,7 @@ public class DetailsActivity extends AppCompatActivity {
         // Get id of company to get all information about it from database
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
-        Cursor cursor = DbHelper.instance(this).fetchById(id);
+        Cursor cursor = DbHelper.instance(this).findById(id);
 
         if (cursor.moveToFirst()) {
 //            int id = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.ID);
