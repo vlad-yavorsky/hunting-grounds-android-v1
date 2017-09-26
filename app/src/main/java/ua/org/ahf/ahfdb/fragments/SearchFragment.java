@@ -92,7 +92,8 @@ public class SearchFragment extends Fragment {
                 R.id.tv_short_info,
                 R.id.tv_short_info
         };
-        Cursor cursor = DbHelper.instance(getActivity()).findAll();
+        String locale = getResources().getString(R.string.locale);
+        Cursor cursor = DbHelper.instance(getActivity()).findAll(locale);
         SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.listview_row, cursor, columns, resourceIds, 0);
 
         simpleCursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {

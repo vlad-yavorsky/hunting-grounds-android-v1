@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ua.org.ahf.ahfdb.R;
+import ua.org.ahf.ahfdb.Utils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,7 +18,7 @@ import ua.org.ahf.ahfdb.R;
  * Use the {@link SettingsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SettingsFragment extends Fragment {
+public class SettingsFragment extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -64,7 +65,30 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        View view = inflater.inflate(R.layout.fragment_settings, container, false);
+
+        view.findViewById(R.id.rb_english).setOnClickListener(this);
+        view.findViewById(R.id.rb_russian).setOnClickListener(this);
+        view.findViewById(R.id.rb_ukrainian).setOnClickListener(this);
+
+        return view;
+    }
+
+    @Override
+    public void onClick(View view) {
+        String locale = "en_GB";
+        switch (view.getId()) {
+            case R.id.rb_english:
+                locale = "en_GB";
+                break;
+            case R.id.rb_russian:
+                locale = "ru_RU";
+                break;
+            case R.id.rb_ukrainian:
+                locale = "uk_UA";
+                break;
+        }
+        Utils.setLocale(locale, getActivity());
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -105,6 +129,7 @@ public class SettingsFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }
 
 // TODO: Possibility to chose home screen (map/search/etc)

@@ -1,0 +1,65 @@
+<resources>
+    <!-- Global -->
+    <string name="locale">ru_RU</string>
+    <string name="app_name">Охотничьи и Рыболовные Хозяйства</string>
+
+    <!-- Menu -->
+    <string name="action_settings">Настройки</string>
+    <string name="map">Карта</string>
+    <string name="search">Поиск</string>
+    <string name="update">Обновление</string>
+    <string name="settings">Настройки</string>
+
+    <!-- Other -->
+    <string name="title_activity_maps">Карта</string>
+    <string name="title_activity_navigation">NavigationActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="select_category">Выберите категорию</string>
+    <string name="hunting_grounds">Охотничьи хозяйства</string>
+    <string name="fishing_grounds">Рыболовные базы</string>
+    <string name="update_database">Обновить базу данных</string>
+
+    <!-- Company -->
+    <string name="memberOfAssociation">Член Ассоциации</string>
+    <string name="area">Площадь хозяйства:</string>
+    <string name="kilo_ha">тыс. га.</string>
+    <string name="website">Вебсайт:</string>
+    <string name="email">Эл.почта:</string>
+    <string name="juridical_address">Юридический адрес:</string>
+    <string name="actual_address">Фактический адрес:</string>
+    <string name="director">Директор:</string>
+
+    <!-- Oblast -->
+    <string name="vinnytsia_oblast">Винницкая область</string>
+    <string name="volyn_oblast">Волынская область</string>
+    <string name="dnipropetrovsk_oblast">Днепропетровская область</string>
+    <string name="donetsk_oblast">Донецкая область</string>
+    <string name="zhitomyr_oblast">Житомирская область</string>
+    <string name="zakarpattia_oblast">Закарпатская область</string>
+    <string name="zaporizhia_oblast">Запорожская область</string>
+    <string name="ivano_frankivsk_oblast">Ивано-Франковская область</string>
+    <string name="kyiv_oblast">Киевская область</string>
+    <string name="kirovohrad_oblast">Кировоградская область</string>
+    <string name="luhansk_oblast">Луганская область</string>
+    <string name="lviv_oblast">Львовская область</string>
+    <string name="mykolaiv_oblast">Николаевская область</string>
+    <string name="odessa_oblast">Одесская область</string>
+    <string name="poltava_oblast">Полтавская область</string>
+    <string name="rivne_oblast">Ровенская область</string>
+    <string name="sumy_oblast">Сумская область</string>
+    <string name="ternopil_oblast">Тернопольская область</string>
+    <string name="kharkiv_oblast">Харьковская область</string>
+    <string name="kherson_oblast">Херсонская область</string>
+    <string name="khmelnytskyi_oblast">Хмельницкая область</string>
+    <string name="cherkasy_oblast">Черкасская область</string>
+    <string name="chernivtsi_oblast">Черновицкая область</string>
+    <string name="chernygiv_oblast">Черниговская область</string>
+    <string name="krim">Крым</string>
+
+    <!-- Settings -->
+    <string name="tv_language">Язык</string>
+    <string name="rb_english">English</string>
+    <string name="rb_russian">Русский</string>
+    <string name="rb_ukrainian">Українська</string>
+</resources>

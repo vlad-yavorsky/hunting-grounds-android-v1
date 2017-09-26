@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DbHelper {
 
     private static final String DB_NAME = "ahf.db";
-    private static final int DB_VERSION = 7;
+    private static final int DB_VERSION = 8;
     private static DbHelper mInstance;
     private SQLiteDatabase mSQLiteDatabase;
 
@@ -55,7 +55,8 @@ public class DbHelper {
                     Column.ACTUAL_ADDRESS + " text," +
                     Column.DIRECTOR + " text," +
                     Column.IS_ENABLED + " integer," +
-                    Column.OBLAST_ID + " integer" +
+                    Column.OBLAST_ID + " integer," +
+                    Column.LOCALE + " text" +
                     ")";
             public static final String DELETE_SQL = "drop table if exists " + NAME;
 
@@ -77,6 +78,7 @@ public class DbHelper {
                 public static final String DIRECTOR = "director";
                 public static final String IS_ENABLED = "is_enabled";
                 public static final String OBLAST_ID = "oblast_id";
+                public static final String LOCALE = "locale";
             }
         }
 
@@ -115,6 +117,7 @@ public class DbHelper {
         contentValues.put(DbSchema.CompanyTable.Column.DIRECTOR, company.getDirector());
         contentValues.put(DbSchema.CompanyTable.Column.IS_ENABLED, company.isEnabled());
         contentValues.put(DbSchema.CompanyTable.Column.OBLAST_ID, company.getOblastId());
+        contentValues.put(DbSchema.CompanyTable.Column.LOCALE, company.getLocale());
         return contentValues;
     }
 
@@ -132,13 +135,17 @@ public class DbHelper {
         return mInstance;
     }
 
-    public Cursor findAll() {
+    // Used for list
+    public Cursor findAll(String locale) {
         Cursor cursor = null;
+        String selection = DbSchema.CompanyTable.Column.LOCALE + " = ?";
+        String[] selectionArgs = {locale};
         String orderBy = DbSchema.CompanyTable.Column.IS_MEMBER + " DESC, " + DbSchema.CompanyTable.Column.NAME  + " ASC";
-        cursor = mSQLiteDatabase.query(DbSchema.CompanyTable.NAME, null, null, null, null, null, orderBy);
+        cursor = mSQLiteDatabase.query(DbSchema.CompanyTable.NAME, null, selection, selectionArgs, null, null, orderBy);
         return cursor;
     }
 
+    // Used for details page
     public Cursor findById(String id) {
         Cursor cursor = null;
         String selection = DbSchema.CompanyTable.Column.ID + " = ?";
@@ -148,7 +155,8 @@ public class DbHelper {
         return cursor;
     }
 
-    public Cursor findByType(int companyType) {
+    // Used for map
+    public Cursor findByType(int companyType, String locale) {
         Cursor cursor = null;
         String selection = DbHelper.DbSchema.CompanyTable.Column.IS_HUNTING_GROUND + " = ?";
         if(companyType == 2) {
@@ -156,7 +164,8 @@ public class DbHelper {
         } else if(companyType == 3) {
             selection = DbHelper.DbSchema.CompanyTable.Column.IS_POND_FARM + " = ?";
         }
-        String[] selectionArgs = {"1"};
+        selection = selection + " AND " + DbHelper.DbSchema.CompanyTable.Column.LOCALE + " = ?";
+        String[] selectionArgs = {"1", locale};
         cursor = mSQLiteDatabase.query(DbSchema.CompanyTable.NAME, null, selection, selectionArgs, null, null, null);
         return cursor;
     }

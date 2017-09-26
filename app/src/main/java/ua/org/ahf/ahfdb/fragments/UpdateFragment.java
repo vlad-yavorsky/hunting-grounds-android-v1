@@ -205,6 +205,7 @@ public class UpdateFragment extends Fragment implements OnClickListener {
                 String director = c.getString(DbHelper.DbSchema.CompanyTable.Column.DIRECTOR);
                 Integer isEnabled = c.getInt(DbHelper.DbSchema.CompanyTable.Column.IS_ENABLED);
                 Integer oblastId = c.getInt(DbHelper.DbSchema.CompanyTable.Column.OBLAST_ID);
+                String locale = c.getString(DbHelper.DbSchema.CompanyTable.Column.LOCALE);
 
                 Double area = null;
                 if(!c.isNull(DbHelper.DbSchema.CompanyTable.Column.AREA)) {
@@ -224,7 +225,7 @@ public class UpdateFragment extends Fragment implements OnClickListener {
 
                 Company company = new Company(id, isMember, isHuntingGround, isFishingGround,
                         isPondFarm, area, lat, lng, name, description, website, email, juridicalAddress,
-                        actualAddress, director, isEnabled, oblastId);
+                        actualAddress, director, isEnabled, oblastId, locale);
                 DbHelper.instance(getActivity()).create(company);
             }
             DbHelper.instance(getActivity()).createOblasts();

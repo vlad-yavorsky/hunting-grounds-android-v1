@@ -22,10 +22,10 @@ import ua.org.ahf.ahfdb.fragments.UpdateFragment;
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    CategoriesFragment categoriesFragment;
-    SearchFragment searchFragment;
-    UpdateFragment updateFragment;
-    SettingsFragment settingsFragment;
+    private CategoriesFragment categoriesFragment;
+    private SearchFragment searchFragment;
+    private UpdateFragment updateFragment;
+    private SettingsFragment settingsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
