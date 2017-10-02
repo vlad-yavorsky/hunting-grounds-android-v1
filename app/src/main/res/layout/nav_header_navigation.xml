@@ -27,6 +27,6 @@
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_weight="1"
         android:text="@string/auhfg"
-        android:textColor="#ffffff" />
+        android:textColor="@android:color/white" />
 
 </LinearLayout>

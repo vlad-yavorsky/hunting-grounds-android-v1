@@ -1,6 +1,5 @@
-package ua.org.ahf.ahfdb.fragments;
+package ua.org.ahf.ahfdb.fragment;
 
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -19,64 +18,17 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import ua.org.ahf.ahfdb.Company;
-import ua.org.ahf.ahfdb.DbHelper;
+import ua.org.ahf.ahfdb.model.Company;
+import ua.org.ahf.ahfdb.helper.DbHelper;
 import ua.org.ahf.ahfdb.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link UpdateFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link UpdateFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class UpdateFragment extends Fragment implements OnClickListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private static final String JSON_URL = "http://ahf.org.ua/get-data.php";
-    private String myJSON;
-    private JSONArray companies;
     private static final String TAG_RESULT = "result";
-
-    private OnFragmentInteractionListener mListener;
 
     public UpdateFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment UpdateFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static UpdateFragment newInstance(String param1, String param2) {
-        UpdateFragment fragment = new UpdateFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -90,60 +42,16 @@ public class UpdateFragment extends Fragment implements OnClickListener {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.updateDatabaseButton:
-                clearDatabase();
-                getJSON(JSON_URL);
+                getJSON();
                 break;
         }
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
-
-    public void clearDatabase() {
-        DbHelper.instance(getActivity()).deleteAllCompanies();
-    }
-
-    private void getJSON(String url) {
+    private void getJSON() {
         class GetJSON extends AsyncTask<String, Void, String> {
 //            ProgressDialog loading;
 
@@ -156,37 +64,52 @@ public class UpdateFragment extends Fragment implements OnClickListener {
             @Override
             protected String doInBackground(String... params) {
                 try {
-                    URL url = new URL(params[0]);
+                    URL url = new URL(JSON_URL);
                     HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                    StringBuilder sb = new StringBuilder();
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                    String json;
-                    while((json = bufferedReader.readLine()) != null){
-                        sb.append(json + "\n");
+                    con.setConnectTimeout(5000);
+
+                    if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                        StringBuilder sb = new StringBuilder();
+                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                        String json;
+                        while ((json = bufferedReader.readLine()) != null) {
+                            sb.append(json + "\n");
+                        }
+                        return sb.toString().trim();
                     }
-                    return sb.toString().trim();
-                } catch(Exception e){
-                    return null;
+                } catch (java.net.SocketTimeoutException e) {
+                    System.out.println("Update error: Time Out");
+                    e.printStackTrace();
+                } catch (java.io.IOException e) {
+                    System.out.println("Update error: IOException");
+                    e.printStackTrace();
                 }
 
+                return null;
             }
 
             @Override
             protected void onPostExecute(String result) {
 //                super.onPostExecute(s);
-                myJSON = result;
-                parseJSON();
+                if (result != null) {
+                    parseJSON(result);
+                } else {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.update_failed), Toast.LENGTH_SHORT).show();
+                }
 //                loading.dismiss();
             }
         }
+
         GetJSON gj = new GetJSON();
-        gj.execute(url);
+        gj.execute();
     }
 
-    protected void parseJSON(){
+    protected void parseJSON(String json){
+        DbHelper.instance(getActivity()).deleteAllCompanies();
+
         try {
-            JSONObject jsonObj = new JSONObject(myJSON);
-            companies = jsonObj.getJSONArray(TAG_RESULT);
+            JSONObject jsonObj = new JSONObject(json);
+            JSONArray companies = jsonObj.getJSONArray(TAG_RESULT);
 
             for(int i = 0; i < companies.length(); i++){
                 JSONObject c = companies.getJSONObject(i);
@@ -222,19 +145,15 @@ public class UpdateFragment extends Fragment implements OnClickListener {
                     lng = c.getDouble(DbHelper.DbSchema.CompanyTable.Column.LNG);
                 }
 
-
                 Company company = new Company(id, isMember, isHuntingGround, isFishingGround,
                         isPondFarm, area, lat, lng, name, description, website, email, juridicalAddress,
                         actualAddress, director, isEnabled, oblastId, locale);
                 DbHelper.instance(getActivity()).create(company);
             }
             DbHelper.instance(getActivity()).createOblasts();
-            Toast.makeText(getActivity(), getResources().getString(R.string.update_success), Toast.LENGTH_SHORT).show();
         } catch (JSONException e) {
-            e.printStackTrace();
             Toast.makeText(getActivity(), getResources().getString(R.string.update_failed), Toast.LENGTH_SHORT).show();
         }
+        Toast.makeText(getActivity(), getResources().getString(R.string.update_success), Toast.LENGTH_SHORT).show();
     }
 }
-
-// TODO: Check internet connection, after that download latest data and clear/update database

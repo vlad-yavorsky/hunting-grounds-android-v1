@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ua.org.ahf.ahfdb.DetailsActivity">
+    tools:context="ua.org.ahf.ahfdb.activity.DetailsActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -41,7 +41,6 @@
                 android:layout_height="wrap_content"
                 android:text="tv_name"
                 android:textAlignment="center"
-                android:textColor="#000000"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -49,52 +48,45 @@
                 android:id="@+id/tv_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="tv_description"
-                android:textColor="#000000" />
+                android:text="tv_description" />
 
             <TextView
                 android:id="@+id/tv_area"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="tv_area"
-                android:textColor="#000000" />
+                android:text="tv_area" />
 
             <TextView
                 android:id="@+id/tv_website"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
-                android:text="tv_website"
-                android:textColor="#000000" />
+                android:text="tv_website" />
 
             <TextView
                 android:id="@+id/tv_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoLink="email"
-                android:text="tv_email"
-                android:textColor="#000000" />
+                android:text="tv_email" />
 
             <TextView
                 android:id="@+id/tv_juridical_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="tv_juridical_address"
-                android:textColor="#000000" />
+                android:text="tv_juridical_address" />
 
             <TextView
                 android:id="@+id/tv_actual_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="tv_actual_address"
-                android:textColor="#000000" />
+                android:text="tv_actual_address" />
 
             <TextView
                 android:id="@+id/tv_director"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="tv_director"
-                android:textColor="#000000" />
+                android:text="tv_director" />
 
         </LinearLayout>
     </ScrollView>

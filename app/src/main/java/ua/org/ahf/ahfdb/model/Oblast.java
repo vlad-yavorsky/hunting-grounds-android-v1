@@ -1,4 +1,4 @@
-package ua.org.ahf.ahfdb;
+package ua.org.ahf.ahfdb.model;
 
 public class Oblast {
 

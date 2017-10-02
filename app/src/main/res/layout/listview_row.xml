@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="tv_id"
-        android:textColor="#000000"
         android:textSize="18sp"
         android:visibility="gone" />
 
@@ -24,7 +23,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="tv_name"
-        android:textColor="#000000"
         android:textSize="18sp" />
 
     <TextView
@@ -33,14 +31,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_weight="1"
-        android:text="tv_oblast"
-        android:textColor="#000000" />
+        android:text="tv_oblast" />
 
     <TextView
         android:id="@+id/tv_short_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="tv_short_info" />
+        android:text="tv_short_info"
+        android:textColor="#777777" />
 
 </LinearLayout>

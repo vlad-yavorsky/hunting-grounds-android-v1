@@ -1,15 +1,18 @@
-package ua.org.ahf.ahfdb;
+package ua.org.ahf.ahfdb.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-public class DetailsActivity extends AppCompatActivity {
+import ua.org.ahf.ahfdb.R;
+import ua.org.ahf.ahfdb.helper.DbHelper;
+import ua.org.ahf.ahfdb.helper.Utils;
+
+public class DetailsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,5 +106,3 @@ public class DetailsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 }
-
-// TODO: add map with borders of hunting ground

@@ -1,10 +1,13 @@
-package ua.org.ahf.ahfdb;
+package ua.org.ahf.ahfdb.helper;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import ua.org.ahf.ahfdb.model.Company;
+import ua.org.ahf.ahfdb.model.Oblast;
 
 public class DbHelper {
 

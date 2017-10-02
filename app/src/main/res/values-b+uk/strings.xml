@@ -4,11 +4,11 @@
     <string name="app_name">Мисливські та Рибальські Господарства</string>
 
     <!-- Menu -->
-    <string name="action_settings">Налаштування</string>
+    <string name="action_preferences">Налаштування</string>
     <string name="map">Карта</string>
-    <string name="search">Пошук</string>
+    <string name="catalog">Довідник</string>
     <string name="update">Оновлення</string>
-    <string name="settings">Налаштування</string>
+    <string name="preferences">Налаштування</string>
 
     <!-- Other -->
     <string name="title_activity_maps">Карта</string>
@@ -60,9 +60,11 @@
     <string name="chernygiv_oblast">Чернігівська область</string>
     <string name="krim">Крим</string>
 
-    <!-- Settings -->
-    <string name="tv_language">Мова</string>
-    <string name="rb_english">English</string>
-    <string name="rb_russian">Русский</string>
-    <string name="rb_ukrainian">Українська</string>
+    <!-- Preferences -->
+    <string name="language_title">Мова</string>
+    <string name="home_screen_title">Початковий екран</string>
+    <string-array name="home_screen_entries">
+        <item>Карта</item>
+        <item>Довідник</item>
+    </string-array>
 </resources>

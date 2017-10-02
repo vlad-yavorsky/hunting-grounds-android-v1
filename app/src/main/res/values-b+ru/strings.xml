@@ -4,11 +4,11 @@
     <string name="app_name">Охотничьи и Рыболовные Хозяйства</string>
 
     <!-- Menu -->
-    <string name="action_settings">Настройки</string>
+    <string name="action_preferences">Настройки</string>
     <string name="map">Карта</string>
-    <string name="search">Поиск</string>
+    <string name="catalog">Справочник</string>
     <string name="update">Обновление</string>
-    <string name="settings">Настройки</string>
+    <string name="preferences">Настройки</string>
 
     <!-- Other -->
     <string name="title_activity_maps">Карта</string>
@@ -60,9 +60,11 @@
     <string name="chernygiv_oblast">Черниговская область</string>
     <string name="krim">Крым</string>
 
-    <!-- Settings -->
-    <string name="tv_language">Язык</string>
-    <string name="rb_english">English</string>
-    <string name="rb_russian">Русский</string>
-    <string name="rb_ukrainian">Українська</string>
+    <!-- Preferences -->
+    <string name="language_title">Язык</string>
+    <string name="home_screen_title">Начальный экран</string>
+    <string-array name="home_screen_entries">
+        <item>Карта</item>
+        <item>Справочник</item>
+    </string-array>
 </resources>

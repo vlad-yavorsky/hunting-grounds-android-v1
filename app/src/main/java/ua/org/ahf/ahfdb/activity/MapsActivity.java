@@ -1,4 +1,4 @@
-package ua.org.ahf.ahfdb;
+package ua.org.ahf.ahfdb.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -20,6 +20,10 @@ import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
+
+import ua.org.ahf.ahfdb.R;
+import ua.org.ahf.ahfdb.helper.DbHelper;
+import ua.org.ahf.ahfdb.model.Company;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -77,10 +81,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     continue;
                 }
 
+                Double areaValue = null;
+                if(!cursor.isNull(area)) {
+                    areaValue = cursor.getDouble(area);
+                }
                 Company item = new Company(cursor.getLong(id), cursor.getInt(isMember),
                         cursor.getInt(isHuntingGround), cursor.getInt(isFishingGround),
                         cursor.getInt(isPondFarm), cursor.getDouble(lat), cursor.getDouble(lng),
-                        cursor.getString(name), cursor.getDouble(area));
+                        cursor.getString(name), areaValue);
 
                 // Add cluster items (markers) to the cluster manager.
                 mClusterManager.addItem(item);
@@ -193,7 +201,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 tv_id.setText(Long.toString(clickedClusterItem.getId()));
                 tv_company_name.setText(clickedClusterItem.getName());
 //                tv_position.setText(clickedClusterItem.getLat() + ", " + clickedClusterItem.getLng());
-                tv_area.setText(clickedClusterItem.getArea() + " " + getResources().getString(R.string.kilo_ha));
+
+                if (clickedClusterItem.getArea() == null) {
+                    tv_area.setVisibility(View.GONE);
+                } else {
+                    tv_area.setText(clickedClusterItem.getArea() + " " + getResources().getString(R.string.kilo_ha));
+                    tv_area.setVisibility(View.VISIBLE);
+                }
 //                String oblastName = DbHelper.instance().findOblastById(clickedClusterItem.getOblastId().toString());
 //                tv_oblast.setText(oblastName);
             }

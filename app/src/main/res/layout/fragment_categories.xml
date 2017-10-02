@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ua.org.ahf.ahfdb.fragments.CategoriesFragment">
+    tools:context="ua.org.ahf.ahfdb.fragment.MapFragment">
 
     <ScrollView
         android:layout_width="0dp"
@@ -33,7 +33,7 @@
                 android:fontFamily="serif"
                 android:text="@string/select_category"
                 android:textAlignment="center"
-                android:textColor="#ffffff"
+                android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"

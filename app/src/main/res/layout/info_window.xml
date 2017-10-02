@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="tv_company_name"
-            android:textColor="#ffffff"
+            android:textColor="@android:color/white"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="tv_position"
-            android:textColor="#ffffff"
+            android:textColor="@android:color/white"
             android:textSize="12sp"
             android:visibility="gone" />
 
@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="tv_id"
-            android:textColor="#ffffff"
+            android:textColor="@android:color/white"
             android:textSize="12sp"
             android:visibility="gone" />
 
@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="tv_oblast"
-            android:textColor="#ffffff"
+            android:textColor="@android:color/white"
             android:textSize="12sp"
             android:visibility="gone" />
 
@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="tv_area"
-            android:textColor="#ffffff"
+            android:textColor="@android:color/white"
             android:textSize="12sp" />
 
     </LinearLayout>

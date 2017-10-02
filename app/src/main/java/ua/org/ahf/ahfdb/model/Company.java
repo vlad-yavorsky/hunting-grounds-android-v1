@@ -1,4 +1,4 @@
-package ua.org.ahf.ahfdb;
+package ua.org.ahf.ahfdb.model;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
