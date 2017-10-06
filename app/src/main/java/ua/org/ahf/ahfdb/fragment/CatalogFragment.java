@@ -93,7 +93,7 @@ public class CatalogFragment extends Fragment {
                     return true;
                 }
                 // oblast column
-                if (columnIndex == 16) {
+                if (columnIndex == 17) {
                     TextView textView = (TextView)view;
                     String oblastName = DbHelper.instance(getActivity()).findOblastById(cursor.getString(columnIndex));
                     textView.setText(oblastName);
@@ -135,6 +135,7 @@ public class CatalogFragment extends Fragment {
 
         MenuItem item = menu.findItem(R.id.menu_search);
         SearchView searchView = (SearchView)item.getActionView();
+        searchView.setMaxWidth(Integer.MAX_VALUE);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

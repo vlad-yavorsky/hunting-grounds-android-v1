@@ -157,6 +157,10 @@ public class Company implements ClusterItem {
     public String getLocale() {
         return locale;
     }
+
+    public String getNameLowercase() {
+        return name.toLowerCase();
+    }
 }
 
 

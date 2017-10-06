@@ -31,6 +31,7 @@
                 android:layout_weight="1"
                 android:background="@color/colorPrimary"
                 android:fontFamily="serif"
+                android:gravity="center"
                 android:text="@string/select_category"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"

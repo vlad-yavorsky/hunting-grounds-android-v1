@@ -12,7 +12,7 @@ import ua.org.ahf.ahfdb.model.Oblast;
 public class DbHelper {
 
     private static final String DB_NAME = "ahf.db";
-    private static final int DB_VERSION = 9;
+    private static final int DB_VERSION = 10;
     private static DbHelper mInstance;
     private SQLiteDatabase mSQLiteDatabase;
     private Context context;
@@ -53,6 +53,7 @@ public class DbHelper {
                     Column.LAT + " real, " +
                     Column.LNG + " real, " +
                     Column.NAME + " text, " +
+                    Column.NAME_LOWERCASE + " text, " +
                     Column.DESCRIPTION + " text," +
                     Column.WEBSITE + " text," +
                     Column.EMAIL + " text," +
@@ -75,6 +76,7 @@ public class DbHelper {
                 public static final String LAT = "lat";
                 public static final String LNG = "lng";
                 public static final String NAME = "name";
+                public static final String NAME_LOWERCASE = "name_lowercase";
                 public static final String DESCRIPTION = "description";
                 public static final String WEBSITE = "website";
                 public static final String EMAIL = "email";
@@ -114,6 +116,7 @@ public class DbHelper {
         contentValues.put(DbSchema.CompanyTable.Column.LAT, company.getLat());
         contentValues.put(DbSchema.CompanyTable.Column.LNG, company.getLng());
         contentValues.put(DbSchema.CompanyTable.Column.NAME, company.getName());
+        contentValues.put(DbSchema.CompanyTable.Column.NAME_LOWERCASE, company.getNameLowercase());
         contentValues.put(DbSchema.CompanyTable.Column.DESCRIPTION, company.getDescription());
         contentValues.put(DbSchema.CompanyTable.Column.WEBSITE, company.getWebsite());
         contentValues.put(DbSchema.CompanyTable.Column.EMAIL, company.getEmail());
@@ -145,7 +148,7 @@ public class DbHelper {
         Cursor cursor = null;
         String selection = DbSchema.CompanyTable.Column.LOCALE + " = ?";
         String[] selectionArgs = {locale};
-        String orderBy = DbSchema.CompanyTable.Column.IS_MEMBER + " DESC, " + DbSchema.CompanyTable.Column.NAME  + " ASC";
+        String orderBy = DbSchema.CompanyTable.Column.IS_MEMBER + " DESC, " + DbSchema.CompanyTable.Column.NAME_LOWERCASE  + " ASC";
         cursor = mSQLiteDatabase.query(DbSchema.CompanyTable.NAME, null, selection, selectionArgs, null, null, orderBy);
         return cursor;
     }
@@ -162,9 +165,9 @@ public class DbHelper {
     // Used for search page
     public Cursor findByName(String name, String locale) {
         Cursor cursor = null;
-        String selection = DbSchema.CompanyTable.Column.NAME + " LIKE '%" + name + "%' AND " + DbSchema.CompanyTable.Column.LOCALE + " = ?";
+        String selection = DbSchema.CompanyTable.Column.NAME_LOWERCASE + " LIKE '%" + name.toLowerCase() + "%' AND " + DbSchema.CompanyTable.Column.LOCALE + " = ?";
         String[] selectionArgs = {locale};
-        String orderBy = DbSchema.CompanyTable.Column.NAME;
+        String orderBy = DbSchema.CompanyTable.Column.NAME_LOWERCASE;
         cursor = mSQLiteDatabase.query(DbSchema.CompanyTable.NAME, null, selection, selectionArgs, null, null, orderBy);
         return cursor;
     }
