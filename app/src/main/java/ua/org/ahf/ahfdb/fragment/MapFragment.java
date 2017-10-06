@@ -10,11 +10,23 @@ import android.view.ViewGroup;
 
 import ua.org.ahf.ahfdb.activity.MapsActivity;
 import ua.org.ahf.ahfdb.R;
+import ua.org.ahf.ahfdb.activity.NavigationActivity;
 
 public class MapFragment extends Fragment implements OnClickListener {
 
     public MapFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((NavigationActivity) getActivity()).getSupportActionBar().setTitle(R.string.map);
     }
 
     @Override

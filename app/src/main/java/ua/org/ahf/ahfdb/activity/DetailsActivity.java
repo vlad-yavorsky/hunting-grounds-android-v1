@@ -48,6 +48,7 @@ public class DetailsActivity extends AppCompatActivity {
             int director  = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.DIRECTOR);
 
             ((TextView)findViewById(R.id.tv_name)).setText(cursor.getString(name));
+            setTitle(cursor.getString(name));
 
             if (cursor.getString(description).isEmpty()) {
                 findViewById(R.id.tv_description).setVisibility(View.GONE);

@@ -24,7 +24,6 @@ public class NavigationActivity extends AppCompatActivity
     private MapFragment mapFragment;
     private CatalogFragment catalogFragment;
     private PreferencesFragment preferencesFragment;
-
     private static String HOME_SCREEN = "home_screen";
 
     @Override
@@ -109,5 +108,4 @@ public class NavigationActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 }

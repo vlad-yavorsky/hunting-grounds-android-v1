@@ -18,6 +18,7 @@ import android.widget.SearchView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import ua.org.ahf.ahfdb.activity.NavigationActivity;
 import ua.org.ahf.ahfdb.helper.DbHelper;
 import ua.org.ahf.ahfdb.activity.DetailsActivity;
 import ua.org.ahf.ahfdb.R;
@@ -31,10 +32,21 @@ public class CatalogFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((NavigationActivity) getActivity()).getSupportActionBar().setTitle(R.string.catalog);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_catalog, container, false);
 
         ListView listView = (ListView) view.findViewById(R.id.lv_companies);

@@ -17,6 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import ua.org.ahf.ahfdb.R;
+import ua.org.ahf.ahfdb.activity.NavigationActivity;
 import ua.org.ahf.ahfdb.helper.DbHelper;
 import ua.org.ahf.ahfdb.model.Company;
 
@@ -39,6 +40,7 @@ public class PreferencesFragment extends PreferenceFragment implements
     public void onResume() {
         super.onResume();
         getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        ((NavigationActivity) getActivity()).getSupportActionBar().setTitle(R.string.preferences);
     }
 
     // unregister the listener
