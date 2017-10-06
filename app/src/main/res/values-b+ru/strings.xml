@@ -4,24 +4,20 @@
     <string name="app_name">Охотничьи и Рыболовные Хозяйства</string>
 
     <!-- Menu -->
-    <string name="action_preferences">Настройки</string>
     <string name="map">Карта</string>
     <string name="catalog">Справочник</string>
-    <string name="update">Обновление</string>
     <string name="preferences">Настройки</string>
+    <string name="search">Поиск</string>
 
     <!-- Other -->
     <string name="title_activity_maps">Карта</string>
-    <string name="title_activity_navigation">NavigationActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_navigation">Навигация</string>
+    <string name="navigation_drawer_open">Открыть панель навигации</string>
+    <string name="navigation_drawer_close">Закрыть панель навигации</string>
     <string name="select_category">Выберите категорию</string>
     <string name="hunting_grounds">Охотничьи хозяйства</string>
     <string name="fishing_grounds">Рыболовные базы</string>
-    <string name="update_database">Обновить базу данных</string>
     <string name="auhfg">Ассоциация пользователей охотничьих и рыболовных хозяйств</string>
-    <string name="update_success">Успешно обновлено!</string>
-    <string name="update_failed">Ошибка обновления!</string>
 
     <!-- Company -->
     <string name="memberOfAssociation">Член Ассоциации</string>
@@ -61,10 +57,15 @@
     <string name="krim">Крым</string>
 
     <!-- Preferences -->
-    <string name="language_title">Язык</string>
+    <string name="other">Другое</string>
     <string name="home_screen_title">Начальный экран</string>
     <string-array name="home_screen_entries">
         <item>Карта</item>
         <item>Справочник</item>
     </string-array>
+    <string name="update">Обновление</string>
+    <string name="update_database">Обновить базу данных</string>
+    <string name="last_update">Последнее обновление: </string>
+    <string name="update_success">Успешно обновлено!</string>
+    <string name="update_failed">Ошибка обновления!</string>
 </resources>

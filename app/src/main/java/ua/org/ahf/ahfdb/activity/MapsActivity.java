@@ -215,7 +215,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-//    public Bitmap resizeBitmap(String drawableName,int width, int height){
+//    public Bitmap resizeBitmap(String drawableName, int width, int height){
 //        Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(drawableName, "drawable", getPackageName()));
 //        return Bitmap.createScaledBitmap(imageBitmap, width, height, false);
 //    }

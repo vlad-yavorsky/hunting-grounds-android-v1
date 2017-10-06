@@ -4,24 +4,20 @@
     <string name="app_name">Мисливські та Рибальські Господарства</string>
 
     <!-- Menu -->
-    <string name="action_preferences">Налаштування</string>
     <string name="map">Карта</string>
     <string name="catalog">Довідник</string>
-    <string name="update">Оновлення</string>
     <string name="preferences">Налаштування</string>
+    <string name="search">Пошук</string>
 
     <!-- Other -->
     <string name="title_activity_maps">Карта</string>
-    <string name="title_activity_navigation">NavigationActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_navigation">Навігація</string>
+    <string name="navigation_drawer_open">Відкрити панель навігації</string>
+    <string name="navigation_drawer_close">Закрити панель навігації</string>
     <string name="select_category">Оберіть категорію</string>
     <string name="hunting_grounds">Мисливські господарства</string>
     <string name="fishing_grounds">Риболовецькі бази</string>
-    <string name="update_database">Оновити базу даних</string>
     <string name="auhfg">Асоціація користувачів мисливських та рибальських господарств</string>
-    <string name="update_success">Успішно оновлено!</string>
-    <string name="update_failed">Помилка оновлення!</string>
 
     <!-- Company -->
     <string name="memberOfAssociation">Член Асоціації</string>
@@ -61,10 +57,15 @@
     <string name="krim">Крим</string>
 
     <!-- Preferences -->
-    <string name="language_title">Мова</string>
+    <string name="other">Інше</string>
     <string name="home_screen_title">Початковий екран</string>
     <string-array name="home_screen_entries">
         <item>Карта</item>
         <item>Довідник</item>
     </string-array>
+    <string name="update">Оновлення</string>
+    <string name="update_database">Оновити базу даних</string>
+    <string name="last_update">Останнє оновлення: </string>
+    <string name="update_success">Успішно оновлено!</string>
+    <string name="update_failed">Помилка оновлення!</string>
 </resources>

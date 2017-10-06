@@ -5,12 +5,6 @@
     android:orientation="vertical"
     tools:context="ua.org.ahf.ahfdb.fragment.CatalogFragment">
 
-    <SearchView
-        android:id="@+id/sv_search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary" />
-
     <ListView
         android:id="@+id/lv_companies"
         android:layout_width="match_parent"

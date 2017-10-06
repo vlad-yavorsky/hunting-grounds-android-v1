@@ -2,25 +2,21 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-        android:title="@string/language_title">
-        <ListPreference
-            android:title="@string/language_title"
-            android:summary="%s"
-            android:entries="@array/language_entries"
-            android:entryValues="@array/language_entry_values"
-            android:key="language"
-            android:defaultValue="@string/locale">
-        </ListPreference>
-    </PreferenceCategory>
-    <PreferenceCategory
-        android:title="Other">
+        android:title="@string/other">
         <ListPreference
             android:title="@string/home_screen_title"
             android:summary="%s"
             android:entries="@array/home_screen_entries"
             android:entryValues="@array/home_screen_entry_values"
-            android:key="default_screen"
+            android:key="@string/key_home_screen"
             android:defaultValue="1">
         </ListPreference>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/update">
+        <Preference
+            android:title="@string/update_database"
+            android:key="@string/key_update_database">
+        </Preference>
     </PreferenceCategory>
 </PreferenceScreen>

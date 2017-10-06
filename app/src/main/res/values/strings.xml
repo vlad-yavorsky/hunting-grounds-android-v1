@@ -4,24 +4,20 @@
     <string name="app_name">Hunting and Fishing Grounds</string>
 
     <!-- Menu -->
-    <string name="action_preferences">Preferences</string>
     <string name="map">Map</string>
     <string name="catalog">Catalog</string>
-    <string name="update">Update</string>
     <string name="preferences">Preferences</string>
+    <string name="search">Search</string>
 
     <!-- Other -->
     <string name="title_activity_maps">Map</string>
-    <string name="title_activity_navigation">NavigationActivity</string>
+    <string name="title_activity_navigation">Navigation</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="select_category">Select category</string>
     <string name="hunting_grounds">Hunting Grounds</string>
     <string name="fishing_grounds">Fishing Grounds</string>
-    <string name="update_database">Update Database</string>
     <string name="auhfg">Association of users of hunting and fishing grounds</string>
-    <string name="update_success">Update success!</string>
-    <string name="update_failed">Update failed!</string>
 
     <!-- Company -->
     <string name="memberOfAssociation">Member of Association</string>
@@ -61,18 +57,7 @@
     <string name="krim">Krim</string>
 
     <!-- Preferences -->
-    <string name="language_title">Language</string>
-    <string-array name="language_entries">
-        <item>English</item>
-        <item>Русский</item>
-        <item>Українська</item>
-    </string-array>
-    <string-array name="language_entry_values">
-        <item>en_GB</item>
-        <item>ru_RU</item>
-        <item>uk_UA</item>
-    </string-array>
-
+    <string name="other">Other</string>
     <string name="home_screen_title">Home Screen</string>
     <string-array name="home_screen_entries">
         <item>Map</item>
@@ -82,4 +67,13 @@
         <item>1</item>
         <item>2</item>
     </string-array>
+    <string name="update">Update</string>
+    <string name="update_database">Update Database</string>
+    <string name="last_update">Last update: </string>
+    <string name="update_success">Update success!</string>
+    <string name="update_failed">Update failed!</string>
+
+    <!-- Preferences keys -->
+    <string name="key_home_screen">home_screen</string>
+    <string name="key_update_database">update_database</string>
 </resources>

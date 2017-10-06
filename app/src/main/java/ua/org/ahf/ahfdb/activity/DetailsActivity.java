@@ -3,6 +3,7 @@ package ua.org.ahf.ahfdb.activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,16 +13,12 @@ import ua.org.ahf.ahfdb.R;
 import ua.org.ahf.ahfdb.helper.DbHelper;
 import ua.org.ahf.ahfdb.helper.Utils;
 
-public class DetailsActivity extends BaseActivity {
+public class DetailsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-
-        // Get toolbar to set back button
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowHomeEnabled(true);

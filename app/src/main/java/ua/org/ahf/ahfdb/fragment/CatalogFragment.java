@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -21,6 +24,8 @@ import ua.org.ahf.ahfdb.R;
 
 public class CatalogFragment extends Fragment {
 
+    private SimpleCursorAdapter simpleCursorAdapter = null;
+
     public CatalogFragment() {
         // Required empty public constructor
     }
@@ -29,10 +34,11 @@ public class CatalogFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_catalog, container, false);
 
         ListView listView = (ListView) view.findViewById(R.id.lv_companies);
-        SearchView searchView = (SearchView) view.findViewById(R.id.sv_search);
+
         String[] columns = {
                 DbHelper.DbSchema.CompanyTable.Column.ID,
                 DbHelper.DbSchema.CompanyTable.Column.NAME,
@@ -49,11 +55,12 @@ public class CatalogFragment extends Fragment {
         };
         String locale = getResources().getString(R.string.locale);
         Cursor cursor = DbHelper.instance(getActivity()).findAll(locale);
-        final SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.listview_row, cursor, columns, resourceIds, 0);
+        simpleCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.listview_row, cursor, columns, resourceIds, 0);
 
         simpleCursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+                // member of associations column
                 if (columnIndex == 1) {
                     if(cursor.getString(columnIndex).equals("1")) {
                         ((TextView)view).setText(R.string.memberOfAssociation);
@@ -62,6 +69,7 @@ public class CatalogFragment extends Fragment {
                     }
                     return true;
                 }
+                // area column
                 if (columnIndex == 5) {
                     if(!cursor.isNull(columnIndex)) {
                         TextView textView = (TextView) view;
@@ -72,6 +80,7 @@ public class CatalogFragment extends Fragment {
                     }
                     return true;
                 }
+                // oblast column
                 if (columnIndex == 16) {
                     TextView textView = (TextView)view;
                     String oblastName = DbHelper.instance(getActivity()).findOblastById(cursor.getString(columnIndex));
@@ -104,6 +113,17 @@ public class CatalogFragment extends Fragment {
             }
         };
         simpleCursorAdapter.setFilterQueryProvider(provider);
+
+        return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.navigation, menu);
+
+        MenuItem item = menu.findItem(R.id.menu_search);
+        SearchView searchView = (SearchView)item.getActionView();
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String string) {
@@ -117,7 +137,7 @@ public class CatalogFragment extends Fragment {
             }
         });
 
-        return view;
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
 }

@@ -9,22 +9,20 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import ua.org.ahf.ahfdb.R;
 import ua.org.ahf.ahfdb.fragment.MapFragment;
 import ua.org.ahf.ahfdb.fragment.PreferencesFragment;
 import ua.org.ahf.ahfdb.fragment.CatalogFragment;
-import ua.org.ahf.ahfdb.fragment.UpdateFragment;
 
-public class NavigationActivity extends BaseActivity
+public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private MapFragment mapFragment;
     private CatalogFragment catalogFragment;
-    private UpdateFragment updateFragment;
     private PreferencesFragment preferencesFragment;
 
     private static String HOME_SCREEN = "home_screen";
@@ -47,7 +45,6 @@ public class NavigationActivity extends BaseActivity
 
         mapFragment = new MapFragment();
         catalogFragment = new CatalogFragment();
-        updateFragment = new UpdateFragment();
         preferencesFragment = new PreferencesFragment();
 
         if (savedInstanceState == null) {
@@ -92,29 +89,6 @@ public class NavigationActivity extends BaseActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.navigation, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
@@ -125,14 +99,8 @@ public class NavigationActivity extends BaseActivity
             fragmentTransaction.replace(R.id.container, mapFragment);
         } else if (id == R.id.nav_catalog) {
             fragmentTransaction.replace(R.id.container, catalogFragment);
-        } else if (id == R.id.nav_update) {
-            fragmentTransaction.replace(R.id.container, updateFragment);
         } else if (id == R.id.nav_settings) {
             fragmentTransaction.replace(R.id.container, preferencesFragment);
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
         }
 
         fragmentTransaction.commit();
