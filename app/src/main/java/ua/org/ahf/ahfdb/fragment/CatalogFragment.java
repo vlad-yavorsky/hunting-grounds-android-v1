@@ -65,7 +65,7 @@ public class CatalogFragment extends Fragment {
                 R.id.tv_short_info,
                 R.id.tv_short_info
         };
-        String locale = getResources().getString(R.string.locale);
+        String locale = getString(R.string.locale);
         Cursor cursor = DbHelper.instance(getActivity()).findAll(locale);
         simpleCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.listview_row, cursor, columns, resourceIds, 0);
 
@@ -88,7 +88,7 @@ public class CatalogFragment extends Fragment {
                         if(!textView.getText().equals("")) {
                             textView.setText(textView.getText() + " • ");
                         }
-                        textView.setText(textView.getText() + cursor.getString(columnIndex) + " " + getResources().getString(R.string.kilo_ha));
+                        textView.setText(textView.getText() + cursor.getString(columnIndex) + " " + getString(R.string.kilo_ha));
                     }
                     return true;
                 }
@@ -117,7 +117,7 @@ public class CatalogFragment extends Fragment {
         FilterQueryProvider provider = new FilterQueryProvider() {
             @Override
             public Cursor runQuery(CharSequence constraint) {
-                String locale = getResources().getString(R.string.locale);
+                String locale = getString(R.string.locale);
                 if (TextUtils.isEmpty(constraint)) {
                     return DbHelper.instance(getActivity()).findAll(locale);
                 }

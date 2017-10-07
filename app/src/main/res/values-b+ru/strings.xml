@@ -24,10 +24,11 @@
     <string name="area">Площадь хозяйства:</string>
     <string name="kilo_ha">тыс. га.</string>
     <string name="website">Вебсайт:</string>
-    <string name="email">Эл.почта:</string>
+    <string name="email">Эл. почта:</string>
     <string name="juridical_address">Юридический адрес:</string>
     <string name="actual_address">Фактический адрес:</string>
     <string name="director">Директор:</string>
+    <string name="contacts">Контакты</string>
 
     <!-- Oblast -->
     <string name="vinnytsia_oblast">Винницкая область</string>
@@ -68,4 +69,9 @@
     <string name="last_update">Последнее обновление: </string>
     <string name="update_success">Успешно обновлено!</string>
     <string name="update_failed">Ошибка обновления!</string>
+
+    <!-- First run -->
+    <string name="downloading">Загрузка базы данных</string>
+    <string name="download_error">Ошибка загрузки. Пожалуйста, проверьте подключение и повторите попытку.</string>
+    <string name="retry">Повторить попытку</string>
 </resources>

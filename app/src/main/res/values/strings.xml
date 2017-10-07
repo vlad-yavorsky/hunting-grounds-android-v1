@@ -28,6 +28,7 @@
     <string name="juridical_address">Juridical address:</string>
     <string name="actual_address">Actual address:</string>
     <string name="director">Director:</string>
+    <string name="contacts">Contacts</string>
 
     <!-- Oblast -->
     <string name="vinnytsia_oblast">Vinnytsia oblast</string>
@@ -76,4 +77,10 @@
     <!-- Preferences keys -->
     <string name="key_home_screen">home_screen</string>
     <string name="key_update_database">update_database</string>
+    <string name="first_run">first_run</string>
+
+    <!-- First run -->
+    <string name="downloading">Downloading database</string>
+    <string name="download_error">Download error. Please, check connection and try again.</string>
+    <string name="retry">Retry</string>
 </resources>

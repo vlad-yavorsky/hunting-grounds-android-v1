@@ -62,7 +62,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         setUpClusterer();
         int companyType = getIntent().getIntExtra("COMPANY_TYPE", 1);
-        String locale = getResources().getString(R.string.locale);
+        String locale = getString(R.string.locale);
         Cursor cursor = DbHelper.instance(this).findByType(companyType, locale);
 
         if (cursor.moveToFirst()) {
@@ -205,7 +205,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (clickedClusterItem.getArea() == null) {
                     tv_area.setVisibility(View.GONE);
                 } else {
-                    tv_area.setText(clickedClusterItem.getArea() + " " + getResources().getString(R.string.kilo_ha));
+                    tv_area.setText(clickedClusterItem.getArea() + " " + getString(R.string.kilo_ha));
                     tv_area.setVisibility(View.VISIBLE);
                 }
 //                String oblastName = DbHelper.instance().findOblastById(clickedClusterItem.getOblastId().toString());

@@ -22,11 +22,12 @@ public class Company implements ClusterItem {
     private Integer isEnabled;
     private Integer oblastId;
     private String locale;
-//    private String[] phone;
+    private String phone1;
+    private String phone2;
+    private String phone3;
 //    private String logo;
 //    private String[] oblast;
 //    private String[] raion;
-//    private String language;
 //    private String[] gallery;
 
     public Company(Long id, Integer isMember, Integer isHuntingGround, Integer isFishingGround,
@@ -45,7 +46,7 @@ public class Company implements ClusterItem {
                    Integer isPondFarm, Double area, Double lat, Double lng, String name,
                    String description, String website, String email, String juridicalAddress,
                    String actualAddress, String director, Integer isEnabled, Integer oblastId,
-                   String locale) {
+                   String locale, String phone1, String phone2, String phone3) {
         this.id = id;
         this.isMember = isMember;
         this.isHuntingGround = isHuntingGround;
@@ -63,6 +64,9 @@ public class Company implements ClusterItem {
         this.isEnabled = isEnabled;
         this.oblastId = oblastId;
         this.locale = locale;
+        this.phone1 = phone1;
+        this.phone2 = phone2;
+        this.phone3 = phone3;
     }
 
     public Long getId() {
@@ -160,6 +164,18 @@ public class Company implements ClusterItem {
 
     public String getNameLowercase() {
         return name.toLowerCase();
+    }
+
+    public String getPhone1() {
+        return phone1;
+    }
+
+    public String getPhone2() {
+        return phone2;
+    }
+
+    public String getPhone3() {
+        return phone3;
     }
 }
 

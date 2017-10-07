@@ -31,6 +31,7 @@ public class DetailsActivity extends AppCompatActivity {
         Cursor cursor = DbHelper.instance(this).findById(id);
 
         if (cursor.moveToFirst()) {
+            boolean showContactsHeader = false;
 //            int id = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.ID);
 //            int isMember = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.IS_MEMBER);
 //            int isHuntingGround = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.IS_HUNTING_GROUND);
@@ -46,6 +47,9 @@ public class DetailsActivity extends AppCompatActivity {
             int juridicalAddress  = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.JURIDICAL_ADDRESS);
             int actualAddress  = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.ACTUAL_ADDRESS);
             int director  = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.DIRECTOR);
+            int phone1  = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.PHONE_1);
+            int phone2  = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.PHONE_2);
+            int phone3  = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.PHONE_3);
 
             ((TextView)findViewById(R.id.tv_name)).setText(cursor.getString(name));
             setTitle(cursor.getString(name));
@@ -53,44 +57,74 @@ public class DetailsActivity extends AppCompatActivity {
             if (cursor.getString(description).isEmpty()) {
                 findViewById(R.id.tv_description).setVisibility(View.GONE);
             } else {
-                ((TextView)findViewById(R.id.tv_description)).setText(Html.fromHtml(cursor.getString(description), null, new Utils.UlTagHandler()));
+                ((TextView)findViewById(R.id.tv_description)).setText(Utils.trimTrailingWhitespace(Html.fromHtml(cursor.getString(description), null, new Utils.UlTagHandler())));
 //            ((TextView)findViewById(R.id.tv_description)).setText(Html.fromHtml(cursor.getString(description), Html.FROM_HTML_MODE_COMPACT));
             }
 
             if (cursor.getString(area) == null) {
-                findViewById(R.id.tv_area).setVisibility(View.GONE);
+                findViewById(R.id.ll_area).setVisibility(View.GONE);
             } else {
-                ((TextView)findViewById(R.id.tv_area)).setText(getResources().getString(R.string.area) + " " + cursor.getString(area) + " " + getResources().getString(R.string.kilo_ha));
+                ((TextView)findViewById(R.id.tv_area)).setText(getString(R.string.area) + " " + cursor.getString(area) + " " + getString(R.string.kilo_ha));
             }
 
             if (cursor.getString(email).isEmpty()) {
-                findViewById(R.id.tv_email).setVisibility(View.GONE);
+                findViewById(R.id.ll_email).setVisibility(View.GONE);
             } else {
-                ((TextView)findViewById(R.id.tv_email)).setText(getResources().getString(R.string.email) + " " + cursor.getString(email));
+                ((TextView)findViewById(R.id.tv_email)).setText(getString(R.string.email) + " " + cursor.getString(email));
+                showContactsHeader = true;
             }
 
             if (cursor.getString(website).isEmpty()) {
-                findViewById(R.id.tv_website).setVisibility(View.GONE);
+                findViewById(R.id.ll_website).setVisibility(View.GONE);
             } else {
-                ((TextView)findViewById(R.id.tv_website)).setText(getResources().getString(R.string.website) + " " + cursor.getString(website));
+                ((TextView)findViewById(R.id.tv_website)).setText(getString(R.string.website) + " " + cursor.getString(website));
+                showContactsHeader = true;
+            }
+
+            if (cursor.getString(phone1).isEmpty()) {
+                findViewById(R.id.ll_phone_1).setVisibility(View.GONE);
+            } else {
+                ((TextView)findViewById(R.id.tv_phone_1)).setText(cursor.getString(phone1));
+                showContactsHeader = true;
+            }
+
+            if (cursor.getString(phone2).isEmpty()) {
+                findViewById(R.id.ll_phone_2).setVisibility(View.GONE);
+            } else {
+                ((TextView)findViewById(R.id.tv_phone_2)).setText(cursor.getString(phone2));
+                showContactsHeader = true;
+            }
+
+            if (cursor.getString(phone3).isEmpty()) {
+                findViewById(R.id.ll_phone_3).setVisibility(View.GONE);
+            } else {
+                ((TextView)findViewById(R.id.tv_phone_3)).setText(cursor.getString(phone3));
+                showContactsHeader = true;
             }
 
             if (cursor.getString(juridicalAddress).isEmpty()) {
-                findViewById(R.id.tv_juridical_address).setVisibility(View.GONE);
+                findViewById(R.id.ll_juridical_address).setVisibility(View.GONE);
             } else {
-                ((TextView)findViewById(R.id.tv_juridical_address)).setText(getResources().getString(R.string.juridical_address) + " " + cursor.getString(juridicalAddress));
+                ((TextView)findViewById(R.id.tv_juridical_address)).setText(getString(R.string.juridical_address) + " " + cursor.getString(juridicalAddress));
+                showContactsHeader = true;
             }
 
             if (cursor.getString(actualAddress).isEmpty()) {
-                findViewById(R.id.tv_actual_address).setVisibility(View.GONE);
+                findViewById(R.id.ll_actual_address).setVisibility(View.GONE);
             } else {
-                ((TextView)findViewById(R.id.tv_actual_address)).setText(getResources().getString(R.string.actual_address) + " " + cursor.getString(actualAddress));
+                ((TextView)findViewById(R.id.tv_actual_address)).setText(getString(R.string.actual_address) + " " + cursor.getString(actualAddress));
+                showContactsHeader = true;
             }
 
             if (cursor.getString(director).isEmpty()) {
-                findViewById(R.id.tv_director).setVisibility(View.GONE);
+                findViewById(R.id.ll_director).setVisibility(View.GONE);
             } else {
-                ((TextView)findViewById(R.id.tv_director)).setText(getResources().getString(R.string.director) + " " + cursor.getString(director));
+                ((TextView)findViewById(R.id.tv_director)).setText(getString(R.string.director) + " " + cursor.getString(director));
+                showContactsHeader = true;
+            }
+
+            if(!showContactsHeader) {
+                findViewById(R.id.tv_contacts).setVisibility(View.GONE);
             }
         }
     }

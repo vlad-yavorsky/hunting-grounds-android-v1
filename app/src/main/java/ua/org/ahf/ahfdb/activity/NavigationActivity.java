@@ -2,6 +2,7 @@ package ua.org.ahf.ahfdb.activity;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -25,11 +26,18 @@ public class NavigationActivity extends AppCompatActivity
     private CatalogFragment catalogFragment;
     private PreferencesFragment preferencesFragment;
     private static String HOME_SCREEN = "home_screen";
+    Fragment fragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        if (preferences.getBoolean(getString(R.string.first_run), true)) {
+            startActivityForResult(new Intent(this, UpdateActivity.class), 1);
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -49,8 +57,7 @@ public class NavigationActivity extends AppCompatActivity
         if (savedInstanceState == null) {
             // Set default fragment
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            String defaultScreen = sharedPreferences.getString(HOME_SCREEN, "1");
-            Fragment fragment = null;
+            String defaultScreen = sharedPreferences.getString(HOME_SCREEN, "2");
             switch (defaultScreen) {
                 case "1" :
                     fragment = mapFragment;
@@ -66,15 +73,30 @@ public class NavigationActivity extends AppCompatActivity
         }
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // app first run
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                Boolean result = data.getBooleanExtra("update_success", false);
+                if(result) {
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                    SharedPreferences.Editor edit = preferences.edit();
+                    edit.putBoolean(getString(R.string.first_run), false);
+                    edit.apply();
+                    // Reload fragment after database update
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.detach(fragment).attach(fragment).commit();
+                } else {
+                    finish();
+                }
+            }
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sharedPreferences.getBoolean("firstrun", true)) {
-            // do smth
-            sharedPreferences.edit().putBoolean("firstrun", false).commit();
-        }
     }
 
     @Override

@@ -24,10 +24,11 @@
     <string name="area">Площа господарства:</string>
     <string name="kilo_ha">тис. га.</string>
     <string name="website">Вебсайт:</string>
-    <string name="email">Ел.пошта:</string>
+    <string name="email">Ел. пошта:</string>
     <string name="juridical_address">Юридична адреса:</string>
     <string name="actual_address">Фактична адреса:</string>
     <string name="director">Директор:</string>
+    <string name="contacts">Контакти</string>
 
     <!-- Oblast -->
     <string name="vinnytsia_oblast">Вінницька область</string>
@@ -68,4 +69,9 @@
     <string name="last_update">Останнє оновлення: </string>
     <string name="update_success">Успішно оновлено!</string>
     <string name="update_failed">Помилка оновлення!</string>
+
+    <!-- First run -->
+    <string name="downloading">Завантаження бази даних</string>
+    <string name="download_error">Помилка завантаження. Будь ласка, перевірте підключення та повторіть спробу.</string>
+    <string name="retry">Повторити спробу</string>
 </resources>
