@@ -23,6 +23,7 @@ import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 
 import ua.org.ahf.ahfdb.R;
 import ua.org.ahf.ahfdb.helper.DbHelper;
+import ua.org.ahf.ahfdb.helper.Utils;
 import ua.org.ahf.ahfdb.model.Company;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -111,8 +112,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mClusterManager.setRenderer(new DefaultClusterRenderer<Company>(getApplicationContext(), mMap, mClusterManager) {
             @Override
             protected void onBeforeClusterItemRendered(Company company, MarkerOptions markerOptions) {
-                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.hunting_target));
-//                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeBitmap("hunting_target", 50, 50)));
+//                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.hunting_target));
+                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(Utils.resizeBitmap(getBaseContext(), "hunting_target", 90, 90)));
             }
 
             @Override
@@ -214,11 +215,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return contentView;
         }
     }
-
-//    public Bitmap resizeBitmap(String drawableName, int width, int height){
-//        Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(drawableName, "drawable", getPackageName()));
-//        return Bitmap.createScaledBitmap(imageBitmap, width, height, false);
-//    }
-
 
 }

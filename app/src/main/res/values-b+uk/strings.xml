@@ -29,6 +29,7 @@
     <string name="actual_address">Фактична адреса:</string>
     <string name="director">Директор:</string>
     <string name="contacts">Контакти</string>
+    <string name="location">Розташування</string>
 
     <!-- Oblast -->
     <string name="vinnytsia_oblast">Вінницька область</string>

@@ -269,6 +269,25 @@
                     android:text="tv_director" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tv_map"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/location"
+                android:textSize="20sp" />
+
+            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:map="http://schemas.android.com/apk/res-auto"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:id="@+id/static_map"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                map:cameraZoom="13"
+                map:mapType="normal"
+                map:liteMode="true"/>
+
         </LinearLayout>
     </ScrollView>
 
