@@ -18,6 +18,7 @@ import ua.org.ahf.ahfdb.R;
 import ua.org.ahf.ahfdb.fragment.MapFragment;
 import ua.org.ahf.ahfdb.fragment.PreferencesFragment;
 import ua.org.ahf.ahfdb.fragment.CatalogFragment;
+import ua.org.ahf.ahfdb.helper.DbHelper;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -111,7 +112,7 @@ public class NavigationActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+        // Handle catalog view item clicks here.
         int id = item.getItemId();
 
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -129,5 +130,42 @@ public class NavigationActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sort_by_name:
+                if (!item.isChecked()) {
+                    item.setChecked(true);
+                    DbHelper.setSortBy(DbHelper.DbSchema.CompanyTable.Column.NAME);
+                    ((CatalogFragment)fragment).reloadData();
+                }
+                return true;
+            case R.id.sort_by_oblast:
+                if (!item.isChecked()) {
+                    item.setChecked(true);
+                    DbHelper.setSortBy(DbHelper.DbSchema.CompanyTable.Column.OBLAST_ID);
+                    ((CatalogFragment)fragment).reloadData();
+                }
+                return true;
+            case R.id.sort_by_area:
+                if (!item.isChecked()) {
+                    item.setChecked(true);
+                    DbHelper.setSortBy(DbHelper.DbSchema.CompanyTable.Column.AREA);
+                    ((CatalogFragment)fragment).reloadData();
+                }
+                return true;
+            case R.id.sort_by_distance:
+                if (!item.isChecked()) {
+                    item.setChecked(true);
+                    // TODO: change after adding GPS support
+                    DbHelper.setSortBy(DbHelper.DbSchema.CompanyTable.Column.NAME);
+                    ((CatalogFragment)fragment).reloadData();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

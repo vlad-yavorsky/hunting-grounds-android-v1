@@ -129,9 +129,15 @@ public class CatalogFragment extends Fragment {
         return view;
     }
 
+    public void reloadData() {
+        String locale = getString(R.string.locale);
+        Cursor cursor = DbHelper.instance(getActivity()).findAll(locale);
+        simpleCursorAdapter.changeCursor(cursor);
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.navigation, menu);
+        inflater.inflate(R.menu.catalog, menu);
 
         MenuItem item = menu.findItem(R.id.menu_search);
         SearchView searchView = (SearchView)item.getActionView();

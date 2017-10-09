@@ -22,7 +22,7 @@ import ua.org.ahf.ahfdb.model.Oblast;
 public class DbHelper {
 
     private static final String DB_NAME = "ahf.db";
-    private static final int DB_VERSION = 11;
+    private static final int DB_VERSION = 12;
     private static DbHelper mInstance;
     private SQLiteDatabase mSQLiteDatabase;
     private Context context;
@@ -30,7 +30,9 @@ public class DbHelper {
     private static final String JSON_URL = "http://ahf.org.ua/get-data.php";
     private static final String TAG_RESULT = "result";
 
-    public DbHelper(Context context) {
+    private static String sortByColumnName = DbHelper.DbSchema.CompanyTable.Column.NAME;
+
+    private DbHelper(Context context) {
         if (context == null) {
             throw new IllegalArgumentException("Context cannot be null!");
         }
@@ -78,7 +80,8 @@ public class DbHelper {
                     Column.LOCALE + " text," +
                     Column.PHONE_1 + " text," +
                     Column.PHONE_2 + " text," +
-                    Column.PHONE_3 + " text" +
+                    Column.PHONE_3 + " text," +
+                    Column.FAVORITE + " integer" +
                     ")";
             public static final String DELETE_SQL = "drop table if exists " + NAME;
 
@@ -105,6 +108,7 @@ public class DbHelper {
                 public static final String PHONE_1 = "phone_1";
                 public static final String PHONE_2 = "phone_2";
                 public static final String PHONE_3 = "phone_3";
+                public static final String FAVORITE = "favorite";
             }
         }
 
@@ -148,6 +152,7 @@ public class DbHelper {
         contentValues.put(DbSchema.CompanyTable.Column.PHONE_1, company.getPhone1());
         contentValues.put(DbSchema.CompanyTable.Column.PHONE_2, company.getPhone2());
         contentValues.put(DbSchema.CompanyTable.Column.PHONE_3, company.getPhone3());
+        contentValues.put(DbSchema.CompanyTable.Column.FAVORITE, company.isFavorite());
         return contentValues;
     }
 
@@ -170,7 +175,7 @@ public class DbHelper {
         Cursor cursor = null;
         String selection = DbSchema.CompanyTable.Column.LOCALE + " = ?";
         String[] selectionArgs = {locale};
-        String orderBy = DbSchema.CompanyTable.Column.IS_MEMBER + " DESC, " + DbSchema.CompanyTable.Column.NAME_LOWERCASE  + " ASC";
+        String orderBy = sortByColumnName  + " ASC";
         cursor = mSQLiteDatabase.query(DbSchema.CompanyTable.NAME, null, selection, selectionArgs, null, null, orderBy);
         return cursor;
     }
@@ -234,11 +239,12 @@ public class DbHelper {
             int iOblastName = cursor.getColumnIndex(DbHelper.DbSchema.OblastTable.Column.NAME);
             sOblastName =  context.getString(context.getResources().getIdentifier(cursor.getString(iOblastName), "string", context.getPackageName()));
         }
+        cursor.close();
 
         return sOblastName;
     }
 
-    public Oblast create(Oblast oblast) {
+    private Oblast create(Oblast oblast) {
         Oblast ret = null;
         ContentValues contentValues = getContentValues(oblast);
         long rowId = mSQLiteDatabase.insert(DbSchema.OblastTable.NAME, null, contentValues);
@@ -249,11 +255,21 @@ public class DbHelper {
         return ret;
     }
 
-    public int deleteAllCompanies() {
+    public void setFavorite(String id, String value) {
+        String selection = DbSchema.CompanyTable.Column.ID + " = ?";
+        String[] selectionArgs = {id};
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(DbSchema.CompanyTable.Column.FAVORITE, value);
+        mSQLiteDatabase.update(DbSchema.CompanyTable.NAME, contentValues, selection, selectionArgs);
+    }
+
+    private int deleteAllCompanies() {
+        // TODO: reset "first run" preference; ideally need to write alter table query
         return mSQLiteDatabase.delete(DbSchema.CompanyTable.NAME, "1", null);
     }
 
-    public void createOblasts() {
+    private void createOblasts() {
         create(new Oblast("vinnytsia_oblast"));
         create(new Oblast("volyn_oblast"));
         create(new Oblast("dnipropetrovsk_oblast"));
@@ -378,7 +394,7 @@ public class DbHelper {
 
                     Company company = new Company(id, isMember, isHuntingGround, isFishingGround,
                             isPondFarm, area, lat, lng, name, description, website, email, juridicalAddress,
-                            actualAddress, director, isEnabled, oblastId, locale, phone1, phone2, phone3);
+                            actualAddress, director, isEnabled, oblastId, locale, phone1, phone2, phone3, 0);
                     create(company);
                 }
                 createOblasts();
@@ -394,6 +410,10 @@ public class DbHelper {
 
     public void downloadData(AsyncResponse listener) {
         new GetDataAsyncTask(listener).execute();
+    }
+
+    public static void setSortBy(String columnName) {
+        sortByColumnName = columnName;
     }
 
 }

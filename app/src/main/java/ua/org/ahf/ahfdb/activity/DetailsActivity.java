@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -64,15 +65,6 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(company.getPosition(), zoomLevel));
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Set back button for toolbar
-        if(item.getItemId() == android.R.id.home) {
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     void getCompany() {
         // Get id of company to get all information about it from database
         Intent intent = getIntent();
@@ -101,10 +93,11 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
             String phone1  = cursor.getString(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.PHONE_1));
             String phone2  = cursor.getString(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.PHONE_2));
             String phone3  = cursor.getString(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.PHONE_3));
+            Integer favorite  = cursor.getInt(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.FAVORITE));
 
             company = new Company(Long.parseLong(id), isMember, isHuntingGround, isFishingGround,
                     isPondFarm, area, lat, lng, name, description, website, email, juridicalAddress,
-                    actualAddress, director, isEnabled, oblastId, locale, phone1, phone2, phone3);
+                    actualAddress, director, isEnabled, oblastId, locale, phone1, phone2, phone3, favorite);
         }
     }
 
@@ -187,4 +180,47 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
             findViewById(R.id.tv_contacts).setVisibility(View.GONE);
         }
     }
+
+    private Menu mOptionsMenu;
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        mOptionsMenu = menu;
+        getMenuInflater().inflate(R.menu.details, menu);
+        MenuItem item = menu.findItem(R.id.action_favorite);
+        if (company.isFavorite() == 1) {
+            item.setIcon(R.drawable.ic_favorite_black_24dp);
+        } else {
+            item.setIcon(R.drawable.ic_favorite_border_black_24dp);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Set back button for toolbar
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.action_favorite:
+                Integer newValue = (company.isFavorite() + 1) % 2;
+                DbHelper.instance(this).setFavorite(company.getId().toString(), newValue.toString());
+                if (newValue == 0) {
+                    item.setIcon(R.drawable.ic_favorite_border_black_24dp);
+                } else {
+                    item.setIcon(R.drawable.ic_favorite_black_24dp);
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void updateOptionsMenu() {
+        if (mOptionsMenu != null) {
+            onPrepareOptionsMenu(mOptionsMenu);
+        }
+    }
+
 }

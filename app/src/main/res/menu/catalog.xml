@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_search"
+        android:title="@string/search"
+        android:icon="@android:drawable/ic_menu_search"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/sort"
+        android:icon="@drawable/ic_sort_black_24dp"
+        android:orderInCategory="101"
+        android:title="@string/sort"
+        app:showAsAction="always">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/sort_by_name"
+                    android:checked="true"
+                    android:orderInCategory="1"
+                    app:showAsAction="never"
+                    android:title="@string/sort_by_name"/>
+
+                <item
+                    android:id="@+id/sort_by_oblast"
+                    android:orderInCategory="2"
+                    app:showAsAction="never"
+                    android:title="@string/sort_by_oblast"/>
+
+                <item
+                    android:id="@+id/sort_by_area"
+                    android:orderInCategory="3"
+                    app:showAsAction="never"
+                    android:title="@string/sort_by_area"/>
+
+                <item
+                    android:id="@+id/sort_by_distance"
+                    android:orderInCategory="4"
+                    app:showAsAction="never"
+                    android:title="@string/sort_by_distance"/>
+            </group>
+        </menu>
+    </item>
+
+
+
+
+</menu>

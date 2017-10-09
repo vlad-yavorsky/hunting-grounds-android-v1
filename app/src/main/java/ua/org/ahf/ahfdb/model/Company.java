@@ -25,6 +25,7 @@ public class Company implements ClusterItem {
     private String phone1;
     private String phone2;
     private String phone3;
+    private Integer favorite;
 //    private String logo;
 //    private String[] oblast;
 //    private String[] raion;
@@ -46,7 +47,7 @@ public class Company implements ClusterItem {
                    Integer isPondFarm, Double area, Double lat, Double lng, String name,
                    String description, String website, String email, String juridicalAddress,
                    String actualAddress, String director, Integer isEnabled, Integer oblastId,
-                   String locale, String phone1, String phone2, String phone3) {
+                   String locale, String phone1, String phone2, String phone3, Integer favorite) {
         this.id = id;
         this.isMember = isMember;
         this.isHuntingGround = isHuntingGround;
@@ -67,6 +68,7 @@ public class Company implements ClusterItem {
         this.phone1 = phone1;
         this.phone2 = phone2;
         this.phone3 = phone3;
+        this.favorite = favorite;
     }
 
     public Long getId() {
@@ -176,6 +178,10 @@ public class Company implements ClusterItem {
 
     public String getPhone3() {
         return phone3;
+    }
+
+    public Integer isFavorite() {
+        return favorite;
     }
 }
 

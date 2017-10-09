@@ -8,6 +8,12 @@
     <string name="catalog">Catalog</string>
     <string name="preferences">Preferences</string>
     <string name="search">Search</string>
+    <string name="sort">Sort</string>
+    <string name="sort_by_name">Sort by name</string>
+    <string name="sort_by_oblast">Sort by oblast</string>
+    <string name="sort_by_area">Sort by area</string>
+    <string name="sort_by_distance">Sort by distance</string>
+    <string name="action_favorite">Save to favorites</string>
 
     <!-- Other -->
     <string name="title_activity_maps">Map</string>

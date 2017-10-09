@@ -8,6 +8,12 @@
     <string name="catalog">Довідник</string>
     <string name="preferences">Налаштування</string>
     <string name="search">Пошук</string>
+    <string name="sort">Сортувати</string>
+    <string name="sort_by_name">Сортувати по назві</string>
+    <string name="sort_by_oblast">Сортувати по області</string>
+    <string name="sort_by_area">Сортувати по площі</string>
+    <string name="sort_by_distance">Сортувати по відстані</string>
+    <string name="action_favorite">Зберегти в закладки</string>
 
     <!-- Other -->
     <string name="title_activity_maps">Карта</string>
