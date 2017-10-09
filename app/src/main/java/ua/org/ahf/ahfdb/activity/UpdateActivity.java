@@ -18,6 +18,7 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
             if (result) {
                 Intent intent = new Intent();
                 setResult(RESULT_OK, intent);
+                intent.putExtra("update_success", true);
                 finish();
             } else {
 //                Toast.makeText(this, getString(R.string.update_failed), Toast.LENGTH_SHORT).show();

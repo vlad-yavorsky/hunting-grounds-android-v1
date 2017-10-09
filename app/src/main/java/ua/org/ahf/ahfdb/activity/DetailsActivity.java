@@ -53,8 +53,8 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                Intent intent = new Intent(DetailsActivity.this, MapsActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(DetailsActivity.this, MapsActivity.class);
+//                startActivity(intent);
             }
         });
         mMap.addMarker(new MarkerOptions().position(company.getPosition())

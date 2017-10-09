@@ -28,9 +28,6 @@
         <activity
             android:name=".activity.UpdateActivity"/>
         <activity
-            android:name=".activity.MapsActivity"
-            android:label="@string/title_activity_maps" />
-        <activity
             android:name=".activity.DetailsActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

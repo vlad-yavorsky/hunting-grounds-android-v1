@@ -1,58 +1,255 @@
 package ua.org.ahf.ahfdb.fragment;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.content.Intent;
+import android.database.Cursor;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-import ua.org.ahf.ahfdb.activity.MapsActivity;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterItem;
+import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.view.DefaultClusterRenderer;
+
 import ua.org.ahf.ahfdb.R;
+import ua.org.ahf.ahfdb.activity.DetailsActivity;
 import ua.org.ahf.ahfdb.activity.NavigationActivity;
+import ua.org.ahf.ahfdb.helper.DbHelper;
+import ua.org.ahf.ahfdb.helper.Utils;
+import ua.org.ahf.ahfdb.model.Company;
 
-public class MapFragment extends Fragment implements OnClickListener {
+public class MapFragment extends Fragment implements OnMapReadyCallback {
 
-    public MapFragment() {
-        // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((NavigationActivity) getActivity()).getSupportActionBar().setTitle(R.string.map);
-    }
+    MapView mMapView;
+    private GoogleMap mMap;
+    private ClusterManager<Company> mClusterManager;
+    private Company clickedClusterItem;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_categories, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_map, container, false);
 
-        view.findViewById(R.id.huntingGroundsButton).setOnClickListener(this);
-        view.findViewById(R.id.fishingGroundButton).setOnClickListener(this);
+        mMapView = (MapView) view.findViewById(R.id.map);
+        mMapView.onCreate(savedInstanceState);
+
+        mMapView.onResume(); // needed to get the map to display immediately
+
+        try {
+            MapsInitializer.initialize(getActivity().getApplicationContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mMapView.getMapAsync(this);
 
         return view;
     }
 
     @Override
-    public void onClick(View view) {
-        Intent intent = new Intent(getActivity(), MapsActivity.class);
-        switch (view.getId()) {
-            case R.id.huntingGroundsButton:
-                intent.putExtra("COMPANY_TYPE", 1);
-                break;
-            case R.id.fishingGroundButton:
-                intent.putExtra("COMPANY_TYPE", 2);
-                break;
-        }
-        startActivity(intent);
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+//        mMap.getUiSettings().setMapToolbarEnabled(false);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+//        mMap.setMyLocationEnabled(true);
+
+        setUpClusterer();
+        addMarkers();
+
+        googleMap.setOnInfoWindowClickListener(mClusterManager);
+        mMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
+
+        LatLng ukraine = new LatLng(49.463006, 31.201909);
+        float zoomLevel = 6.0f;
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ukraine, zoomLevel));
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMapView.onResume();
+        ((NavigationActivity) getActivity()).getSupportActionBar().setTitle(R.string.map);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mMapView.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mMapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mMapView.onLowMemory();
+    }
+
+
+    private void addMarkers() {
+//        int companyType = getIntent().getIntExtra("COMPANY_TYPE", 1);
+        String locale = getString(R.string.locale);
+        Cursor cursor = DbHelper.instance(getActivity()).findAll(locale);
+
+        if (cursor.moveToFirst()) {
+            int id = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.ID);
+            int isMember = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.IS_MEMBER);
+            int isHuntingGround = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.IS_HUNTING_GROUND);
+            int isFishingGround = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.IS_FISHING_GROUND);
+            int isPondFarm = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.IS_POND_FARM);
+            int lat = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.LAT);
+            int lng = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.LNG);
+            int name = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.NAME);
+            int area = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.AREA);
+
+            do {
+                if(cursor.isNull(lat) || cursor.isNull(lng)) {
+                    continue;
+                }
+
+                Double areaValue = null;
+                if(!cursor.isNull(area)) {
+                    areaValue = cursor.getDouble(area);
+                }
+                Company item = new Company(cursor.getLong(id), cursor.getInt(isMember),
+                        cursor.getInt(isHuntingGround), cursor.getInt(isFishingGround),
+                        cursor.getInt(isPondFarm), cursor.getDouble(lat), cursor.getDouble(lng),
+                        cursor.getString(name), areaValue);
+
+                // Add cluster items (markers) to the cluster manager.
+                mClusterManager.addItem(item);
+            } while (cursor.moveToNext());
+        }
+    }
+
+    private void setUpClusterer() {
+        // Initialize the manager with the context and the map.
+        // (Activity extends context, so we can pass 'this' in the constructor.)
+        mClusterManager = new ClusterManager<Company>(getActivity(), mMap);
+
+        mClusterManager.setRenderer(new DefaultClusterRenderer<Company>(getActivity(), mMap, mClusterManager) {
+            @Override
+            protected void onBeforeClusterItemRendered(Company company, MarkerOptions markerOptions) {
+//                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.hunting_target));
+                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(Utils.resizeBitmap(getActivity(), "hunting_target", 90, 90)));
+            }
+
+            @Override
+            protected void onBeforeClusterRendered(Cluster<Company> cluster, MarkerOptions markerOptions) {
+                super.onBeforeClusterRendered(cluster, markerOptions);
+//            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_hunt));
+            }
+
+            @Override
+            protected boolean shouldRenderAsCluster(Cluster cluster) {
+                // Always render clusters.
+                return cluster.getSize() > 1;
+            }
+        });
+
+        mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new MyCustomAdapterForItems());
+
+        mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<Company>() {
+            @Override
+            public boolean onClusterItemClick(Company item) {
+                clickedClusterItem = item;
+                return false;
+            }
+        });
+
+        mClusterManager.setOnClusterItemInfoWindowClickListener(new ClusterManager.OnClusterItemInfoWindowClickListener<Company>() {
+            @Override
+            public void onClusterItemInfoWindowClick(Company company) {
+                Intent intent = new Intent(getActivity(), DetailsActivity.class);
+                intent.putExtra("id", Long.toString(company.getId()));
+                startActivity(intent);
+            }
+        });
+
+        // Point the map's listeners at the listeners implemented by the cluster manager.
+        mMap.setOnCameraIdleListener(mClusterManager);
+        mMap.setOnMarkerClickListener(mClusterManager);
+
+        mClusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<Company>() {
+            @Override
+            public boolean onClusterClick(Cluster<Company> cluster) {
+                // Zoom in the cluster. Need to create LatLngBounds and including all the cluster items
+                // inside of bounds, then animate to center of the bounds.
+
+                // Create the builder to collect all essential cluster items for the bounds.
+                LatLngBounds.Builder builder = LatLngBounds.builder();
+                for (ClusterItem item : cluster.getItems()) {
+                    builder.include(item.getPosition());
+                }
+                // Get the LatLngBounds
+                final LatLngBounds bounds = builder.build();
+
+                // Animate camera to the bounds
+                try {
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return true;
+            }
+        });
+    }
+
+    public class MyCustomAdapterForItems implements GoogleMap.InfoWindowAdapter {
+        private final View contentView;
+
+        MyCustomAdapterForItems() {
+            contentView = getActivity().getLayoutInflater().inflate(R.layout.info_window, null);
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            return null;
+        }
+
+        @Override
+        public View getInfoWindow(Marker marker) {
+            TextView tv_id = ((TextView) contentView.findViewById(R.id.tv_id));
+            TextView tv_company_name = ((TextView) contentView.findViewById(R.id.tv_company_name));
+//            TextView tv_position = (TextView) contentView.findViewById(R.id.tv_position);
+            TextView tv_area = (TextView) contentView.findViewById(R.id.tv_area);
+            TextView tv_oblast = (TextView) contentView.findViewById(R.id.tv_oblast);
+
+            if (clickedClusterItem != null) {
+                tv_id.setText(Long.toString(clickedClusterItem.getId()));
+                tv_company_name.setText(clickedClusterItem.getName());
+//                tv_position.setText(clickedClusterItem.getLat() + ", " + clickedClusterItem.getLng());
+
+                if (clickedClusterItem.getArea() == null) {
+                    tv_area.setVisibility(View.GONE);
+                } else {
+                    tv_area.setText(clickedClusterItem.getArea() + " " + getString(R.string.kilo_ha));
+                    tv_area.setVisibility(View.VISIBLE);
+                }
+//                String oblastName = DbHelper.instance().findOblastById(clickedClusterItem.getOblastId().toString());
+//                tv_oblast.setText(oblastName);
+            }
+            return contentView;
+        }
+    }
+
 
 }
