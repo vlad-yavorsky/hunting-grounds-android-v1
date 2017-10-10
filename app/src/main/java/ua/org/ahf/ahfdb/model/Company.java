@@ -183,6 +183,10 @@ public class Company implements ClusterItem {
     public Integer isFavorite() {
         return favorite;
     }
+
+    public void setFavorite(Integer favorite) {
+        this.favorite = favorite;
+    }
 }
 
 

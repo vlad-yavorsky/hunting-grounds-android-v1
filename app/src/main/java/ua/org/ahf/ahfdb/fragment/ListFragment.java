@@ -23,11 +23,11 @@ import ua.org.ahf.ahfdb.helper.DbHelper;
 import ua.org.ahf.ahfdb.activity.DetailsActivity;
 import ua.org.ahf.ahfdb.R;
 
-public class CatalogFragment extends Fragment {
+public class ListFragment extends Fragment {
 
     private SimpleCursorAdapter simpleCursorAdapter = null;
 
-    public CatalogFragment() {
+    public ListFragment() {
         // Required empty public constructor
     }
 
@@ -40,7 +40,12 @@ public class CatalogFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((NavigationActivity) getActivity()).getSupportActionBar().setTitle(R.string.catalog);
+        Integer type = getArguments().getInt("type");
+        if (type == 1) {
+            ((NavigationActivity) getActivity()).getSupportActionBar().setTitle(R.string.catalog);
+        } else {
+            ((NavigationActivity) getActivity()).getSupportActionBar().setTitle(R.string.favorites);
+        }
     }
 
     @Override
@@ -66,9 +71,15 @@ public class CatalogFragment extends Fragment {
                 R.id.tv_short_info
         };
         String locale = getString(R.string.locale);
-        Cursor cursor = DbHelper.instance(getActivity()).findAll(locale);
-        simpleCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.listview_row, cursor, columns, resourceIds, 0);
+        Integer type = getArguments().getInt("type");
+        Cursor cursor = null;
+        if (type == 1) {
+            cursor = DbHelper.instance(getActivity()).findAll(locale);
+        } else {
+            cursor = DbHelper.instance(getActivity()).findFavorites(locale);
+        }
 
+        simpleCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.listview_row, cursor, columns, resourceIds, 0);
         simpleCursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {

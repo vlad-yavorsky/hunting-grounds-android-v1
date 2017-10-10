@@ -6,6 +6,7 @@
     <!-- Menu -->
     <string name="map">Map</string>
     <string name="catalog">Catalog</string>
+    <string name="favorites">Favorites</string>
     <string name="preferences">Preferences</string>
     <string name="search">Search</string>
     <string name="sort">Sort</string>
@@ -13,7 +14,8 @@
     <string name="sort_by_oblast">Sort by oblast</string>
     <string name="sort_by_area">Sort by area</string>
     <string name="sort_by_distance">Sort by distance</string>
-    <string name="action_favorite">Save to favorites</string>
+    <string name="add_to_favorites">Add to favorites</string>
+    <string name="delete_from_favorites">Delete from favorites</string>
 
     <!-- Other -->
     <string name="title_activity_maps">Map</string>
@@ -70,10 +72,12 @@
     <string-array name="home_screen_entries">
         <item>Map</item>
         <item>Catalog</item>
+        <item>Favorites</item>
     </string-array>
     <string-array name="home_screen_entry_values">
         <item>1</item>
         <item>2</item>
+        <item>3</item>
     </string-array>
     <string name="update">Update</string>
     <string name="update_database">Update Database</string>

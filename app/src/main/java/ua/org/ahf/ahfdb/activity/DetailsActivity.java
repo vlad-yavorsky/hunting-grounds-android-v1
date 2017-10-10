@@ -205,11 +205,14 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
                 return true;
             case R.id.action_favorite:
                 Integer newValue = (company.isFavorite() + 1) % 2;
+                company.setFavorite(newValue);
                 DbHelper.instance(this).setFavorite(company.getId().toString(), newValue.toString());
-                if (newValue == 0) {
+                if (company.isFavorite() == 0) {
                     item.setIcon(R.drawable.ic_favorite_border_black_24dp);
+                    item.setTitle(R.string.add_to_favorites);
                 } else {
                     item.setIcon(R.drawable.ic_favorite_black_24dp);
+                    item.setTitle(R.string.delete_from_favorites);
                 }
                 return true;
             default:

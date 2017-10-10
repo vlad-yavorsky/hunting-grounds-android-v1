@@ -6,6 +6,7 @@
     <!-- Menu -->
     <string name="map">Карта</string>
     <string name="catalog">Справочник</string>
+    <string name="favorites">Избранное</string>
     <string name="preferences">Настройки</string>
     <string name="search">Поиск</string>
     <string name="sort">Сортировать</string>
@@ -13,7 +14,8 @@
     <string name="sort_by_oblast">Сортировать по области</string>
     <string name="sort_by_area">Сортировать по площади</string>
     <string name="sort_by_distance">Сортировать по расстоянию</string>
-    <string name="action_favorite">Сохранить в закладки</string>
+    <string name="add_to_favorites">Добавить в избранное</string>
+    <string name="delete_from_favorites">Удалить из избранного</string>
 
     <!-- Other -->
     <string name="title_activity_maps">Карта</string>
@@ -70,6 +72,7 @@
     <string-array name="home_screen_entries">
         <item>Карта</item>
         <item>Справочник</item>
+        <item>Избранное</item>
     </string-array>
     <string name="update">Обновление</string>
     <string name="update_database">Обновить базу данных</string>

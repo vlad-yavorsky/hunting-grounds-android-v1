@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="ua.org.ahf.ahfdb.fragment.CatalogFragment">
+    tools:context="ua.org.ahf.ahfdb.fragment.ListFragment">
 
     <ListView
         android:id="@+id/lv_companies"

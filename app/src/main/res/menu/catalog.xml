@@ -34,12 +34,6 @@
                     android:orderInCategory="3"
                     app:showAsAction="never"
                     android:title="@string/sort_by_area"/>
-
-                <item
-                    android:id="@+id/sort_by_distance"
-                    android:orderInCategory="4"
-                    app:showAsAction="never"
-                    android:title="@string/sort_by_distance"/>
             </group>
         </menu>
     </item>

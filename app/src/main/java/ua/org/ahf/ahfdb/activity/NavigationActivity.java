@@ -17,14 +17,15 @@ import android.view.MenuItem;
 import ua.org.ahf.ahfdb.R;
 import ua.org.ahf.ahfdb.fragment.MapFragment;
 import ua.org.ahf.ahfdb.fragment.PreferencesFragment;
-import ua.org.ahf.ahfdb.fragment.CatalogFragment;
+import ua.org.ahf.ahfdb.fragment.ListFragment;
 import ua.org.ahf.ahfdb.helper.DbHelper;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private MapFragment mapFragment;
-    private CatalogFragment catalogFragment;
+    private ListFragment listFragment;
+    private ListFragment favoritesFragment;
     private PreferencesFragment preferencesFragment;
     private static String HOME_SCREEN = "home_screen";
     Fragment fragment = null;
@@ -51,21 +52,33 @@ public class NavigationActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        Bundle bundleList = new Bundle();
+        Bundle bundleFavorites = new Bundle();
+
+        bundleList.putInt("type", 1);
+        bundleFavorites.putInt("type", 2);
+
         mapFragment = new MapFragment();
-        catalogFragment = new CatalogFragment();
+        listFragment = new ListFragment();
+        favoritesFragment = new ListFragment();
         preferencesFragment = new PreferencesFragment();
+
+        listFragment.setArguments(bundleList);
+        favoritesFragment.setArguments(bundleFavorites);
 
         if (savedInstanceState == null) {
             // Set default fragment
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            String defaultScreen = sharedPreferences.getString(HOME_SCREEN, "2");
+            String defaultScreen = sharedPreferences.getString(HOME_SCREEN, "1");
             switch (defaultScreen) {
                 case "1" :
                     fragment = mapFragment;
                     break;
                 case "2" :
-                default:
-                    fragment = catalogFragment;
+                    fragment = listFragment;
+                    break;
+                case "3" :
+                    fragment = favoritesFragment;
                     break;
             }
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -119,10 +132,16 @@ public class NavigationActivity extends AppCompatActivity
 
         if (id == R.id.nav_map) {
             fragmentTransaction.replace(R.id.container, mapFragment);
+            fragment = mapFragment;
         } else if (id == R.id.nav_catalog) {
-            fragmentTransaction.replace(R.id.container, catalogFragment);
+            fragmentTransaction.replace(R.id.container, listFragment);
+            fragment = listFragment;
+        } else if (id == R.id.nav_favorites) {
+            fragmentTransaction.replace(R.id.container, favoritesFragment);
+            fragment = favoritesFragment;
         } else if (id == R.id.nav_settings) {
             fragmentTransaction.replace(R.id.container, preferencesFragment);
+            fragment = preferencesFragment;
         }
 
         fragmentTransaction.commit();
@@ -139,29 +158,21 @@ public class NavigationActivity extends AppCompatActivity
                 if (!item.isChecked()) {
                     item.setChecked(true);
                     DbHelper.setSortBy(DbHelper.DbSchema.CompanyTable.Column.NAME);
-                    ((CatalogFragment)fragment).reloadData();
+                    ((ListFragment)fragment).reloadData();
                 }
                 return true;
             case R.id.sort_by_oblast:
                 if (!item.isChecked()) {
                     item.setChecked(true);
                     DbHelper.setSortBy(DbHelper.DbSchema.CompanyTable.Column.OBLAST_ID);
-                    ((CatalogFragment)fragment).reloadData();
+                    ((ListFragment)fragment).reloadData();
                 }
                 return true;
             case R.id.sort_by_area:
                 if (!item.isChecked()) {
                     item.setChecked(true);
                     DbHelper.setSortBy(DbHelper.DbSchema.CompanyTable.Column.AREA);
-                    ((CatalogFragment)fragment).reloadData();
-                }
-                return true;
-            case R.id.sort_by_distance:
-                if (!item.isChecked()) {
-                    item.setChecked(true);
-                    // TODO: change after adding GPS support
-                    DbHelper.setSortBy(DbHelper.DbSchema.CompanyTable.Column.NAME);
-                    ((CatalogFragment)fragment).reloadData();
+                    ((ListFragment)fragment).reloadData();
                 }
                 return true;
             default:

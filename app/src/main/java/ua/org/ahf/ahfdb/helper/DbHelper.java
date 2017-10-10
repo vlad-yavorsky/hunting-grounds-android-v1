@@ -180,6 +180,16 @@ public class DbHelper {
         return cursor;
     }
 
+    // Used for favorites
+    public Cursor findFavorites(String locale) {
+        Cursor cursor = null;
+        String selection = DbSchema.CompanyTable.Column.FAVORITE + " = ? AND " + DbSchema.CompanyTable.Column.LOCALE + " = ?";
+        String[] selectionArgs = {"1", locale};
+        String orderBy = sortByColumnName  + " ASC";
+        cursor = mSQLiteDatabase.query(DbSchema.CompanyTable.NAME, null, selection, selectionArgs, null, null, orderBy);
+        return cursor;
+    }
+
     // Used for details page
     public Cursor findById(String id) {
         Cursor cursor = null;
