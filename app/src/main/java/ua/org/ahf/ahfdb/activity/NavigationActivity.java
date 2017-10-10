@@ -54,8 +54,8 @@ public class NavigationActivity extends AppCompatActivity
         Bundle bundleList = new Bundle();
         Bundle bundleFavorites = new Bundle();
 
-        bundleList.putInt("type", 1);
-        bundleFavorites.putInt("type", 2);
+        bundleList.putString("type", "all");
+        bundleFavorites.putString("type", "favorites");
 
         mapFragment = new MapFragment();
         listFragment = new ListFragment();

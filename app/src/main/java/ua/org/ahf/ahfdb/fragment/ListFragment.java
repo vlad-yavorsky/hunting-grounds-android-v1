@@ -70,13 +70,7 @@ public class ListFragment extends Fragment {
                 R.id.tv_short_info
         };
         String locale = getString(R.string.locale);
-        Integer type = getArguments().getInt("type");
-        Cursor cursor = null;
-        if (type == 1) {
-            cursor = DbHelper.instance(getActivity()).findAll(locale);
-        } else {
-            cursor = DbHelper.instance(getActivity()).findFavorites(locale);
-        }
+        Cursor cursor = DbHelper.instance(getActivity()).findAll(locale, getArguments().getString("type"));
 
         simpleCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.listview_row, cursor, columns, resourceIds, 0);
         simpleCursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
@@ -129,9 +123,9 @@ public class ListFragment extends Fragment {
             public Cursor runQuery(CharSequence constraint) {
                 String locale = getString(R.string.locale);
                 if (TextUtils.isEmpty(constraint)) {
-                    return DbHelper.instance(getActivity()).findAll(locale);
+                    return DbHelper.instance(getActivity()).findAll(locale, getArguments().getString("type"));
                 }
-                return DbHelper.instance(getActivity()).findByName(constraint.toString(), locale);
+                return DbHelper.instance(getActivity()).findByName(constraint.toString(), locale, getArguments().getString("type"));
             }
         };
         simpleCursorAdapter.setFilterQueryProvider(provider);
@@ -142,11 +136,7 @@ public class ListFragment extends Fragment {
     public void reloadData() {
         Cursor cursor = null;
         String locale = getString(R.string.locale);
-        if (getArguments().getInt("type") == 1) {
-            cursor = DbHelper.instance(getActivity()).findAll(locale);
-        } else {
-            cursor = DbHelper.instance(getActivity()).findFavorites(locale);
-        }
+        cursor = DbHelper.instance(getActivity()).findAll(locale, getArguments().getString("type"));
         simpleCursorAdapter.changeCursor(cursor);
     }
 

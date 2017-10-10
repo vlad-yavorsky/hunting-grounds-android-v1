@@ -171,20 +171,13 @@ public class DbHelper {
     }
 
     // Used for list
-    public Cursor findAll(String locale) {
+    public Cursor findAll(String locale, String type) {
         Cursor cursor = null;
         String selection = DbSchema.CompanyTable.Column.LOCALE + " = ?";
+        if(type == "favorites") {
+            selection += " AND " + DbSchema.CompanyTable.Column.FAVORITE + " = 1";
+        }
         String[] selectionArgs = {locale};
-        String orderBy = sortByColumnName  + " ASC";
-        cursor = mSQLiteDatabase.query(DbSchema.CompanyTable.NAME, null, selection, selectionArgs, null, null, orderBy);
-        return cursor;
-    }
-
-    // Used for favorites
-    public Cursor findFavorites(String locale) {
-        Cursor cursor = null;
-        String selection = DbSchema.CompanyTable.Column.FAVORITE + " = ? AND " + DbSchema.CompanyTable.Column.LOCALE + " = ?";
-        String[] selectionArgs = {"1", locale};
         String orderBy = sortByColumnName  + " ASC";
         cursor = mSQLiteDatabase.query(DbSchema.CompanyTable.NAME, null, selection, selectionArgs, null, null, orderBy);
         return cursor;
@@ -200,9 +193,12 @@ public class DbHelper {
     }
 
     // Used for search page
-    public Cursor findByName(String name, String locale) {
+    public Cursor findByName(String name, String locale, String type) {
         Cursor cursor = null;
         String selection = DbSchema.CompanyTable.Column.NAME_LOWERCASE + " LIKE '%" + name.toLowerCase() + "%' AND " + DbSchema.CompanyTable.Column.LOCALE + " = ?";
+        if(type == "favorites") {
+            selection += " AND " + DbSchema.CompanyTable.Column.FAVORITE + " = 1";
+        }
         String[] selectionArgs = {locale};
         String orderBy = DbSchema.CompanyTable.Column.NAME_LOWERCASE;
         cursor = mSQLiteDatabase.query(DbSchema.CompanyTable.NAME, null, selection, selectionArgs, null, null, orderBy);

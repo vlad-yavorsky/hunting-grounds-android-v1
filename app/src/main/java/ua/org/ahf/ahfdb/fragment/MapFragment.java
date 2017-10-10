@@ -119,7 +119,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void addMarkers() {
 //        int companyType = getIntent().getIntExtra("COMPANY_TYPE", 1);
         String locale = getString(R.string.locale);
-        Cursor cursor = DbHelper.instance(getActivity()).findAll(locale);
+        Cursor cursor = DbHelper.instance(getActivity()).findAll(locale, "all");
 
         if (cursor.moveToFirst()) {
             int id = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.ID);
