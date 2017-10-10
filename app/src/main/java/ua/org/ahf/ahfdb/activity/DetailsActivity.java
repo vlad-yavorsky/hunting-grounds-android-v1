@@ -63,7 +63,7 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
             }
         });
         mMap.addMarker(new MarkerOptions().position(company.getPosition())
-                .icon(BitmapDescriptorFactory.fromBitmap(Utils.resizeBitmap(getBaseContext(), "hunting_target", 90, 90))));
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.hunting_target)));
 
         float zoomLevel = 10.0f;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(company.getPosition(), zoomLevel));

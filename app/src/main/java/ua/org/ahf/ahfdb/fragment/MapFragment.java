@@ -161,8 +161,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mClusterManager.setRenderer(new DefaultClusterRenderer<Company>(getActivity(), mMap, mClusterManager) {
             @Override
             protected void onBeforeClusterItemRendered(Company company, MarkerOptions markerOptions) {
-//                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.hunting_target));
-                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(Utils.resizeBitmap(getActivity(), "hunting_target", 90, 90)));
+                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.hunting_target));
             }
 
             @Override
