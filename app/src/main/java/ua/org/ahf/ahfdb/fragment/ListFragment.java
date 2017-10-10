@@ -40,8 +40,7 @@ public class ListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Integer type = getArguments().getInt("type");
-        if (type == 1) {
+        if (getArguments().getInt("type") == 1) {
             ((NavigationActivity) getActivity()).getSupportActionBar().setTitle(R.string.catalog);
         } else {
             ((NavigationActivity) getActivity()).getSupportActionBar().setTitle(R.string.favorites);
@@ -141,8 +140,13 @@ public class ListFragment extends Fragment {
     }
 
     public void reloadData() {
+        Cursor cursor = null;
         String locale = getString(R.string.locale);
-        Cursor cursor = DbHelper.instance(getActivity()).findAll(locale);
+        if (getArguments().getInt("type") == 1) {
+            cursor = DbHelper.instance(getActivity()).findAll(locale);
+        } else {
+            cursor = DbHelper.instance(getActivity()).findFavorites(locale);
+        }
         simpleCursorAdapter.changeCursor(cursor);
     }
 
