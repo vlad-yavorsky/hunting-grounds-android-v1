@@ -27,7 +27,6 @@ public class NavigationActivity extends AppCompatActivity
     private ListFragment listFragment;
     private ListFragment favoritesFragment;
     private PreferencesFragment preferencesFragment;
-    private static String HOME_SCREEN = "home_screen";
     Fragment fragment = null;
 
     @Override
@@ -36,7 +35,7 @@ public class NavigationActivity extends AppCompatActivity
         setContentView(R.layout.activity_navigation);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        if (preferences.getBoolean(getString(R.string.first_run), true)) {
+        if (preferences.getBoolean(getString(R.string.key_first_run), true)) {
             startActivityForResult(new Intent(this, UpdateActivity.class), 1);
         }
 
@@ -69,15 +68,15 @@ public class NavigationActivity extends AppCompatActivity
         if (savedInstanceState == null) {
             // Set default fragment
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            String defaultScreen = sharedPreferences.getString(HOME_SCREEN, "1");
-            switch (defaultScreen) {
-                case "1" :
+            int homeScreen = sharedPreferences.getInt(getString(R.string.key_home_screen), 1);
+            switch (homeScreen) {
+                case 1 :
                     fragment = mapFragment;
                     break;
-                case "2" :
+                case 2 :
                     fragment = listFragment;
                     break;
-                case "3" :
+                case 3 :
                     fragment = favoritesFragment;
                     break;
             }
@@ -96,7 +95,7 @@ public class NavigationActivity extends AppCompatActivity
                 if(result) {
                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
                     SharedPreferences.Editor edit = preferences.edit();
-                    edit.putBoolean(getString(R.string.first_run), false);
+                    edit.putBoolean(getString(R.string.key_first_run), false);
                     edit.apply();
                     // Reload fragment after database update
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -154,6 +153,30 @@ public class NavigationActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.map_type_normal:
+                if (!item.isChecked()) {
+                    item.setChecked(true);
+                    ((MapFragment)fragment).setMapType(1);
+                }
+                return true;
+            case R.id.map_type_satellite:
+                if (!item.isChecked()) {
+                    item.setChecked(true);
+                    ((MapFragment)fragment).setMapType(2);
+                }
+                return true;
+            case R.id.map_type_hybrid:
+                if (!item.isChecked()) {
+                    item.setChecked(true);
+                    ((MapFragment)fragment).setMapType(3);
+                }
+                return true;
+            case R.id.map_type_terrain:
+                if (!item.isChecked()) {
+                    item.setChecked(true);
+                    ((MapFragment)fragment).setMapType(4);
+                }
+                return true;
             case R.id.sort_by_name:
                 if (!item.isChecked()) {
                     item.setChecked(true);

@@ -2,9 +2,13 @@ package ua.org.ahf.ahfdb.fragment;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -37,6 +41,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     private ClusterManager<Company> mClusterManager;
     private Company clickedClusterItem;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,6 +85,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         LatLng ukraine = new LatLng(49.463006, 31.201909);
         float zoomLevel = 6.0f;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ukraine, zoomLevel));
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        setMapType(preferences.getInt(getString(R.string.key_map_type), 1));
     }
 
     @Override
@@ -252,4 +265,31 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.map, menu);
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    public void setMapType(int type) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences.Editor edit = preferences.edit();
+        edit.putInt(getString(R.string.key_map_type), type);
+        edit.apply();
+        switch (type) {
+            case 1:
+                mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                return;
+            case 2:
+                mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                return;
+            case 3:
+                mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+                return;
+            case 4:
+                mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+                return;
+        }
+    }
 }
