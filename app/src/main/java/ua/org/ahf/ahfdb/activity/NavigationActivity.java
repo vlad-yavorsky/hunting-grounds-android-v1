@@ -68,15 +68,15 @@ public class NavigationActivity extends AppCompatActivity
         if (savedInstanceState == null) {
             // Set default fragment
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            int homeScreen = sharedPreferences.getInt(getString(R.string.key_home_screen), 1);
+            String homeScreen = sharedPreferences.getString(getString(R.string.key_home_screen), "1");
             switch (homeScreen) {
-                case 1 :
+                case "1" :
                     fragment = mapFragment;
                     break;
-                case 2 :
+                case "2" :
                     fragment = listFragment;
                     break;
-                case 3 :
+                case "3" :
                     fragment = favoritesFragment;
                     break;
             }

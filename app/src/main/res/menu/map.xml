@@ -12,7 +12,6 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/map_type_normal"
-                    android:checked="true"
                     android:orderInCategory="1"
                     app:showAsAction="never"
                     android:title="@string/map_type_normal"/>
