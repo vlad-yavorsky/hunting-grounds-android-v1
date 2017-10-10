@@ -229,9 +229,9 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
         getMenuInflater().inflate(R.menu.details, menu);
         MenuItem item = menu.findItem(R.id.action_favorite);
         if (company.isFavorite() == 1) {
-            item.setIcon(R.drawable.ic_favorite_black_24dp);
+            item.setIcon(R.drawable.ic_favorite_white_24dp);
         } else {
-            item.setIcon(R.drawable.ic_favorite_border_black_24dp);
+            item.setIcon(R.drawable.ic_unfavorite_white_24dp);
         }
         return true;
     }
@@ -248,10 +248,10 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
                 company.setFavorite(newValue);
                 DbHelper.instance(this).setFavorite(company.getId().toString(), newValue.toString());
                 if (company.isFavorite() == 0) {
-                    item.setIcon(R.drawable.ic_favorite_border_black_24dp);
+                    item.setIcon(R.drawable.ic_unfavorite_white_24dp);
                     item.setTitle(R.string.add_to_favorites);
                 } else {
-                    item.setIcon(R.drawable.ic_favorite_black_24dp);
+                    item.setIcon(R.drawable.ic_favorite_white_24dp);
                     item.setTitle(R.string.delete_from_favorites);
                 }
                 return true;

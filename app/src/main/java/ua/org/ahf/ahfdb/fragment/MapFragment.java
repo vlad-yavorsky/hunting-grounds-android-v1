@@ -33,7 +33,6 @@ import ua.org.ahf.ahfdb.activity.DetailsActivity;
 import ua.org.ahf.ahfdb.activity.NavigationActivity;
 import ua.org.ahf.ahfdb.helper.DbHelper;
 import ua.org.ahf.ahfdb.helper.DbSchema;
-import ua.org.ahf.ahfdb.helper.Utils;
 import ua.org.ahf.ahfdb.model.Company;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
@@ -118,7 +117,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
     private void addMarkers() {
-//        int companyType = getIntent().getIntExtra("COMPANY_TYPE", 1);
         String locale = getString(R.string.locale);
         Cursor cursor = DbHelper.instance(getActivity()).findAll(locale, "all");
 
@@ -167,7 +165,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             protected void onBeforeClusterRendered(Cluster<Company> cluster, MarkerOptions markerOptions) {
                 super.onBeforeClusterRendered(cluster, markerOptions);
-//            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_hunt));
+//            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.hunting_target));
             }
 
             @Override
@@ -268,6 +266,24 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.map, menu);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        int type = preferences.getInt(getString(R.string.key_map_type), 1);
+
+        switch (type) {
+            case 1:
+                menu.findItem(R.id.map_type_normal).setChecked(true);
+                break;
+            case 2:
+                menu.findItem(R.id.map_type_satellite).setChecked(true);
+                break;
+            case 3:
+                menu.findItem(R.id.map_type_hybrid).setChecked(true);
+                break;
+            case 4:
+                menu.findItem(R.id.map_type_terrain).setChecked(true);
+                break;
+        }
 
         super.onCreateOptionsMenu(menu, inflater);
     }
