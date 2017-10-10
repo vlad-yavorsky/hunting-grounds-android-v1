@@ -1,7 +1,7 @@
 <resources>
     <!-- Global -->
     <string name="locale">ru_RU</string>
-    <string name="app_name">Охотничьи и Рыболовные Хозяйства</string>
+    <string name="app_name">Охотничьи Хозяйства</string>
 
     <!-- Menu -->
     <string name="map">Карта</string>

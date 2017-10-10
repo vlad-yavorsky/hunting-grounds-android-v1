@@ -22,6 +22,7 @@ import ua.org.ahf.ahfdb.activity.NavigationActivity;
 import ua.org.ahf.ahfdb.helper.DbHelper;
 import ua.org.ahf.ahfdb.activity.DetailsActivity;
 import ua.org.ahf.ahfdb.R;
+import ua.org.ahf.ahfdb.helper.DbSchema;
 
 public class ListFragment extends Fragment {
 
@@ -40,10 +41,11 @@ public class ListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (getArguments().getInt("type") == 1) {
+        if (getArguments().getString("type") == "all") {
             ((NavigationActivity) getActivity()).getSupportActionBar().setTitle(R.string.catalog);
         } else {
             ((NavigationActivity) getActivity()).getSupportActionBar().setTitle(R.string.favorites);
+            reloadData();
         }
     }
 
@@ -56,11 +58,11 @@ public class ListFragment extends Fragment {
         ListView listView = (ListView) view.findViewById(R.id.lv_companies);
 
         String[] columns = {
-                DbHelper.DbSchema.CompanyTable.Column.ID,
-                DbHelper.DbSchema.CompanyTable.Column.NAME,
-                DbHelper.DbSchema.CompanyTable.Column.OBLAST_ID,
-                DbHelper.DbSchema.CompanyTable.Column.IS_MEMBER,
-                DbHelper.DbSchema.CompanyTable.Column.AREA
+                DbSchema.CompanyTable.Column.ID,
+                DbSchema.CompanyTable.Column.NAME,
+                DbSchema.CompanyTable.Column.OBLAST_ID,
+                DbSchema.CompanyTable.Column.IS_MEMBER,
+                DbSchema.CompanyTable.Column.AREA
         };
         int[] resourceIds = {
                 R.id.tv_id,

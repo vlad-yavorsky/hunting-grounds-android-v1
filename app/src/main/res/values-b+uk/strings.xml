@@ -1,7 +1,7 @@
 <resources>
     <!-- Global -->
     <string name="locale">uk_UA</string>
-    <string name="app_name">Мисливські та Рибальські Господарства</string>
+    <string name="app_name">Мисливські Господарства</string>
 
     <!-- Menu -->
     <string name="map">Карта</string>

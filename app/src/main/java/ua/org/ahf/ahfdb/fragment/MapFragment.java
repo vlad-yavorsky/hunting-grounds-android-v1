@@ -32,6 +32,7 @@ import ua.org.ahf.ahfdb.R;
 import ua.org.ahf.ahfdb.activity.DetailsActivity;
 import ua.org.ahf.ahfdb.activity.NavigationActivity;
 import ua.org.ahf.ahfdb.helper.DbHelper;
+import ua.org.ahf.ahfdb.helper.DbSchema;
 import ua.org.ahf.ahfdb.helper.Utils;
 import ua.org.ahf.ahfdb.model.Company;
 
@@ -122,15 +123,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         Cursor cursor = DbHelper.instance(getActivity()).findAll(locale, "all");
 
         if (cursor.moveToFirst()) {
-            int id = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.ID);
-            int isMember = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.IS_MEMBER);
-            int isHuntingGround = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.IS_HUNTING_GROUND);
-            int isFishingGround = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.IS_FISHING_GROUND);
-            int isPondFarm = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.IS_POND_FARM);
-            int lat = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.LAT);
-            int lng = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.LNG);
-            int name = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.NAME);
-            int area = cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.AREA);
+            int id = cursor.getColumnIndex(DbSchema.CompanyTable.Column.ID);
+            int isMember = cursor.getColumnIndex(DbSchema.CompanyTable.Column.IS_MEMBER);
+            int isHuntingGround = cursor.getColumnIndex(DbSchema.CompanyTable.Column.IS_HUNTING_GROUND);
+            int isFishingGround = cursor.getColumnIndex(DbSchema.CompanyTable.Column.IS_FISHING_GROUND);
+            int isPondFarm = cursor.getColumnIndex(DbSchema.CompanyTable.Column.IS_POND_FARM);
+            int lat = cursor.getColumnIndex(DbSchema.CompanyTable.Column.LAT);
+            int lng = cursor.getColumnIndex(DbSchema.CompanyTable.Column.LNG);
+            int name = cursor.getColumnIndex(DbSchema.CompanyTable.Column.NAME);
+            int area = cursor.getColumnIndex(DbSchema.CompanyTable.Column.AREA);
 
             do {
                 if(cursor.isNull(lat) || cursor.isNull(lng)) {

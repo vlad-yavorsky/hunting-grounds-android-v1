@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import ua.org.ahf.ahfdb.R;
 import ua.org.ahf.ahfdb.helper.DbHelper;
+import ua.org.ahf.ahfdb.helper.DbSchema;
 import ua.org.ahf.ahfdb.helper.Utils;
 import ua.org.ahf.ahfdb.model.Company;
 
@@ -49,6 +50,9 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        if(company.getPosition() == null) {
+            return;
+        }
         mMap = googleMap;
         mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -71,33 +75,64 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
         String id = intent.getStringExtra("id");
         Cursor cursor = DbHelper.instance(this).findById(id);
 
-        if (cursor.moveToFirst()) {
-//            Integer id = cursor.getInt(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.ID));
-            Integer isMember = cursor.getInt(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.IS_MEMBER));
-            Integer isHuntingGround = cursor.getInt(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.IS_HUNTING_GROUND));
-            Integer isFishingGround = cursor.getInt(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.IS_FISHING_GROUND));
-            Integer isPondFarm = cursor.getInt(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.IS_POND_FARM));
-            Double lat = cursor.getDouble(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.LAT));
-            Double lng = cursor.getDouble(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.LNG));
-            String name = cursor.getString(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.NAME));
-            String description = cursor.getString(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.DESCRIPTION));
-            Double area = cursor.getDouble(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.AREA));
-            String website  = cursor.getString(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.WEBSITE));
-            String email  = cursor.getString(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.EMAIL));
-            String juridicalAddress  = cursor.getString(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.JURIDICAL_ADDRESS));
-            String actualAddress  = cursor.getString(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.ACTUAL_ADDRESS));
-            String director  = cursor.getString(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.DIRECTOR));
-            Integer isEnabled = cursor.getInt(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.IS_ENABLED));
-            Integer oblastId = cursor.getInt(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.OBLAST_ID));
-            String locale = cursor.getString(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.LOCALE));
-            String phone1  = cursor.getString(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.PHONE_1));
-            String phone2  = cursor.getString(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.PHONE_2));
-            String phone3  = cursor.getString(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.PHONE_3));
-            Integer favorite  = cursor.getInt(cursor.getColumnIndex(DbHelper.DbSchema.CompanyTable.Column.FAVORITE));
+        int isMember = cursor.getColumnIndex(DbSchema.CompanyTable.Column.IS_MEMBER);
+        int isHuntingGround = cursor.getColumnIndex(DbSchema.CompanyTable.Column.IS_HUNTING_GROUND);
+        int isFishingGround = cursor.getColumnIndex(DbSchema.CompanyTable.Column.IS_FISHING_GROUND);
+        int isPondFarm = cursor.getColumnIndex(DbSchema.CompanyTable.Column.IS_POND_FARM);
+        int lat = cursor.getColumnIndex(DbSchema.CompanyTable.Column.LAT);
+        int lng = cursor.getColumnIndex(DbSchema.CompanyTable.Column.LNG);
+        int name = cursor.getColumnIndex(DbSchema.CompanyTable.Column.NAME);
+        int description = cursor.getColumnIndex(DbSchema.CompanyTable.Column.DESCRIPTION);
+        int area = cursor.getColumnIndex(DbSchema.CompanyTable.Column.AREA);
+        int website  = cursor.getColumnIndex(DbSchema.CompanyTable.Column.WEBSITE);
+        int email  = cursor.getColumnIndex(DbSchema.CompanyTable.Column.EMAIL);
+        int juridicalAddress  = cursor.getColumnIndex(DbSchema.CompanyTable.Column.JURIDICAL_ADDRESS);
+        int actualAddress  = cursor.getColumnIndex(DbSchema.CompanyTable.Column.ACTUAL_ADDRESS);
+        int director  = cursor.getColumnIndex(DbSchema.CompanyTable.Column.DIRECTOR);
+        int isEnabled = cursor.getColumnIndex(DbSchema.CompanyTable.Column.IS_ENABLED);
+        int oblastId = cursor.getColumnIndex(DbSchema.CompanyTable.Column.OBLAST_ID);
+        int locale = cursor.getColumnIndex(DbSchema.CompanyTable.Column.LOCALE);
+        int phone1  = cursor.getColumnIndex(DbSchema.CompanyTable.Column.PHONE_1);
+        int phone2  = cursor.getColumnIndex(DbSchema.CompanyTable.Column.PHONE_2);
+        int phone3  = cursor.getColumnIndex(DbSchema.CompanyTable.Column.PHONE_3);
+        int favorite  = cursor.getColumnIndex(DbSchema.CompanyTable.Column.FAVORITE);
 
-            company = new Company(Long.parseLong(id), isMember, isHuntingGround, isFishingGround,
-                    isPondFarm, area, lat, lng, name, description, website, email, juridicalAddress,
-                    actualAddress, director, isEnabled, oblastId, locale, phone1, phone2, phone3, favorite);
+        if (cursor.moveToFirst()) {
+            Integer isMemberValue = cursor.getInt(isMember);
+            Integer isHuntingGroundValue = cursor.getInt(isHuntingGround);
+            Integer isFishingGroundValue = cursor.getInt(isFishingGround);
+            Integer isPondFarmValue = cursor.getInt(isPondFarm);
+            Double latValue = null;
+            Double lngValue = null;
+            String nameValue = cursor.getString(name);
+            String descriptionValue = cursor.getString(description);
+            Double areaValue = null;
+            String websiteValue  = cursor.getString(website);
+            String emailValue  = cursor.getString(email);
+            String juridicalAddressValue  = cursor.getString(juridicalAddress);
+            String actualAddressValue  = cursor.getString(actualAddress);
+            String directorValue  = cursor.getString(director);
+            Integer isEnabledValue = cursor.getInt(isEnabled);
+            Integer oblastIdValue = cursor.getInt(oblastId);
+            String localeValue = cursor.getString(locale);
+            String phone1Value  = cursor.getString(phone1);
+            String phone2Value  = cursor.getString(phone2);
+            String phone3Value  = cursor.getString(phone3);
+            Integer favoriteValue  = cursor.getInt(favorite);
+
+            if(!cursor.isNull(area)) {
+                areaValue = cursor.getDouble(area);
+            }
+            if(!cursor.isNull(lat) && !cursor.isNull(lng)) {
+                latValue = cursor.getDouble(lat);
+                lngValue = cursor.getDouble(lng);
+            }
+
+            company = new Company(Long.parseLong(id), isMemberValue, isHuntingGroundValue,
+                    isFishingGroundValue, isPondFarmValue, areaValue, latValue, lngValue, nameValue,
+                    descriptionValue, websiteValue, emailValue, juridicalAddressValue,
+                    actualAddressValue, directorValue, isEnabledValue, oblastIdValue, localeValue,
+                    phone1Value, phone2Value, phone3Value, favoriteValue);
         }
     }
 
@@ -174,6 +209,11 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
         } else {
             ((TextView)findViewById(R.id.tv_director)).setText(getString(R.string.director) + " " + company.getDirector());
             showContactsHeader = true;
+        }
+
+        if (company.getPosition() == null) {
+            findViewById(R.id.tv_map).setVisibility(View.GONE);
+            findViewById(R.id.static_map).setVisibility(View.GONE);
         }
 
         if(!showContactsHeader) {

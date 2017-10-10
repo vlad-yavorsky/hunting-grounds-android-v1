@@ -1,7 +1,7 @@
 <resources>
     <!-- Global -->
     <string name="locale">en_GB</string>
-    <string name="app_name">Hunting and Fishing Grounds</string>
+    <string name="app_name">Hunting Grounds</string>
 
     <!-- Menu -->
     <string name="map">Map</string>

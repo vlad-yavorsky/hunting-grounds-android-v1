@@ -19,6 +19,7 @@ import ua.org.ahf.ahfdb.fragment.MapFragment;
 import ua.org.ahf.ahfdb.fragment.PreferencesFragment;
 import ua.org.ahf.ahfdb.fragment.ListFragment;
 import ua.org.ahf.ahfdb.helper.DbHelper;
+import ua.org.ahf.ahfdb.helper.DbSchema;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -180,21 +181,21 @@ public class NavigationActivity extends AppCompatActivity
             case R.id.sort_by_name:
                 if (!item.isChecked()) {
                     item.setChecked(true);
-                    DbHelper.setSortBy(DbHelper.DbSchema.CompanyTable.Column.NAME);
+                    DbHelper.setSortBy(DbSchema.CompanyTable.Column.NAME);
                     ((ListFragment)fragment).reloadData();
                 }
                 return true;
             case R.id.sort_by_oblast:
                 if (!item.isChecked()) {
                     item.setChecked(true);
-                    DbHelper.setSortBy(DbHelper.DbSchema.CompanyTable.Column.OBLAST_ID);
+                    DbHelper.setSortBy(DbSchema.CompanyTable.Column.OBLAST_ID);
                     ((ListFragment)fragment).reloadData();
                 }
                 return true;
             case R.id.sort_by_area:
                 if (!item.isChecked()) {
                     item.setChecked(true);
-                    DbHelper.setSortBy(DbHelper.DbSchema.CompanyTable.Column.AREA);
+                    DbHelper.setSortBy(DbSchema.CompanyTable.Column.AREA);
                     ((ListFragment)fragment).reloadData();
                 }
                 return true;
