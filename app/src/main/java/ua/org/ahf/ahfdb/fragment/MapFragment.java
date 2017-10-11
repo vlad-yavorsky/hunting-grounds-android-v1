@@ -160,6 +160,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             protected void onBeforeClusterItemRendered(Company company, MarkerOptions markerOptions) {
                 markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.hunting_target));
+                // centering marker
+                markerOptions.anchor(0.5f, 0.5f);
             }
 
             @Override
