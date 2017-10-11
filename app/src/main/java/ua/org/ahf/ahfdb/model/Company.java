@@ -1,7 +1,14 @@
 package ua.org.ahf.ahfdb.model;
 
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
+
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.maps.android.clustering.ClusterItem;
+
+import ua.org.ahf.ahfdb.R;
 
 public class Company implements ClusterItem {
 
@@ -11,7 +18,7 @@ public class Company implements ClusterItem {
     private Integer isFishingGround;
     private Integer isPondFarm;
     private Double area;
-    private LatLng position;
+    private LatLng position = null;
     private String name;
     private String description;
     private String website;
@@ -26,13 +33,18 @@ public class Company implements ClusterItem {
     private String phone2;
     private String phone3;
     private Integer favorite;
+    private String territoryCoords;
+    private PolygonOptions polygonOptions = null;
+    private Polygon polygon = null;
 //    private String logo;
 //    private String[] oblast;
 //    private String[] raion;
 //    private String[] gallery;
+    private Context context;
 
-    public Company(Long id, Integer isMember, Integer isHuntingGround, Integer isFishingGround,
-                   Integer isPondFarm, Double lat, Double lng, String name, Double area) {
+    public Company(Context context, Long id, Integer isMember, Integer isHuntingGround, Integer isFishingGround,
+                   Integer isPondFarm, Double lat, Double lng, String name, Double area, String territoryCoords) {
+        this.context = context;
         this.id = id;
         this.isMember = isMember;
         this.isHuntingGround = isHuntingGround;
@@ -41,13 +53,16 @@ public class Company implements ClusterItem {
         setPosition(lat, lng);
         this.name = name;
         this.area = area;
+        setTerritoryCoords(territoryCoords);
     }
 
-    public Company(Long id, Integer isMember, Integer isHuntingGround, Integer isFishingGround,
+    public Company(Context context, Long id, Integer isMember, Integer isHuntingGround, Integer isFishingGround,
                    Integer isPondFarm, Double area, Double lat, Double lng, String name,
                    String description, String website, String email, String juridicalAddress,
                    String actualAddress, String director, Integer isEnabled, Integer oblastId,
-                   String locale, String phone1, String phone2, String phone3, Integer favorite) {
+                   String locale, String phone1, String phone2, String phone3, Integer favorite,
+                   String territoryCoords) {
+        this.context = context;
         this.id = id;
         this.isMember = isMember;
         this.isHuntingGround = isHuntingGround;
@@ -69,11 +84,13 @@ public class Company implements ClusterItem {
         this.phone2 = phone2;
         this.phone3 = phone3;
         this.favorite = favorite;
+        setTerritoryCoords(territoryCoords);
     }
 
     public Long getId() {
         return id;
     }
+
     public void setId(long id) {
         this.id = id;
     }
@@ -102,10 +119,9 @@ public class Company implements ClusterItem {
     public LatLng getPosition() {
         return position;
     }
+
     public void setPosition(Double lat, Double lng) {
-        if(lat == null || lng == null) {
-            this.position = null;
-        } else {
+        if(lat != null && lng != null) {
             this.position = new LatLng(lat, lng);
         }
     }
@@ -186,6 +202,52 @@ public class Company implements ClusterItem {
 
     public void setFavorite(Integer favorite) {
         this.favorite = favorite;
+    }
+
+    public String getTerritoryCoords() {
+        return territoryCoords;
+    }
+
+    public PolygonOptions getPolygonOptions() {
+        return polygonOptions;
+    }
+
+    public void setTerritoryCoords(String territoryCoords) {
+        this.territoryCoords = territoryCoords;
+        if(territoryCoords == null) {
+            return;
+        }
+
+        String[] allLatLng = territoryCoords.split(" ");
+        polygonOptions = new PolygonOptions();
+
+        for (int i = 0; i < allLatLng.length; i++) {
+            String[] latLng = allLatLng[i].split(",");
+            polygonOptions.add(new LatLng(Double.parseDouble(latLng[1]), Double.parseDouble(latLng[0])));
+            System.out.println("coords:" + latLng[1] + " " + latLng[0]);
+        }
+        polygonOptions.strokeWidth(2.0f);
+    }
+
+    public void setPolygon(Polygon polygon) {
+        this.polygon = polygon;
+        setPolygonColor("deselected");
+    }
+
+    public void setPolygonColor(String type) {
+        if(polygon == null) {
+            return;
+        }
+        switch (type) {
+            case "selected":
+                polygon.setStrokeColor(ContextCompat.getColor(context, R.color.selectedPolygonStrokeColor));
+                polygon.setFillColor(ContextCompat.getColor(context, R.color.selectedPolygonFillColor));
+                return;
+            case "deselected":
+            default:
+                polygon.setStrokeColor(ContextCompat.getColor(context, R.color.deselectedPolygonStrokeColor));
+                polygon.setFillColor(ContextCompat.getColor(context, R.color.deselectedPolygonFillColor));
+        }
     }
 }
 

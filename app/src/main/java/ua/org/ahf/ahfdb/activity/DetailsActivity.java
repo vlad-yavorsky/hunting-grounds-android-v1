@@ -65,6 +65,9 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
         mMap.addMarker(new MarkerOptions().position(company.getPosition())
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.hunting_target))
                 .anchor(0.5f, 0.5f));
+        if(company.getPolygonOptions() != null) {
+            company.setPolygon(mMap.addPolygon(company.getPolygonOptions()));
+        }
 
         float zoomLevel = 10.0f;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(company.getPosition(), zoomLevel));
@@ -97,6 +100,7 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
         int phone2  = cursor.getColumnIndex(DbSchema.CompanyTable.Column.PHONE_2);
         int phone3  = cursor.getColumnIndex(DbSchema.CompanyTable.Column.PHONE_3);
         int favorite  = cursor.getColumnIndex(DbSchema.CompanyTable.Column.FAVORITE);
+        int territoryCoords  = cursor.getColumnIndex(DbSchema.CompanyTable.Column.TERRITORY_COORDS);
 
         if (cursor.moveToFirst()) {
             Integer isMemberValue = cursor.getInt(isMember);
@@ -120,6 +124,7 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
             String phone2Value  = cursor.getString(phone2);
             String phone3Value  = cursor.getString(phone3);
             Integer favoriteValue  = cursor.getInt(favorite);
+            String territoryCoordsValue  = cursor.getString(territoryCoords);
 
             if(!cursor.isNull(area)) {
                 areaValue = cursor.getDouble(area);
@@ -129,11 +134,11 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
                 lngValue = cursor.getDouble(lng);
             }
 
-            company = new Company(Long.parseLong(id), isMemberValue, isHuntingGroundValue,
+            company = new Company(this, Long.parseLong(id), isMemberValue, isHuntingGroundValue,
                     isFishingGroundValue, isPondFarmValue, areaValue, latValue, lngValue, nameValue,
                     descriptionValue, websiteValue, emailValue, juridicalAddressValue,
                     actualAddressValue, directorValue, isEnabledValue, oblastIdValue, localeValue,
-                    phone1Value, phone2Value, phone3Value, favoriteValue);
+                    phone1Value, phone2Value, phone3Value, favoriteValue, territoryCoordsValue);
         }
     }
 

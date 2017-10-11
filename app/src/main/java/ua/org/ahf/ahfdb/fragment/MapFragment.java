@@ -40,7 +40,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     MapView mMapView;
     private GoogleMap mMap;
     private ClusterManager<Company> mClusterManager;
-    private Company clickedClusterItem;
+    private Company clickedItem;
+    private Company previouslyClickedItem = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -130,6 +131,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             int lng = cursor.getColumnIndex(DbSchema.CompanyTable.Column.LNG);
             int name = cursor.getColumnIndex(DbSchema.CompanyTable.Column.NAME);
             int area = cursor.getColumnIndex(DbSchema.CompanyTable.Column.AREA);
+            int territoryCoords = cursor.getColumnIndex(DbSchema.CompanyTable.Column.TERRITORY_COORDS);
 
             do {
                 if(cursor.isNull(lat) || cursor.isNull(lng)) {
@@ -140,13 +142,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 if(!cursor.isNull(area)) {
                     areaValue = cursor.getDouble(area);
                 }
-                Company item = new Company(cursor.getLong(id), cursor.getInt(isMember),
+
+                String territoryCoordsValue = null;
+                if(!cursor.isNull(territoryCoords)) {
+                    territoryCoordsValue = cursor.getString(territoryCoords);
+                }
+                Company company = new Company(getActivity(), cursor.getLong(id), cursor.getInt(isMember),
                         cursor.getInt(isHuntingGround), cursor.getInt(isFishingGround),
                         cursor.getInt(isPondFarm), cursor.getDouble(lat), cursor.getDouble(lng),
-                        cursor.getString(name), areaValue);
+                        cursor.getString(name), areaValue, territoryCoordsValue);
 
                 // Add cluster items (markers) to the cluster manager.
-                mClusterManager.addItem(item);
+                mClusterManager.addItem(company);
+                if(company.getPolygonOptions() != null) {
+                    company.setPolygon(mMap.addPolygon(company.getPolygonOptions()));
+                }
             } while (cursor.moveToNext());
         }
     }
@@ -182,7 +192,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<Company>() {
             @Override
             public boolean onClusterItemClick(Company item) {
-                clickedClusterItem = item;
+                clickedItem = item;
                 return false;
             }
         });
@@ -246,19 +256,27 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             TextView tv_area = (TextView) contentView.findViewById(R.id.tv_area);
             TextView tv_oblast = (TextView) contentView.findViewById(R.id.tv_oblast);
 
-            if (clickedClusterItem != null) {
-                tv_id.setText(Long.toString(clickedClusterItem.getId()));
-                tv_company_name.setText(clickedClusterItem.getName());
+            if (clickedItem != null) {
+                tv_id.setText(Long.toString(clickedItem.getId()));
+                tv_company_name.setText(clickedItem.getName());
 //                tv_position.setText(clickedClusterItem.getLat() + ", " + clickedClusterItem.getLng());
 
-                if (clickedClusterItem.getArea() == null) {
+                if (clickedItem.getArea() == null) {
                     tv_area.setVisibility(View.GONE);
                 } else {
-                    tv_area.setText(clickedClusterItem.getArea() + " " + getString(R.string.kilo_ha));
+                    tv_area.setText(clickedItem.getArea() + " " + getString(R.string.kilo_ha));
                     tv_area.setVisibility(View.VISIBLE);
                 }
 //                String oblastName = DbHelper.instance().findOblastById(clickedClusterItem.getOblastId().toString());
 //                tv_oblast.setText(oblastName);
+
+                // if earlier marker was selected, set the borders of hunting ground to blue color
+                if(previouslyClickedItem != null) {
+                    previouslyClickedItem.setPolygonColor("deselected");
+                }
+                // set the borders of selected hunting ground to red color
+                clickedItem.setPolygonColor("selected");
+                previouslyClickedItem = clickedItem;
             }
             return contentView;
         }
@@ -307,7 +325,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 return;
             case 4:
                 mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-                return;
         }
     }
 }

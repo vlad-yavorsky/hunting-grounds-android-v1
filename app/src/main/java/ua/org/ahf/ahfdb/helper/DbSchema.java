@@ -27,7 +27,8 @@ public class DbSchema {
                 Column.PHONE_1 + " text," +
                 Column.PHONE_2 + " text," +
                 Column.PHONE_3 + " text," +
-                Column.FAVORITE + " integer" +
+                Column.FAVORITE + " integer," +
+                Column.TERRITORY_COORDS + " text" +
                 ")";
         public static final String DELETE_SQL = "drop table if exists " + NAME;
 
@@ -55,6 +56,7 @@ public class DbSchema {
             public static final String PHONE_2 = "phone_2";
             public static final String PHONE_3 = "phone_3";
             public static final String FAVORITE = "favorite";
+            public static final String TERRITORY_COORDS = "territory_coords";
         }
     }
 

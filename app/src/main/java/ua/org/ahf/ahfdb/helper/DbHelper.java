@@ -22,7 +22,7 @@ import ua.org.ahf.ahfdb.model.Oblast;
 public class DbHelper {
 
     private static final String DB_NAME = "ahf.db";
-    private static final int DB_VERSION = 12;
+    private static final int DB_VERSION = 1;
     private static DbHelper mInstance;
     private SQLiteDatabase mSQLiteDatabase;
     private Context context;
@@ -79,6 +79,7 @@ public class DbHelper {
         contentValues.put(DbSchema.CompanyTable.Column.PHONE_2, company.getPhone2());
         contentValues.put(DbSchema.CompanyTable.Column.PHONE_3, company.getPhone3());
 //        contentValues.put(DbSchema.CompanyTable.Column.FAVORITE, company.isFavorite());
+        contentValues.put(DbSchema.CompanyTable.Column.TERRITORY_COORDS, company.getTerritoryCoords());
         return contentValues;
     }
 
@@ -312,6 +313,7 @@ public class DbHelper {
                     String phone1 = c.getString(DbSchema.CompanyTable.Column.PHONE_1);
                     String phone2 = c.getString(DbSchema.CompanyTable.Column.PHONE_2);
                     String phone3 = c.getString(DbSchema.CompanyTable.Column.PHONE_3);
+                    String territoryCoords = null;
 
                     if(!c.isNull(DbSchema.CompanyTable.Column.AREA)) {
                         area = c.getDouble(DbSchema.CompanyTable.Column.AREA);
@@ -320,10 +322,14 @@ public class DbHelper {
                         lat = c.getDouble(DbSchema.CompanyTable.Column.LAT);
                         lng = c.getDouble(DbSchema.CompanyTable.Column.LNG);
                     }
+                    if(!c.isNull(DbSchema.CompanyTable.Column.TERRITORY_COORDS)) {
+                        territoryCoords = c.getString(DbSchema.CompanyTable.Column.TERRITORY_COORDS);
+                    }
 
-                    Company company = new Company(id, isMember, isHuntingGround, isFishingGround,
+                    Company company = new Company(context, id, isMember, isHuntingGround, isFishingGround,
                             isPondFarm, area, lat, lng, name, description, website, email, juridicalAddress,
-                            actualAddress, director, isEnabled, oblastId, locale, phone1, phone2, phone3, 0);
+                            actualAddress, director, isEnabled, oblastId, locale, phone1, phone2, phone3, 0,
+                            territoryCoords);
                     create(company);
                 }
                 createOblasts();
