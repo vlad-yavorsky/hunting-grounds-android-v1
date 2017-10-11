@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
+import android.util.Base64;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +32,8 @@ public class DbHelper {
     private static final String TAG_RESULT = "result";
 
     private static String sortByColumnName = DbSchema.CompanyTable.Column.NAME;
+
+    final String basicAuth = "Basic " + Base64.encodeToString("androiduser:qrgM,bXL4s_ZV!uB".getBytes(), Base64.NO_WRAP);
 
     private DbHelper(Context context) {
         if (context == null) {
@@ -250,6 +253,7 @@ public class DbHelper {
             try {
                 URL url = new URL(JSON_URL);
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setRequestProperty ("Authorization", basicAuth);
                 con.setConnectTimeout(5000);
 
                 if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
