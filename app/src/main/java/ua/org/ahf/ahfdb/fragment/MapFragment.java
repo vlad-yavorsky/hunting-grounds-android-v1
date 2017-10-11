@@ -21,7 +21,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
@@ -40,8 +39,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     MapView mMapView;
     private GoogleMap mMap;
     private ClusterManager<Company> mClusterManager;
-    private Company clickedItem;
-    private Company previouslyClickedItem = null;
+    private Company clickedItem = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,9 +51,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
+        view.findViewById(R.id.ll_info_window).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), DetailsActivity.class);
+                intent.putExtra("id", Long.toString(clickedItem.getId()));
+                startActivity(intent);
+            }
+        });
+
         mMapView = (MapView) view.findViewById(R.id.map);
         mMapView.onCreate(savedInstanceState);
-
         mMapView.onResume(); // needed to get the map to display immediately
 
         try {
@@ -73,9 +79,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-//        mMap.getUiSettings().setMapToolbarEnabled(false);
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-//        mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setMapToolbarEnabled(false);
+        mMap.getUiSettings().setZoomControlsEnabled(false);
+//        mMap.setMyLocationEnabled(false);
 
         setUpClusterer();
         addMarkers();
@@ -131,6 +137,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             int lng = cursor.getColumnIndex(DbSchema.CompanyTable.Column.LNG);
             int name = cursor.getColumnIndex(DbSchema.CompanyTable.Column.NAME);
             int area = cursor.getColumnIndex(DbSchema.CompanyTable.Column.AREA);
+            int oblastId = cursor.getColumnIndex(DbSchema.CompanyTable.Column.OBLAST_ID);
             int territoryCoords = cursor.getColumnIndex(DbSchema.CompanyTable.Column.TERRITORY_COORDS);
 
             do {
@@ -150,7 +157,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 Company company = new Company(getActivity(), cursor.getLong(id), cursor.getInt(isMember),
                         cursor.getInt(isHuntingGround), cursor.getInt(isFishingGround),
                         cursor.getInt(isPondFarm), cursor.getDouble(lat), cursor.getDouble(lng),
-                        cursor.getString(name), areaValue, territoryCoordsValue);
+                        cursor.getString(name), areaValue, cursor.getInt(oblastId), territoryCoordsValue);
 
                 // Add cluster items (markers) to the cluster manager.
                 mClusterManager.addItem(company);
@@ -187,22 +194,32 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-        mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new MyCustomAdapterForItems());
-
         mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<Company>() {
             @Override
             public boolean onClusterItemClick(Company item) {
-                clickedItem = item;
-                return false;
-            }
-        });
+                View contentView = getView();
 
-        mClusterManager.setOnClusterItemInfoWindowClickListener(new ClusterManager.OnClusterItemInfoWindowClickListener<Company>() {
-            @Override
-            public void onClusterItemInfoWindowClick(Company company) {
-                Intent intent = new Intent(getActivity(), DetailsActivity.class);
-                intent.putExtra("id", Long.toString(company.getId()));
-                startActivity(intent);
+                ((TextView) contentView.findViewById(R.id.tv_company_name)).setText(item.getName());
+                ((TextView) contentView.findViewById(R.id.tv_oblast)).setText(item.getOblastName());
+
+                TextView tv_area = (TextView) contentView.findViewById(R.id.tv_area);
+                if (item.getArea() == null) {
+                    tv_area.setVisibility(View.GONE);
+                } else {
+                    tv_area.setText(item.getArea() + " " + getString(R.string.kilo_ha));
+                    tv_area.setVisibility(View.VISIBLE);
+                }
+
+                // if earlier marker was selected, set the borders of hunting ground to blue color
+                if(clickedItem != null) {
+                    clickedItem.setPolygonColor("deselected");
+                }
+                // set the borders of selected hunting ground to red color
+                item.setPolygonColor("selected");
+                clickedItem = item;
+                contentView.findViewById(R.id.ll_info_window).setVisibility(View.VISIBLE);
+
+                return false;
             }
         });
 
@@ -235,53 +252,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
     }
-
-    public class MyCustomAdapterForItems implements GoogleMap.InfoWindowAdapter {
-        private final View contentView;
-
-        MyCustomAdapterForItems() {
-            contentView = getActivity().getLayoutInflater().inflate(R.layout.info_window, null);
-        }
-
-        @Override
-        public View getInfoContents(Marker marker) {
-            return null;
-        }
-
-        @Override
-        public View getInfoWindow(Marker marker) {
-            TextView tv_id = ((TextView) contentView.findViewById(R.id.tv_id));
-            TextView tv_company_name = ((TextView) contentView.findViewById(R.id.tv_company_name));
-//            TextView tv_position = (TextView) contentView.findViewById(R.id.tv_position);
-            TextView tv_area = (TextView) contentView.findViewById(R.id.tv_area);
-            TextView tv_oblast = (TextView) contentView.findViewById(R.id.tv_oblast);
-
-            if (clickedItem != null) {
-                tv_id.setText(Long.toString(clickedItem.getId()));
-                tv_company_name.setText(clickedItem.getName());
-//                tv_position.setText(clickedClusterItem.getLat() + ", " + clickedClusterItem.getLng());
-
-                if (clickedItem.getArea() == null) {
-                    tv_area.setVisibility(View.GONE);
-                } else {
-                    tv_area.setText(clickedItem.getArea() + " " + getString(R.string.kilo_ha));
-                    tv_area.setVisibility(View.VISIBLE);
-                }
-//                String oblastName = DbHelper.instance().findOblastById(clickedClusterItem.getOblastId().toString());
-//                tv_oblast.setText(oblastName);
-
-                // if earlier marker was selected, set the borders of hunting ground to blue color
-                if(previouslyClickedItem != null) {
-                    previouslyClickedItem.setPolygonColor("deselected");
-                }
-                // set the borders of selected hunting ground to red color
-                clickedItem.setPolygonColor("selected");
-                previouslyClickedItem = clickedItem;
-            }
-            return contentView;
-        }
-    }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

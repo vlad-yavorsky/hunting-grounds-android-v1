@@ -9,6 +9,7 @@ import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.maps.android.clustering.ClusterItem;
 
 import ua.org.ahf.ahfdb.R;
+import ua.org.ahf.ahfdb.helper.DbHelper;
 
 public class Company implements ClusterItem {
 
@@ -28,6 +29,7 @@ public class Company implements ClusterItem {
     private String director;
     private Integer isEnabled;
     private Integer oblastId;
+    private String oblastName;
     private String locale;
     private String phone1;
     private String phone2;
@@ -42,8 +44,9 @@ public class Company implements ClusterItem {
 //    private String[] gallery;
     private Context context;
 
-    public Company(Context context, Long id, Integer isMember, Integer isHuntingGround, Integer isFishingGround,
-                   Integer isPondFarm, Double lat, Double lng, String name, Double area, String territoryCoords) {
+    public Company(Context context, Long id, Integer isMember, Integer isHuntingGround,
+                   Integer isFishingGround, Integer isPondFarm, Double lat, Double lng, String name,
+                   Double area, Integer oblastId, String territoryCoords) {
         this.context = context;
         this.id = id;
         this.isMember = isMember;
@@ -53,15 +56,17 @@ public class Company implements ClusterItem {
         setPosition(lat, lng);
         this.name = name;
         this.area = area;
+        this.oblastId = oblastId;
+        this.oblastName = DbHelper.instance(context).findOblastById(oblastId.toString());
         setTerritoryCoords(territoryCoords);
     }
 
-    public Company(Context context, Long id, Integer isMember, Integer isHuntingGround, Integer isFishingGround,
-                   Integer isPondFarm, Double area, Double lat, Double lng, String name,
-                   String description, String website, String email, String juridicalAddress,
-                   String actualAddress, String director, Integer isEnabled, Integer oblastId,
-                   String locale, String phone1, String phone2, String phone3, Integer favorite,
-                   String territoryCoords) {
+    public Company(Context context, Long id, Integer isMember, Integer isHuntingGround,
+                   Integer isFishingGround, Integer isPondFarm, Double area, Double lat, Double lng,
+                   String name, String description, String website, String email,
+                   String juridicalAddress, String actualAddress, String director, Integer isEnabled,
+                   Integer oblastId, String locale, String phone1, String phone2, String phone3,
+                   Integer favorite, String territoryCoords) {
         this.context = context;
         this.id = id;
         this.isMember = isMember;
@@ -79,6 +84,7 @@ public class Company implements ClusterItem {
         this.director = director;
         this.isEnabled = isEnabled;
         this.oblastId = oblastId;
+        this.oblastName = DbHelper.instance(context).findOblastById(oblastId.toString());
         this.locale = locale;
         this.phone1 = phone1;
         this.phone2 = phone2;
@@ -176,6 +182,10 @@ public class Company implements ClusterItem {
         return oblastId;
     }
 
+    public String getOblastName() {
+        return oblastName;
+    }
+
     public String getLocale() {
         return locale;
     }
@@ -224,7 +234,6 @@ public class Company implements ClusterItem {
         for (int i = 0; i < allLatLng.length; i++) {
             String[] latLng = allLatLng[i].split(",");
             polygonOptions.add(new LatLng(Double.parseDouble(latLng[1]), Double.parseDouble(latLng[0])));
-            System.out.println("coords:" + latLng[1] + " " + latLng[0]);
         }
         polygonOptions.strokeWidth(2.0f);
     }
