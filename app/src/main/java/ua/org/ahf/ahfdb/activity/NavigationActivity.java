@@ -14,6 +14,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.google.android.gms.maps.GoogleMap;
+
 import ua.org.ahf.ahfdb.R;
 import ua.org.ahf.ahfdb.fragment.MapFragment;
 import ua.org.ahf.ahfdb.fragment.PreferencesFragment;
@@ -157,25 +159,19 @@ public class NavigationActivity extends AppCompatActivity
             case R.id.map_type_normal:
                 if (!item.isChecked()) {
                     item.setChecked(true);
-                    ((MapFragment)fragment).setMapType(1);
-                }
-                return true;
-            case R.id.map_type_satellite:
-                if (!item.isChecked()) {
-                    item.setChecked(true);
-                    ((MapFragment)fragment).setMapType(2);
+                    ((MapFragment)fragment).setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 }
                 return true;
             case R.id.map_type_hybrid:
                 if (!item.isChecked()) {
                     item.setChecked(true);
-                    ((MapFragment)fragment).setMapType(3);
+                    ((MapFragment)fragment).setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 }
                 return true;
             case R.id.map_type_terrain:
                 if (!item.isChecked()) {
                     item.setChecked(true);
-                    ((MapFragment)fragment).setMapType(4);
+                    ((MapFragment)fragment).setMapType(GoogleMap.MAP_TYPE_TERRAIN);
                 }
                 return true;
             case R.id.sort_by_name:

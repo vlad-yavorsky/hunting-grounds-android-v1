@@ -27,6 +27,8 @@ import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 
+import java.util.Iterator;
+
 import ua.org.ahf.ahfdb.R;
 import ua.org.ahf.ahfdb.activity.DetailsActivity;
 import ua.org.ahf.ahfdb.activity.NavigationActivity;
@@ -86,15 +88,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         setUpClusterer();
         addMarkers();
 
-        googleMap.setOnInfoWindowClickListener(mClusterManager);
-        mMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
-
         LatLng ukraine = new LatLng(49.463006, 31.201909);
         float zoomLevel = 6.0f;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ukraine, zoomLevel));
 
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng arg0) {
+                closeInfoWindow();
+            }
+        });
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        setMapType(preferences.getInt(getString(R.string.key_map_type), 1));
+        setMapType(preferences.getInt(getString(R.string.key_map_type), GoogleMap.MAP_TYPE_NORMAL));
     }
 
     @Override
@@ -170,7 +176,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private void setUpClusterer() {
         // Initialize the manager with the context and the map.
-        // (Activity extends context, so we can pass 'this' in the constructor.)
         mClusterManager = new ClusterManager<Company>(getActivity(), mMap);
 
         mClusterManager.setRenderer(new DefaultClusterRenderer<Company>(getActivity(), mMap, mClusterManager) {
@@ -197,35 +202,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<Company>() {
             @Override
             public boolean onClusterItemClick(Company item) {
-                View contentView = getView();
-
-                ((TextView) contentView.findViewById(R.id.tv_company_name)).setText(item.getName());
-                ((TextView) contentView.findViewById(R.id.tv_oblast)).setText(item.getOblastName());
-
-                TextView tv_area = (TextView) contentView.findViewById(R.id.tv_area);
-                if (item.getArea() == null) {
-                    tv_area.setVisibility(View.GONE);
-                } else {
-                    tv_area.setText(item.getArea() + " " + getString(R.string.kilo_ha));
-                    tv_area.setVisibility(View.VISIBLE);
-                }
-
-                // if earlier marker was selected, set the borders of hunting ground to blue color
-                if(clickedItem != null) {
-                    clickedItem.setPolygonColor("deselected");
-                }
-                // set the borders of selected hunting ground to red color
-                item.setPolygonColor("selected");
-                clickedItem = item;
-                contentView.findViewById(R.id.ll_info_window).setVisibility(View.VISIBLE);
-
+                openInfoWindow(item);
                 return false;
             }
         });
-
-        // Point the map's listeners at the listeners implemented by the cluster manager.
-        mMap.setOnCameraIdleListener(mClusterManager);
-        mMap.setOnMarkerClickListener(mClusterManager);
 
         mClusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<Company>() {
             @Override
@@ -243,7 +223,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 // Animate camera to the bounds
                 try {
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -251,6 +231,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 return true;
             }
         });
+
+        // Point the map's listeners at the listeners implemented by the cluster manager.
+        mMap.setOnCameraIdleListener(mClusterManager);
+        mMap.setOnMarkerClickListener(mClusterManager);
     }
 
     @Override
@@ -258,19 +242,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         inflater.inflate(R.menu.map, menu);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        int type = preferences.getInt(getString(R.string.key_map_type), 1);
+        int type = preferences.getInt(getString(R.string.key_map_type), GoogleMap.MAP_TYPE_NORMAL);
 
         switch (type) {
-            case 1:
+            case GoogleMap.MAP_TYPE_NORMAL:
                 menu.findItem(R.id.map_type_normal).setChecked(true);
                 break;
-            case 2:
-                menu.findItem(R.id.map_type_satellite).setChecked(true);
-                break;
-            case 3:
+            case GoogleMap.MAP_TYPE_HYBRID:
                 menu.findItem(R.id.map_type_hybrid).setChecked(true);
                 break;
-            case 4:
+            case GoogleMap.MAP_TYPE_TERRAIN:
                 menu.findItem(R.id.map_type_terrain).setChecked(true);
                 break;
         }
@@ -278,23 +259,69 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    public void setMapType(int type) {
+    public void setMapType(int newType) {
+        int prevMapType = mMap.getMapType();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         SharedPreferences.Editor edit = preferences.edit();
-        edit.putInt(getString(R.string.key_map_type), type);
+        edit.putInt(getString(R.string.key_map_type), newType);
         edit.apply();
-        switch (type) {
-            case 1:
-                mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                return;
-            case 2:
-                mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-                return;
-            case 3:
-                mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-                return;
-            case 4:
-                mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+        mMap.setMapType(newType);
+        // optimization
+        if((prevMapType == GoogleMap.MAP_TYPE_NORMAL && newType == GoogleMap.MAP_TYPE_TERRAIN) ||
+                (prevMapType == GoogleMap.MAP_TYPE_TERRAIN && newType == GoogleMap.MAP_TYPE_NORMAL)) {
+            return;
+        }
+        // change colors of icons, when changes map type
+//        Iterator<Marker> iterator = mClusterManager.getMarkerCollection().getMarkers().iterator();
+//        while(iterator.hasNext()){
+//            iterator.next().setIcon();
+//        }
+        // change colors of borders, when changes map type
+        Iterator<Company> iterator = mClusterManager.getAlgorithm().getItems().iterator();
+        while(iterator.hasNext()){
+            Company company = iterator.next();
+            if(company == clickedItem) {
+                company.setPolygonColor("selected", newType);
+            } else {
+                company.setPolygonColor("deselected", newType);
+            }
         }
     }
+
+    private void closeInfoWindow() {
+        if(clickedItem != null) {
+            clickedItem.setPolygonColor("deselected", mMap.getMapType());
+            clickedItem = null;
+            getView().findViewById(R.id.ll_info_window).setVisibility(View.GONE);
+        }
+    }
+
+    private void openInfoWindow(Company item) {
+        View contentView = getView();
+
+        ((TextView) contentView.findViewById(R.id.tv_company_name)).setText(item.getName());
+        ((TextView) contentView.findViewById(R.id.tv_oblast)).setText(item.getOblastName());
+
+        TextView tv_area = (TextView) contentView.findViewById(R.id.tv_area);
+        if (item.getArea() == null) {
+            tv_area.setVisibility(View.GONE);
+        } else {
+            tv_area.setText(item.getArea() + " " + getString(R.string.kilo_ha));
+            tv_area.setVisibility(View.VISIBLE);
+        }
+
+        if (clickedItem == null) {
+            contentView.findViewById(R.id.ll_info_window).setVisibility(View.VISIBLE);
+        }
+
+        // if earlier marker was selected, set the borders of hunting ground to blue color
+        if(clickedItem != null) {
+            clickedItem.setPolygonColor("deselected", mMap.getMapType());
+        }
+        // set the borders of selected hunting ground to red color
+        item.setPolygonColor("selected", mMap.getMapType());
+
+        clickedItem = item;
+    }
+
 }

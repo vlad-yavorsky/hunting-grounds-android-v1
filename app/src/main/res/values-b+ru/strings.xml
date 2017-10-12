@@ -18,9 +18,8 @@
     <string name="delete_from_favorites">Удалить из избранного</string>
     <string name="map_type">Тип карты</string>
     <string name="map_type_normal">Обычная</string>
-    <string name="map_type_satellite">Спутник</string>
-    <string name="map_type_hybrid">Гибрид</string>
-    <string name="map_type_terrain">Физическая</string>
+    <string name="map_type_hybrid">Спутник</string>
+    <string name="map_type_terrain">Ландшафт</string>
 
     <!-- Other -->
     <string name="title_activity_maps">Карта</string>

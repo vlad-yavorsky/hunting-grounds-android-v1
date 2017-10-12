@@ -3,6 +3,7 @@ package ua.org.ahf.ahfdb.model;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
@@ -240,22 +241,33 @@ public class Company implements ClusterItem {
 
     public void setPolygon(Polygon polygon) {
         this.polygon = polygon;
-        setPolygonColor("deselected");
+        setPolygonColor("deselected", GoogleMap.MAP_TYPE_NORMAL);
     }
 
-    public void setPolygonColor(String type) {
+    public void setPolygonColor(String polygonType, int mapType) {
         if(polygon == null) {
             return;
         }
-        switch (type) {
+
+        switch (polygonType) {
             case "selected":
-                polygon.setStrokeColor(ContextCompat.getColor(context, R.color.selectedPolygonStrokeColor));
-                polygon.setFillColor(ContextCompat.getColor(context, R.color.selectedPolygonFillColor));
+                if(mapType == GoogleMap.MAP_TYPE_HYBRID){
+                    polygon.setStrokeColor(ContextCompat.getColor(context, R.color.polygonStrokeColorRed));
+                    polygon.setFillColor(ContextCompat.getColor(context, R.color.polygonFillColorRed));
+                } else {
+                    polygon.setStrokeColor(ContextCompat.getColor(context, R.color.polygonStrokeColorRed));
+                    polygon.setFillColor(ContextCompat.getColor(context, R.color.polygonFillColorRed));
+                }
                 return;
             case "deselected":
             default:
-                polygon.setStrokeColor(ContextCompat.getColor(context, R.color.deselectedPolygonStrokeColor));
-                polygon.setFillColor(ContextCompat.getColor(context, R.color.deselectedPolygonFillColor));
+                if(mapType == GoogleMap.MAP_TYPE_HYBRID){
+                    polygon.setStrokeColor(ContextCompat.getColor(context, R.color.polygonStrokeColorYellow));
+                    polygon.setFillColor(ContextCompat.getColor(context, R.color.polygonFillColorYellow));
+                } else {
+                    polygon.setStrokeColor(ContextCompat.getColor(context, R.color.polygonStrokeColorBlue));
+                    polygon.setFillColor(ContextCompat.getColor(context, R.color.polygonFillColorBlue));
+                }
         }
     }
 }

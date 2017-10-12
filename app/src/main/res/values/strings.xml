@@ -18,8 +18,7 @@
     <string name="delete_from_favorites">Delete from favorites</string>
     <string name="map_type">Map type</string>
     <string name="map_type_normal">Normal</string>
-    <string name="map_type_satellite">Satellite</string>
-    <string name="map_type_hybrid">Hybrid</string>
+    <string name="map_type_hybrid">Satellite</string>
     <string name="map_type_terrain">Terrain</string>
 
     <!-- Other -->
@@ -81,7 +80,7 @@
     </string-array>
     <string-array name="home_screen_entry_values">
         <item>1</item>
-        <item>2</item>
+        <item>4</item>
         <item>3</item>
     </string-array>
     <string name="update">Update</string>
