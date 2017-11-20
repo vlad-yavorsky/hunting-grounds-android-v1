@@ -1,6 +1,6 @@
 # Database of Hunting and Fishing Ground
 
-This is an multilanguage (en/uk/ru) application for Android OS that contains datailed information about ukrainian hunting and fishing grounds. This information may help ukrainian hunters and fishermen or guests from another countries to choose the future hunting or fishing place. Also this maybe helpfull for founders of this hunting ground to discover and cooperate with each other. 
+This is a multilanguage (en/uk/ru) application for Android OS that contains detailed information about Ukrainian hunting and fishing grounds. This information may help Ukrainian hunters and fishermen or guests from another country to choose the future hunting or fishing place. Also this maybe helpful for founders of this hunting ground to discover and cooperate with each other.
 
 ## Screenshots
 
