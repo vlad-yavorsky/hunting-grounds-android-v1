@@ -108,6 +108,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         super.onResume();
         mMapView.onResume();
         ((NavigationActivity) getActivity()).getSupportActionBar().setTitle(R.string.map);
+        if(clickedItem != null) {
+            getView().findViewById(R.id.ll_info_window).setVisibility(View.VISIBLE);
+            openInfoWindow(clickedItem);
+        }
     }
 
     @Override
