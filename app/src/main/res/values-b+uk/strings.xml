@@ -26,10 +26,8 @@
     <string name="title_activity_navigation">Навігація</string>
     <string name="navigation_drawer_open">Відкрити панель навігації</string>
     <string name="navigation_drawer_close">Закрити панель навігації</string>
-    <string name="select_category">Оберіть категорію</string>
-    <string name="hunting_grounds">Мисливські господарства</string>
-    <string name="fishing_grounds">Риболовецькі бази</string>
     <string name="auhfg">Асоціація користувачів мисливських та рибальських господарств</string>
+    <string name="details">Детальна інформація</string>
 
     <!-- Company -->
     <string name="memberOfAssociation">Член Асоціації</string>

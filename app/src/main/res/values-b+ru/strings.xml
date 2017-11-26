@@ -26,10 +26,8 @@
     <string name="title_activity_navigation">Навигация</string>
     <string name="navigation_drawer_open">Открыть панель навигации</string>
     <string name="navigation_drawer_close">Закрыть панель навигации</string>
-    <string name="select_category">Выберите категорию</string>
-    <string name="hunting_grounds">Охотничьи хозяйства</string>
-    <string name="fishing_grounds">Рыболовные базы</string>
     <string name="auhfg">Ассоциация пользователей охотничьих и рыболовных хозяйств</string>
+    <string name="details">Детальная информация</string>
 
     <!-- Company -->
     <string name="memberOfAssociation">Член Ассоциации</string>
